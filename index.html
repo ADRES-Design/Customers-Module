@@ -1863,9 +1863,8 @@ function renderBody(){
     return (i===0?'<a data-a="home">'+esc(c)+"</a>":"<span>"+esc(c)+"</span>");
   }).join('<span class="sep">&#8250;</span>');
 
-  var back = r.name!=="list"
-    ? '<div class="row-end" style="margin-bottom:18px"><button class="btn" data-a="home">'
-      +icon("arrowRight",18,"flip dir")+" "+esc(ar()?"\u0631\u062C\u0648\u0639":"Back")+"</button></div>" : "";
+  /* no Back button: the breadcrumb's "Customers" crumb and the active nav item
+     both route home, so returning to the list is still one click. */
 
   var content;
   switch(r.name){
@@ -1878,7 +1877,7 @@ function renderBody(){
 
   document.getElementById("page").innerHTML=
     '<div class="crumbline">'+cl+"</div>"
-    +'<h1 class="pt">'+esc(h1)+"</h1>"+back+content;
+    +'<h1 class="pt">'+esc(h1)+"</h1>"+content;
 
   if(fk){
     var again=document.querySelector('[data-b="'+fk+'"]');
