@@ -293,17 +293,6 @@ body[dir=rtl] .pager button .ar{transform:scaleX(-1);}
 /* ══ tabs (Today/Week/Month underline style) ══ */
 
 /* ══ persons summary card ══ */
-/* ══ person profile: summary is the lead section, full width, attributes across ══ */
-.psummary{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-box-shadow:var(--shadow);padding:24px 28px 26px;margin-bottom:20px;}
-.psummary .pshead{padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-2);}
-.psummary .pname{font-size:21px;font-weight:700;letter-spacing:-.015em;}
-.psgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 30px;margin:0;}
-@media(max-width:1180px){.psgrid{grid-template-columns:repeat(3,minmax(0,1fr));}}
-@media(max-width:720px){.psgrid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-.psgrid .it dt{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
-color:var(--muted);margin-bottom:7px;}
-.psgrid .it dd{margin:0;font-size:14.5px;color:var(--ink);word-break:break-word;line-height:1.5;}
 
 /* ══ accordions ══ */
 
@@ -457,6 +446,7 @@ function icon(name,px,cls){
 
 /* ═══════════════════ i18n ═══════════════════ */
 var D = {
+  mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
   searchDesc:["Whether the customer is a person, a company or a government entity, you can review and make changes to their information.","\u0633\u0648\u0627\u0621 \u0643\u0627\u0646 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644 \u0634\u062E\u0635\u0627\u064B \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0648 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629\u060C \u064A\u0645\u0643\u0646\u0643 \u0645\u0631\u0627\u062C\u0639\u0629 \u0628\u064A\u0627\u0646\u0627\u062A\u0647 \u0648\u062A\u0639\u062F\u064A\u0644\u0647\u0627."],
   showMore:["Show more","\u0639\u0631\u0636 \u0627\u0644\u0645\u0632\u064A\u062F"],
@@ -1435,16 +1425,14 @@ var PERSON_TABS=[["profileDetails","profileDetails"],["blockDetails","blockDetai
                  ["poaDetails","poaDetails"],["documents","documents"]];
 
 function personSummary(p){
-  var items=[[t("nationality"),p.nationality,false],[t("gender"),p.gender,false],
-             [t("idNumber"),p.idNumber,true],[t("mobile"),p.mobile,true],
-             [t("emailAddress"),p.email,true]];
-  return '<section class="psummary">'
-    +'<div class="pshead"><div class="pname">'
-      +esc(ar() ? (p.nameAr||p.nameEn) : (p.nameEn||p.nameAr))+"</div></div>"
-    +'<dl class="psgrid">'+items.map(function(r){
-        return '<div class="it"><dt>'+esc(r[0])+"</dt><dd"+(r[2]?' dir="ltr"':"")+">"
-          +esc(dash(r[1]))+"</dd></div>";
-      }).join("")+"</dl></section>";
+  return secTitle(t("mainDetails"))+panel(fieldGrid([
+    [t("name"), ar() ? (p.nameAr||p.nameEn) : (p.nameEn||p.nameAr)],
+    [t("nationality"), p.nationality],
+    [t("gender"), p.gender],
+    [t("idNumber"), p.idNumber, true],
+    [t("mobile"), p.mobile, true],
+    [t("emailAddress"), p.email, true]
+  ]));
 }
 
 function sectionProfile(p){
@@ -1857,16 +1845,16 @@ function renderModal(){
     title = S.cat==="persons"?t("custPerson") : S.cat==="companies"?t("custCompany") : t("custGov");
     body=addModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
-      +'<button class="btn" data-a="addSave">&#128190; '+esc(t("save"))+"</button>";
+      +'<button class="btn" data-a="addSave">'+esc(t("save"))+"</button>";
   } else if(m.kind==="editId"){
     title = S.cat==="persons"?t("custPerson") : S.cat==="companies"?t("custCompany") : t("custGov");
     body=editIdBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
-      +'<button class="btn" data-a="editIdSave">&#128190; '+esc(t("save"))+"</button>";
+      +'<button class="btn" data-a="editIdSave">'+esc(t("save"))+"</button>";
   } else if(m.kind==="exc"){
     title=t("addException"); body=excModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
-      +'<button class="btn" data-a="excSave">&#128190; '+esc(t("save"))+"</button>";
+      +'<button class="btn" data-a="excSave">'+esc(t("save"))+"</button>";
   } else if(m.kind==="doc"){
     title=t("addDocument"); body=docModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
@@ -1895,9 +1883,9 @@ function editIdBody(){
       +'<input type="text" value="'+esc(d.nameAr)+'" disabled></div></div>'
     +'<div class="frow"><label>'+esc(t("nameEn"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.nameEn)+'" disabled></div></div>'
-    +'<div class="frow"><label style="background:#FFF9C4">'+esc(t("landLine"))+'</label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("landLine"))+'</label><div class="ctl">'
       +'<input type="text" dir="ltr" data-b="modal.d.landLine" value="'+esc(d.landLine)+'"></div></div>'
-    +'<div class="frow"><label style="background:#FFF9C4">'+esc(t("email"))+'</label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("email"))+'</label><div class="ctl">'
       +'<input type="email" dir="ltr" data-b="modal.d.email" value="'+esc(d.email)+'"></div></div>';
 }
 
