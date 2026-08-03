@@ -242,6 +242,14 @@ color:var(--ink-2);font-size:13.5px;}
 
 /* ══ tables ══ */
 .tw{overflow-x:auto;}
+/* list tables must never scroll sideways: fixed layout, headers may wrap onto a
+   second line, values stay on one line and truncate with an ellipsis (full text
+   remains available via the cell's title attribute) */
+.tw.fit{overflow-x:hidden;}
+.tw.fit table.g{table-layout:fixed;width:100%;}
+.tw.fit table.g th{white-space:normal;}
+.tw.fit table.g td{overflow:hidden;text-overflow:ellipsis;}
+.tw.fit table.g th:last-child,.tw.fit table.g td:last-child{width:112px;}
 table.g{width:100%;border-collapse:collapse;font-size:14px;}
 table.g th{text-align:start;background:var(--thead);font-weight:700;color:var(--ink);
 padding:12px 18px;white-space:nowrap;font-size:13.5px;
@@ -255,24 +263,6 @@ table.g tbody tr:nth-child(even){background:var(--zebra);}
 table.g tbody tr:hover{background:var(--hover);}
 table.g tbody tr:last-child td{border-bottom:0;}
 
-/* pinned trailing action column — stays put while the row scrolls horizontally.
-   The cell needs its own opaque fill, otherwise scrolling content shows through. */
-/* only pinned while the wrapper actually overflows — .scrolls is toggled in
-   syncStickyCols(). A table that fits shows no divider and no shadow. */
-.tw.scrolls table.g.stick-last th:last-child,
-.tw.scrolls table.g.stick-last td:last-child{
-position:sticky;inset-inline-end:0;z-index:2;
-border-inline-start:1px solid var(--row-line);
-box-shadow:-7px 0 9px -7px rgba(19,15,38,.16);}
-body[dir=rtl] .tw.scrolls table.g.stick-last th:last-child,
-body[dir=rtl] .tw.scrolls table.g.stick-last td:last-child{
-box-shadow:7px 0 9px -7px rgba(19,15,38,.16);}
-.tw.scrolls table.g.stick-last th:last-child{background:var(--thead);z-index:3;}
-.tw.scrolls table.g.stick-last tbody tr:nth-child(odd) td:last-child{background:var(--surface);}
-.tw.scrolls table.g.stick-last tbody tr:nth-child(even) td:last-child{background:var(--zebra);}
-.tw.scrolls table.g.stick-last tbody tr:hover td:last-child{background:var(--hover);}
-/* an empty-state row spans every column, so it must not be pinned */
-.tw.scrolls table.g.stick-last tbody td[colspan]{position:static;box-shadow:none;border-inline-start:0;}
 .num{text-align:end;}
 .empty{padding:34px 18px;text-align:center;color:var(--muted);font-size:14px;}
 .empty .gl{display:block;font-size:30px;color:#C8CBCE;margin-bottom:10px;}
@@ -1176,8 +1166,6 @@ function ac(id,title,body,def,nested){
     +(o?'<div class="acb">'+body+'</div>':'')+'</div>';
 }
 function grid(cols,list,rowFn,cls){
-  /* a blank trailing header means the last column holds row actions -> pin it */
-  if(cols.length && cols[cols.length-1]==="") cls=(cls?cls+" ":"")+"stick-last";
   var h=cols.map(function(c){ return "<th>"+esc(c)+"</th>"; }).join("");
   var b=list.length
     ? list.map(function(r,i){ return "<tr>"+rowFn(r,i)+"</tr>"; }).join("")
@@ -1278,11 +1266,17 @@ function viewSearch(){
   var primary=all.filter(function(x){ return !x.more; });
   var extra  =all.filter(function(x){ return  x.more; });
 
+  var toggle='<div class="fmore"><button class="showmore" data-a="more" aria-expanded="'
+    +(S.moreFilters?"true":"false")+'">'+esc(t(S.moreFilters?"showLess":"showMore"))
+    +icon("chevron",20)+'</button><span class="rule"></span></div>';
+
+  /* the toggle always sits directly beneath the last visible field row, so
+     "Show less" appears below the revealed filters rather than between them */
   return '<div class="fpanel">'
     +'<div class="fgrid">'+primary.map(filterRow).join("")+"</div>"
-    +'<div class="fmore"><button class="showmore" data-a="more" aria-expanded="'+(S.moreFilters?"true":"false")+'">'
-      +esc(t(S.moreFilters?"showLess":"showMore"))+icon("chevron",20)+'</button><span class="rule"></span></div>'
-    +(S.moreFilters?'<div class="fgrid">'+extra.map(filterRow).join("")+"</div>":"")
+    +(S.moreFilters
+        ? '<div class="fgrid">'+extra.map(filterRow).join("")+"</div>"+toggle
+        : toggle)
     +'<div class="factions">'
       +'<button class="btn-clear" data-a="reset">'+esc(t("clearAll"))+"</button>"
       +'<button class="btn-search" data-a="search">'+icon("search",17)+esc(t("searchBtn"))+"</button>"
@@ -1318,23 +1312,26 @@ function viewList(){
       +' aria-label="'+esc(t("viewDetails"))+'">'+icon("arrowRight",17,"dir")+"</button></div>";
   }
   function idCell(r){ return '<td dir="ltr">'+esc(r[idKey])+"</td>"; }
+  function tc(v,dir){   /* truncatable cell */
+    return "<td"+(dir?' dir="'+dir+'"':"")+' title="'+esc(v)+'">'+esc(v)+"</td>";
+  }
 
   if(cat==="persons"){
     cols=[idLbl,t("nameAr"),t("nameEn"),t("mobileNumber"),t("emailAddress"),t("actions")];
-    rowFn=function(r){ return idCell(r)+"<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)
-      +'</td><td dir="ltr">'+esc(r.mobile)+'</td><td dir="ltr">'+esc(r.email)+"</td><td>"+actions(r)+"</td>"; };
+    rowFn=function(r){ return idCell(r)+tc(r.nameAr)+tc(r.nameEn)
+      +tc(r.mobile,"ltr")+tc(r.email,"ltr")+"<td>"+actions(r)+"</td>"; };
   } else if(cat==="companies"){
     cols=[idLbl,t("nameAr"),t("nameEn"),t("landLine"),t("emailAddress"),
           t("isExempted"),t("isSmartSurvey"),t("actions")];
-    rowFn=function(r){ return idCell(r)+"<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)
-      +'</td><td dir="ltr">'+esc(r.landLine)+'</td><td dir="ltr">'+esc(r.email)
-      +"</td><td>"+sx(r.isExempted)+"</td><td>"+sx(r.isSmartSurvey)+"</td><td>"+actions(r)+"</td>"; };
+    rowFn=function(r){ return idCell(r)+tc(r.nameAr)+tc(r.nameEn)
+      +tc(r.landLine,"ltr")+tc(r.email,"ltr")
+      +"<td>"+sx(r.isExempted)+"</td><td>"+sx(r.isSmartSurvey)+"</td><td>"+actions(r)+"</td>"; };
   } else {
     cols=[idLbl,t("nameAr"),t("nameEn"),t("mobileNumber"),t("emailAddress"),
           t("isExempted"),t("actions")];
-    rowFn=function(r){ return idCell(r)+"<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)
-      +'</td><td dir="ltr">'+esc(r.mobile)+'</td><td dir="ltr">'+esc(r.email)
-      +"</td><td>"+sx(r.isExempted)+"</td><td>"+actions(r)+"</td>"; };
+    rowFn=function(r){ return idCell(r)+tc(r.nameAr)+tc(r.nameEn)
+      +tc(r.mobile,"ltr")+tc(r.email,"ltr")
+      +"<td>"+sx(r.isExempted)+"</td><td>"+actions(r)+"</td>"; };
   }
 
   var all=rows().filter(match);
@@ -1348,8 +1345,8 @@ function viewList(){
       +esc(t("noResults"))+"</div></td></tr>";
 
   return catTabs()+viewSearch()
-    +'<section class="card"><div class="body flush"><div class="tw">'
-    +'<table class="g stick-last">'+head+"<tbody>"+body+"</tbody></table></div></div></section>"
+    +'<section class="card"><div class="body flush"><div class="tw fit">'
+    +'<table class="g">'+head+"<tbody>"+body+"</tbody></table></div></div></section>"
     +'<div class="pgwrap">'+pager(pg.page,pg.total,"listPage")+"</div>";
 }
 
@@ -1685,7 +1682,7 @@ function viewCpu(){
   var secs=cpuSections().map(function(name){
     var list=C.docs[name]||[];
     var body = list.length
-      ? '<div class="tw"><table class="g stick-last"><thead><tr><th></th><th>'+esc(t("referenceNumber"))
+      ? '<div class="tw"><table class="g"><thead><tr><th></th><th>'+esc(t("referenceNumber"))
         +"</th><th>"+esc(t("issueDate"))+"</th><th>"+esc(t("expiryDate"))+"</th><th></th></tr></thead><tbody>"
         +list.map(function(d,i){
             var police = name===POLICE_SECTION;
@@ -1964,7 +1961,6 @@ function renderBody(){
       if(pos!=null&&again.setSelectionRange){ try{ again.setSelectionRange(pos,pos); }catch(x){} } }
   }
   renderMenu();
-  syncStickyCols();
 }
 
 /* ── dropdown layer ─────────────────────────────────────────────────────────
@@ -2008,18 +2004,6 @@ function renderMenu(){
     : (r.bottom+6)+"px";
 }
 function closeMenu(){ S.gear=null; renderMenu(); }
-
-/* ── pin only when needed ───────────────────────────────────────────────────
-   Adds .scrolls to any .tw whose content is wider than its box, so the sticky
-   action column (and its divider/shadow) appears only on tables that scroll.  */
-function syncStickyCols(){
-  var tws=document.querySelectorAll(".tw");
-  for(var i=0;i<tws.length;i++){
-    var el=tws[i];
-    if(el.scrollWidth-el.clientWidth>1) el.classList.add("scrolls");
-    else el.classList.remove("scrolls");
-  }
-}
 
 function render(){ renderChrome(); renderBody(); renderModal(); renderMenu(); }
 
@@ -2193,12 +2177,7 @@ document.addEventListener("keydown",function(ev){
 try{ if(/[?&]lang=ar\b/.test(location.search)) S.lang="ar"; }catch(e){}
 
 window.addEventListener("scroll",function(){ if(S.gear) closeMenu(); },true);
-window.addEventListener("resize",function(){ if(S.gear) closeMenu(); syncStickyCols(); });
-/* container-driven size changes (sidebar reflow, zoom) too, where supported */
-if(typeof ResizeObserver!=="undefined"){
-  var ro=new ResizeObserver(function(){ syncStickyCols(); });
-  ro.observe(document.body);
-}
+window.addEventListener("resize",function(){ if(S.gear) closeMenu(); });
 
 render();
 </script>
