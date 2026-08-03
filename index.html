@@ -1073,29 +1073,68 @@ function fillCompany(o){
     propertyNumber:"",address:""};
   return base;
 }
-COMPANIES = COMPANIES.concat([
-  fillCompany({id:"C4", tradeLicenseNumber:"CN-1102884", nameAr:"إعمار الإمارات العقارية ذ.م.م",
-    nameEn:"Emirates Property Trust LLC", landLine:"971266011 88", email:"info@ept.ae"}),
-  fillCompany({id:"C5", tradeLicenseNumber:"CN-2290117", nameAr:"البطين للتطوير والمقاولات",
-    nameEn:"Bateen Development & Contracting", landLine:"971244577 88",
-    email:"contact@bateendev.ae", isExempted:"Yes"}),
-  fillCompany({id:"C6", tradeLicenseNumber:"CN-1234567", nameAr:"CN-1234567",
-    nameEn:"CN-2518654 E Company", landLine:"", email:"QADDOUMI@QADDOUMI.COM"}),
+/* Companies fixture supplied by the business, listed first so page 1 shows this
+   set exactly. The UAT-derived records follow (CN-1298819 carries the activities /
+   owners / users / signatories / exceptions payload used by the detail tabs). */
+COMPANIES = [
+  fillCompany({id:"K1", tradeLicenseNumber:"CN-5541290", nameAr:"شركة الأفق الجديد للعقارات",
+    nameEn:"New Horizon Real Estate LLC", landLine:"97125551234", email:"info@horizonre.ae",
+    isExempted:"No", isSmartSurvey:"Yes",
+    general:{licenseIssueDate:"12-03-2016",licenseExpiryDate:"11-03-2028",adcci:"1283040"},
+    activities:[
+      {code:"6810001",nameAr:"شراء وبيع الأراضي والعقارات",nameEn:"Land and Real Estate Purchase and Sale"},
+      {code:"6820001",nameAr:"خدمات تأجير وإدارة العقارات",nameEn:"Real Estate Lease And Management Services"}],
+    owners:[{nameAr:"طارق خالد المنصوري",nameEn:"Tariq Khalid Almansoori",percentage:"100",
+      nationality:"United Arab Emirates",relationType:"Owner"}]}),
+  fillCompany({id:"K2", tradeLicenseNumber:"CN-9923841", nameAr:"الروابي للمقاولات العامة",
+    nameEn:"Al Rawabi General Contracting", landLine:"97126774321",
+    email:"contact@alrawabicontracting.ae", isExempted:"Yes", isSmartSurvey:"No",
+    general:{licenseIssueDate:"05-07-2013",licenseExpiryDate:"04-07-2027",adcci:""}}),
+  fillCompany({id:"K3", tradeLicenseNumber:"CN-1182934", nameAr:"الواحة للخدمات التجارية",
+    nameEn:"Oasis Commercial Services", landLine:"97124448899", email:"support@oasis-services.ae",
+    isExempted:"No", isSmartSurvey:"No"}),
+  fillCompany({id:"K4", tradeLicenseNumber:"CN-7734012", nameAr:"القمة للاستثمارات العقارية",
+    nameEn:"Al Qemma Real Estate Investment", landLine:"97128883344", email:"info@alqemmare.ae",
+    isExempted:"No", isSmartSurvey:"Yes",
+    completedApplications:[
+      {no:"202600014120",startUserName:"Al Qemma Real Estate Investment",status:"Approved",createdDate:"24-06-2026 09:31"},
+      {no:"202600010884",startUserName:"Al Qemma Real Estate Investment",status:"Rejected",createdDate:"07-05-2026 16:02"}]}),
+  fillCompany({id:"K5", tradeLicenseNumber:"CN-3349205", nameAr:"صقر الأمارات للخدمات اللوجستية",
+    nameEn:"Emirates Falcon Logistics", landLine:"97123337766", email:"ops@falconlogistics.ae",
+    isExempted:"Yes", isSmartSurvey:"Yes",
+    signatories:[
+      {no:"202600013455",startDate:"01-06-2026",expiryDate:"31-05-2028",
+       secondParty:"Sultan Ahmed Almarzooqi",status:"Active"},
+      {no:"202600008920",startDate:"14-02-2026",expiryDate:"13-02-2026",
+       secondParty:"Rashed Mohammed Altunaiji",status:"Expired"}],
+    users:[{nameAr:"سلطان أحمد المرزوقي",nameEn:"Sultan Ahmed Almarzooqi",
+      email:"sultan.almarzooqi@adres.ae",phone:"971552233445",location:"CN-3349205",isAdmin:"true"}]}),
+  fillCompany({id:"K6", tradeLicenseNumber:"CN-6612093", nameAr:"النخيل للتجارة العامة",
+    nameEn:"Al Nakheel General Trading", landLine:"97129992211", email:"trading@nakheel.ae",
+    isExempted:"No", isSmartSurvey:"No"}),
+  fillCompany({id:"K7", tradeLicenseNumber:"CN-2284950", nameAr:"الاتحاد لإدارة المشاريع",
+    nameEn:"Union Project Management", landLine:"97121115588", email:"management@unionpm.ae",
+    isExempted:"No", isSmartSurvey:"Yes"}),
+  fillCompany({id:"K8", tradeLicenseNumber:"CN-8849102", nameAr:"الخليج العربي للحلول التقنية",
+    nameEn:"Arabian Gulf Tech Solutions", landLine:"97127776655", email:"hello@agtech.ae",
+    isExempted:"Yes", isSmartSurvey:"No"}),
+  fillCompany({id:"K9", tradeLicenseNumber:"CN-4410928", nameAr:"المستقبل المشرق للمقاولات",
+    nameEn:"Bright Future Contracting", landLine:"97126664433", email:"admin@brightfuture.ae",
+    isExempted:"No", isSmartSurvey:"Yes"}),
+  fillCompany({id:"K10", tradeLicenseNumber:"CN-9983411", nameAr:"الدار لإدارة العقارات",
+    nameEn:"Aldar Property Management", landLine:"97122229900", email:"leasing@aldarprop.ae",
+    isExempted:"No", isSmartSurvey:"Yes",
+    exceptions:[{id:"KE1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"}]})
+].concat(COMPANIES, [
+  /* remaining rows lifted from the UAT Companies list screenshot */
   fillCompany({id:"C7", tradeLicenseNumber:"Cn-76187", nameAr:"Aqeel company1",
     nameEn:"Aqeel company1", landLine:"845245456", email:"Aqeel@gmail.com"}),
+  fillCompany({id:"C6", tradeLicenseNumber:"CN-1234567", nameAr:"CN-1234567",
+    nameEn:"CN-2518654 E Company", landLine:"", email:"QADDOUMI@QADDOUMI.COM"}),
   fillCompany({id:"C8", tradeLicenseNumber:"IN-1000226",
     nameAr:"IN-1000226-شركة تجريبي ذات مسؤولية محدودة",
     nameEn:"IN-1000226 TEST-Limited Liability Company", landLine:"971567612455",
-    email:"c.suman.challa@adm.gov.ae"}),
-  fillCompany({id:"C9", tradeLicenseNumber:"CN-3344556", nameAr:"الخليج للاستثمار العقاري",
-    nameEn:"Gulf Real Estate Investment", landLine:"971243322 11", email:"info@gulfrei.ae"}),
-  fillCompany({id:"C10", tradeLicenseNumber:"CN-4455667", nameAr:"أبوظبي للمقاولات العامة",
-    nameEn:"Abu Dhabi General Contracting", landLine:"971245566 77", email:"admin@adgc.ae"}),
-  fillCompany({id:"C11", tradeLicenseNumber:"CN-5566778", nameAr:"النخبة لإدارة الأملاك",
-    nameEn:"Elite Property Management", landLine:"971246677 88", email:"ops@eliteproperty.ae",
-    isSmartSurvey:"Yes"}),
-  fillCompany({id:"C12", tradeLicenseNumber:"CN-6677889", nameAr:"واحة الظفرة العقارية",
-    nameEn:"Dhafra Oasis Real Estate", landLine:"971287788 99", email:"hello@dhafraoasis.ae"})
+    email:"c.suman.challa@adm.gov.ae"})
 ]);
 
 function fillGov(o){
@@ -1106,21 +1145,51 @@ function fillGov(o){
     propertyNumber:"",address:""};
   return base;
 }
-GOV = GOV.concat([
-  fillGov({id:"G6", idNumber:"GOV-999", nameAr:"مكتب أبوظبي الخلفي",
-    nameEn:"ADM Back Office", mobile:"11111111111122", email:"Admin@this.me"}),
-  fillGov({id:"G7", idNumber:"GOV-3001", nameAr:"دائرة التعليم والمعرفة",
-    nameEn:"Department of Education and Knowledge", mobile:"971024441000", email:"info@adek.gov.ae"}),
-  fillGov({id:"G8", idNumber:"GOV-3002", nameAr:"هيئة أبوظبي للإسكان",
-    nameEn:"Abu Dhabi Housing Authority", mobile:"971026668000", email:"contact@adha.gov.ae"}),
-  fillGov({id:"G9", idNumber:"GOV-3003", nameAr:"دائرة الصحة - أبوظبي",
-    nameEn:"Department of Health - Abu Dhabi", mobile:"971024193000", email:"info@doh.gov.ae"}),
-  fillGov({id:"G10", idNumber:"GOV-3004", nameAr:"شرطة أبوظبي",
-    nameEn:"Abu Dhabi Police", mobile:"971028001111", email:"info@adpolice.gov.ae"}),
-  fillGov({id:"G11", idNumber:"GOV-3005", nameAr:"مركز أبوظبي للغة العربية",
-    nameEn:"Abu Dhabi Arabic Language Centre", mobile:"971026215555", email:"info@alc.gov.ae",
-    isExempted:"Yes"})
-]);
+/* Government Entities fixture supplied by the business, listed first so page 1
+   shows this set exactly. The UAT-derived rows follow (GOV-976 carries the Users
+   and Documents payload, GOV-1000471 the exceptions). */
+GOV = [
+  fillGov({id:"V1", idNumber:"GOV-4001", nameAr:"وزارة الطاقة والبنية التحتية",
+    nameEn:"Ministry of Energy and Infrastructure", mobile:"97123334455",
+    email:"info@moei.gov.ae", isExempted:"Yes",
+    users:[
+      {nameAr:"طارق خالد المنصوري",nameEn:"Tariq Khalid Almansoori",email:"tariq.almansoori@adres.ae",
+       phone:"971501122334",location:"Ministry of Energy and Infrastructure",isAdmin:"true"},
+      {nameAr:"نورة عبدالله الشحي",nameEn:"Nora Abdulla Alshehhi",email:"nora.alshehhi@example.com",
+       phone:"971506655443",location:"Ministry of Energy and Infrastructure",isAdmin:"false"}],
+    documents:[{type:"Delegation Letter",issueDate:"04-02-2026",expiryDate:"03-02-2027"}]}),
+  fillGov({id:"V2", idNumber:"GOV-4002", nameAr:"دائرة البلديات والنقل",
+    nameEn:"Department of Municipalities and Transport", mobile:"97124445566",
+    email:"contact@dmt.gov.ae", isExempted:"No"}),
+  fillGov({id:"V3", idNumber:"GOV-4003", nameAr:"هيئة أبوظبي للرعاية الرقمية",
+    nameEn:"Abu Dhabi Digital Authority", mobile:"97125556677",
+    email:"info@adda.gov.ae", isExempted:"Yes"}),
+  fillGov({id:"V4", idNumber:"GOV-4004", nameAr:"دائرة الثقافة والسياحة",
+    nameEn:"Department of Culture and Tourism", mobile:"97126667788",
+    email:"contact@dctabudhabi.ae", isExempted:"No",
+    exceptions:[
+      {id:"VE1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"VE2",workflow:WORKFLOWS[6],nameAr:"Redirection",nameEn:"Redirection"}]}),
+  fillGov({id:"V5", idNumber:"GOV-4005", nameAr:"هيئة البيئة - أبوظبي",
+    nameEn:"Environment Agency - Abu Dhabi", mobile:"97127778899",
+    email:"info@ead.gov.ae", isExempted:"Yes",
+    documents:[{type:"Copy of Trade License",issueDate:"18-09-2025",expiryDate:"17-09-2027"}]}),
+  fillGov({id:"V6", idNumber:"GOV-4006", nameAr:"مركز أبوظبي لإدارة النفايات",
+    nameEn:"Abu Dhabi Waste Management Center", mobile:"97128889900",
+    email:"support@tadweer.ae", isExempted:"No"}),
+  fillGov({id:"V7", idNumber:"GOV-4007", nameAr:"دائرة التنمية الاقتصادية",
+    nameEn:"Department of Economic Development", mobile:"97129990011",
+    email:"info@ded.abudhabi.ae", isExempted:"No"}),
+  fillGov({id:"V8", idNumber:"GOV-4008", nameAr:"هيئة مياه وكهرباء أبوظبي",
+    nameEn:"Abu Dhabi Water and Electricity Authority", mobile:"97121112233",
+    email:"contact@adwea.gov.ae", isExempted:"Yes"}),
+  fillGov({id:"V9", idNumber:"GOV-4009", nameAr:"مركز أبوظبي للصحة العامة",
+    nameEn:"Abu Dhabi Public Health Center", mobile:"97122223344",
+    email:"info@adphc.gov.ae", isExempted:"No"}),
+  fillGov({id:"V10", idNumber:"GOV-4010", nameAr:"مؤسسة التنمية الأسرية",
+    nameEn:"Family Development Foundation", mobile:"97123335577",
+    email:"contact@fdf.ae", isExempted:"Yes"})
+].concat(GOV);
 
 /* ═══════════════════ state ═══════════════════ */
 var S = {
