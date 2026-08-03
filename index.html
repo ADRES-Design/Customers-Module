@@ -287,14 +287,6 @@ color:#1F3315;font-weight:700;}
 body[dir=rtl] .pager button .ar{transform:scaleX(-1);}
 
 /* ══ tabs (Today/Week/Month underline style) ══ */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;
-background:var(--surface);border-radius:var(--r) var(--r) 0 0;padding:0 8px;}
-.tab{background:none;border:0;padding:16px 18px 13px;white-space:nowrap;
-color:var(--muted);font-size:14px;border-bottom:3px solid transparent;}
-.tab:hover{color:var(--ink-2);}
-.tab[aria-selected=true]{color:var(--ink);font-weight:700;border-bottom-color:var(--olive);}
-.tabpanel{background:var(--surface);border:1px solid var(--line);border-top:0;
-border-radius:0 0 var(--r) var(--r);padding:22px;box-shadow:var(--shadow);}
 
 /* ══ persons summary card ══ */
 /* ══ person profile: summary is the lead section, full width, attributes across ══ */
@@ -310,31 +302,30 @@ color:var(--muted);margin-bottom:7px;}
 .psgrid .it dd{margin:0;font-size:14.5px;color:var(--ink);word-break:break-word;line-height:1.5;}
 
 /* ══ accordions ══ */
-.ac{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:10px;overflow:hidden;}
-.ac>button{display:flex;align-items:center;gap:12px;width:100%;text-align:start;
-background:var(--surface);border:0;padding:15px 18px;color:var(--ink);font-size:14px;font-weight:600;}
-.ac>button:hover{background:var(--hover);}
-.ac>button[aria-expanded=true]{background:var(--olive-soft);color:var(--olive-dk);}
-.ac>button .grow{flex:1;}
-.ac>button .cv{font-size:11px;color:var(--muted);}
-.ac>button[aria-expanded=true] .cv{color:var(--olive-dk);}
-.acb{border-top:1px solid var(--line-2);padding:18px;}
-.ac.nested{border-color:#E4E4DE;}
-.ac.nested>button{background:var(--page);}
-.ac.nested>button[aria-expanded=true]{background:var(--sage-soft);color:var(--sage-dk);}
-.cnt{background:var(--page);border:1px solid var(--line);border-radius:99px;
-padding:1px 9px;font-size:12px;font-weight:700;color:var(--muted);}
+
+/* ══ stacked sections (Broker(s) Details structure) ══════════════════════════
+   section title outside a bordered panel; inside, group headings each followed
+   by a 4-across grid of small grey label over bold value. */
+.sect-t{font-size:14px;font-weight:600;color:var(--ink);margin:32px 0 10px;}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+box-shadow:var(--shadow);padding:22px 26px 26px;}
+.grp{font-size:14px;font-weight:700;color:var(--ink);padding-bottom:13px;
+border-bottom:1px solid var(--line-2);margin:28px 0 20px;}
+.grp:first-child{margin-top:0;}
+.fgrid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 30px;margin:0;}
+@media(max-width:1180px){.fgrid4{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:760px){.fgrid4{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.fgrid4 .it dt{font-size:12.5px;color:var(--muted);font-weight:400;margin-bottom:6px;}
+.fgrid4 .it dd{margin:0;font-size:14px;font-weight:700;color:var(--ink);
+word-break:break-word;line-height:1.45;}
+.panel .tw{margin-top:4px;}
 
 /* ══ field rows ══ */
-.seclabel{display:inline-block;background:var(--olive-soft);color:var(--olive-dk);
-font-size:12px;font-weight:700;padding:5px 12px;border-radius:var(--r-xs);margin:22px 0 12px;}
-.seclabel.first{margin-top:0;}
-dl.fl{margin:0;}
-.fr{display:flex;gap:16px;padding:12px 4px;border-bottom:1px solid var(--line-2);}
-.fr:last-child{border-bottom:0;}
-.fr dt{flex:0 0 40%;font-weight:600;font-size:13.5px;color:var(--ink);}
-.fr dd{margin:0;flex:1;text-align:end;font-size:13.5px;color:var(--muted);word-break:break-word;}
-body[dir=rtl] .fr dd{text-align:start;}
+
+.drill{border:1px solid #E2DCBE;background:var(--olive-soft);border-radius:var(--r-sm);
+padding:16px 18px;margin:14px 0 6px;}
+.drill-h{font-size:12.5px;color:var(--olive-dk);font-weight:600;margin-bottom:12px;}
+.drill .grp{margin-top:18px;border-bottom-color:#E2DCBE;}
 
 /* ══ ESB cards ══ */
 .esb{border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:10px;
@@ -458,12 +449,6 @@ function icon(name,px,cls){
 }
 
 
-/* ═══════════════════════════════════════════════════════════
-   Ticket-vs-UAT switch.
-   UAT screenshots show Block Details sections COLLAPSED.
-   The ticket says "Expanded by default". Flip to true for ticket behaviour.
-   ═══════════════════════════════════════════════════════════ */
-var BLOCK_DETAILS_EXPANDED_BY_DEFAULT = false;
 
 /* ═══════════════════ i18n ═══════════════════ */
 var D = {
@@ -1199,9 +1184,9 @@ var S = {
   draft:{}, applied:{}, pageSize:"10", listPage:1,
   route:{name:"list"},
   tab:null, gear:null,
-  ac:{}, plotOpen:{},
+  plotOpen:{},
   poa:{no:"",start:"",end:"",status:""},
-  appPage:1, sigPage:1, actPage:1, usrPage:1,
+  appPage:1, poaPage:1, sigPage:1, actPage:1, usrPage:1,
   cpu:null,           /* Customer Profile Update page state */
   modal:null
 };
@@ -1227,14 +1212,6 @@ function rec(){ var a=PERSONS.concat(COMPANIES,GOV);
   for(var i=0;i<a.length;i++) if(a[i].id===S.route.id) return a[i]; return null; }
 function catLabel(){ return t(S.cat); }
 
-function acOpen(id,def){ return Object.prototype.hasOwnProperty.call(S.ac,id)?S.ac[id]:!!def; }
-function ac(id,title,body,def,nested){
-  var o=acOpen(id,def);
-  return '<div class="ac'+(nested?" nested":"")+'">'
-    +'<button data-a="ac" data-id="'+esc(id)+'" data-def="'+(def?1:0)+'" aria-expanded="'+o+'">'
-    +'<span class="grow">'+esc(title)+"</span>"+icon("chevron",18,o?"cv":"cv rot")+"</button>"
-    +(o?'<div class="acb">'+body+'</div>':'')+'</div>';
-}
 function grid(cols,list,rowFn,cls){
   var h=cols.map(function(c){ return "<th>"+esc(c)+"</th>"; }).join("");
   var b=list.length
@@ -1242,11 +1219,15 @@ function grid(cols,list,rowFn,cls){
     : '<tr><td colspan="'+cols.length+'"><div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+'</div></td></tr>';
   return '<div class="tw"><table class="g'+(cls?" "+cls:"")+'"><thead><tr>'+h+"</tr></thead><tbody>"+b+"</tbody></table></div>";
 }
-function fr(label,val){
-  return '<div class="fr"><dt>'+esc(label)+"</dt><dd>"+esc(dash(val))+"</dd></div>";
+function secTitle(txt){ return '<div class="sect-t">'+esc(txt)+"</div>"; }
+function panel(inner){ return '<section class="panel">'+inner+"</section>"; }
+function grp(txt){ return '<div class="grp">'+esc(txt)+"</div>"; }
+function fieldGrid(items){
+  return '<dl class="fgrid4">'+items.map(function(r){
+    var v=(r[1]===""||r[1]===null||r[1]===undefined)?"\u2014":r[1];
+    return '<div class="it"><dt>'+esc(r[0])+"</dt><dd"+(r[2]?' dir="ltr"':"")+">"+esc(v)+"</dd></div>";
+  }).join("")+"</dl>";
 }
-function frList(items){ return '<dl class="fl">'+items.map(function(x){ return fr(x[0],x[1]); }).join("")+"</dl>"; }
-function seclabel(txt,first){ return '<div class="seclabel'+(first?" first":"")+'">'+esc(txt)+"</div>"; }
 
 function pageList(cur,total){
   if(total<=7){ var a=[]; for(var i=1;i<=total;i++) a.push(i); return a; }
@@ -1462,113 +1443,102 @@ function personSummary(p){
       }).join("")+"</dl></section>";
 }
 
-function tabPersonProfile(p){
-  var out="";
-  out+=ac("p-basic",t("basicInformation"),
-    frList([[t("nameAr"),p.nameAr],[t("nameEn"),p.nameEn],[t("familyName"),p.familyName]]),true);
-  var d=p.personDetails;
-  out+=ac("p-det",t("personDetails"),
-    frList([[t("motherNameAr"),d.motherNameAr],[t("motherNameEn"),d.motherNameEn],
-      [t("placeOfBirth"),d.placeOfBirth],[t("dateOfBirth"),d.dateOfBirth],
-      [t("maritalStatus"),d.maritalStatus],[t("regSmartHub"),st(d.regSmartHub)]]),false);
-  var ps=p.passport;
-  out+=ac("p-pass",t("passport"),
-    frList([[t("passportNumber"),ps.number],[t("passportIssuePlace"),ps.issuePlace],
-      [t("passportIssueDate"),ps.issueDate],[t("passportExpiryDate"),ps.expiryDate]]),false);
-  var c=p.contact;
-  out+=ac("p-con",t("contactInformation"),
-    frList([[t("mobile"),c.mobile],[t("phone"),c.phone],[t("fax"),c.fax],[t("poBox"),c.poBox],
-      [t("email"),c.email],[t("propertyNumber"),c.propertyNumber],[t("address"),c.address]]),false);
+function sectionProfile(p){
+  var d=p.personDetails, ps=p.passport, c=p.contact, out="";
 
-  var fbBody;
+  out+=grp(t("basicInformation"))+fieldGrid([
+    [t("nameAr"),p.nameAr],[t("nameEn"),p.nameEn],[t("familyName"),p.familyName]]);
+
+  out+=grp(t("personDetails"))+fieldGrid([
+    [t("motherNameAr"),d.motherNameAr],[t("motherNameEn"),d.motherNameEn],
+    [t("placeOfBirth"),d.placeOfBirth],[t("dateOfBirth"),d.dateOfBirth],
+    [t("maritalStatus"),d.maritalStatus],[t("regSmartHub"),st(d.regSmartHub)]]);
+
+  out+=grp(t("passport"))+fieldGrid([
+    [t("passportNumber"),ps.number,true],[t("passportIssuePlace"),ps.issuePlace],
+    [t("passportIssueDate"),ps.issueDate],[t("passportExpiryDate"),ps.expiryDate]]);
+
+  out+=grp(t("contactInformation"))+fieldGrid([
+    [t("mobile"),c.mobile,true],[t("phone"),c.phone,true],[t("fax"),c.fax,true],
+    [t("poBox"),c.poBox,true],[t("emailAddress"),c.email,true],
+    [t("propertyNumber"),c.propertyNumber],[t("address"),c.address]]);
+
+  out+=grp(t("familyBookDetails"));
   if(!p.familyBook){
-    fbBody='<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
+    out+='<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
   } else {
     var fb=p.familyBook;
-    var headCols=[t("nameAr"),t("nameEn"),t("motherNameAr"),t("motherNameEn"),t("idNumber"),
+    out+=fieldGrid([[t("familySequence"),fb.familySequence,true],[t("city"),fb.city],
+      [t("wivesCount"),fb.wivesCount],[t("childrenCount"),fb.childrenCount]]);
+    var hc=[t("nameAr"),t("nameEn"),t("motherNameAr"),t("motherNameEn"),t("idNumber"),
       t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),t("religion"),t("nationality")];
-    fbBody=frList([[t("familySequence"),fb.familySequence],[t("city"),fb.city],
-      [t("wivesCount"),fb.wivesCount],[t("childrenCount"),fb.childrenCount]])
-    +'<div class="seclabel">'+esc(t("familyHead"))+"</div>"
-    +grid(headCols,fb.head,function(r){
-      return "<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.motherNameAr)+"</td><td>"+esc(r.motherNameEn)
-        +'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)
-        +"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; })
-    +'<div class="seclabel">'+esc(t("dependents"))+"</div>"
-    +grid(["#",t("nameAr"),t("nameEn"),t("gender"),t("motherIdCard"),t("motherNameAr"),t("motherNameEn"),
-      t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),t("religion"),t("nationality")],
-      fb.dependents,function(r,i){
+    out+=grp(t("familyHead"))+grid(hc,fb.head,function(r){
+      return "<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.motherNameAr)
+        +"</td><td>"+esc(r.motherNameEn)+'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)
+        +"</td><td>"+esc(r.placeOfBirth)+"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)
+        +"</td><td>"+esc(r.nationality)+"</td>"; });
+    out+=grp(t("dependents"))+grid(["#",t("nameAr"),t("nameEn"),t("gender"),t("motherIdCard"),
+      t("motherNameAr"),t("motherNameEn"),t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),
+      t("maritalStatus"),t("religion"),t("nationality")],fb.dependents,function(r,i){
       return "<td>"+(i+1)+"</td><td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.gender)
         +'</td><td dir="ltr">'+esc(r.motherIdCard)+"</td><td>"+esc(r.motherNameAr)+"</td><td>"+esc(r.motherNameEn)
         +'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)
-        +"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; })
-    +'<div class="seclabel">'+esc(t("wifeDetails"))+"</div>"
-    +grid(["#",t("nameAr"),t("nameEn"),t("marriageDate"),t("motherNameAr"),t("motherNameEn"),
-      t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),t("religion"),t("nationality")],
-      fb.wives,function(r,i){
-      return "<td>"+(i+1)+"</td><td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.marriageDate)
-        +"</td><td>"+esc(r.motherNameAr)+"</td><td>"+esc(r.motherNameEn)
-        +'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)
         +"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; });
+    out+=grp(t("wifeDetails"))+grid(["#",t("nameAr"),t("nameEn"),t("marriageDate"),t("motherNameAr"),
+      t("motherNameEn"),t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),
+      t("religion"),t("nationality")],fb.wives,function(r,i){
+      return "<td>"+(i+1)+"</td><td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.marriageDate)
+        +"</td><td>"+esc(r.motherNameAr)+"</td><td>"+esc(r.motherNameEn)+'</td><td dir="ltr">'+esc(r.idNumber)
+        +"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)+"</td><td>"+esc(r.maritalStatus)
+        +"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; });
   }
-  out+=ac("p-fb",t("familyBookDetails"),fbBody,false);
-  return out;
+  return secTitle(t("profileDetails"))+panel(out);
 }
 
 /* Block Details — shared by Persons and Companies */
-function tabBlocks(r){
-  var b=r.blocks, DEF=BLOCK_DETAILS_EXPANDED_BY_DEFAULT, out="";
-
-  var esbBody = b.esb.length
+function sectionBlocks(r){
+  var b=r.blocks, out="";
+  var esb=b.esb.length
     ? b.esb.map(function(e){
         return '<div class="esb"><div class="l"><div class="t">'+esc(e.title)+"</div>"
           +'<div class="w">&#9888; '+esc(e.warning)+"</div></div>"
           +'<div class="r">'+esc(e.ref)+"<br>&#128197; "+esc(e.datetime)+"</div></div>";
       }).join("")
     : '<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
-  out+=ac("b-esb",t("esbBlocks"),esbBody,DEF);
+  out+=grp(t("esbBlocks"))+esb;
 
-  out+=ac("b-own",t("elmsOwner"),
-    grid([t("blockNo")||"#",t("ownerName"),t("reason"),t("blockDate")],b.elmsOwner,function(x){
-      return "<td>"+esc(x.no)+"</td><td>"+esc(x.owner)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }),DEF);
-  out+=ac("b-par",t("elmsPartial"),
-    grid(["#",t("plotNumber"),t("reason"),t("blockDate")],b.elmsPartial,function(x){
-      return "<td>"+esc(x.no)+"</td><td>"+esc(x.plot)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }),DEF);
-  out+=ac("b-hub",t("smartHubBlocks"),
-    grid(["#",t("reason"),t("blockDate")],b.smartHub,function(x){
-      return "<td>"+esc(x.no)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }),DEF);
+  out+=grp(t("elmsOwner"))+grid(["#",t("ownerName"),t("reason"),t("blockDate")],b.elmsOwner,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.owner)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
+  out+=grp(t("elmsPartial"))+grid(["#",t("plotNumber"),t("reason"),t("blockDate")],b.elmsPartial,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.plot)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
+  out+=grp(t("smartHubBlocks"))+grid(["#",t("reason"),t("blockDate")],b.smartHub,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
 
-  /* nested two-level drill-down — evidenced Persons image14/15/16/17 */
-  var bpBody = grid(
-    [t("municipality"),t("district"),t("community"),t("road"),t("plotNumber"),t("landUse"),""],
-    b.blockedPlots,
-    function(x,i){
+  out+=grp(t("blockedPlots"))
+    +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNumber"),t("landUse"),""],
+      b.blockedPlots,function(x,i){
       var open=!!S.plotOpen[i];
-      var main="<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
+      return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
         +"</td><td>"+esc(x.road)+'</td><td class="num">'+esc(x.plotNumber)+"</td><td>"+esc(x.landUse)
-        +'</td><td><button class="btn btn-amber sm" data-a="plot" data-n="'+i+'" aria-expanded="'+open+'">&#8599;</button></td>';
-      return main;
-    });
+        +'</td><td><button class="btn btn-sage sm" data-a="plot" data-n="'+i+'" aria-expanded="'+open+'">'
+        +(open?"&minus;":"+")+"</button></td>"; });
 
-  /* render expanded sub-panels beneath the table */
-  var subs="";
   b.blockedPlots.forEach(function(x,i){
     if(!S.plotOpen[i]) return;
-    var pl=ac("bp-p-"+i,t("blockedPlotS"),
-      grid([t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],x.plots,function(y){
+    out+='<div class="drill">'
+      +'<div class="drill-h">'+esc(x.municipality+" / "+x.district+" / "+t("plotNumber")+" "+x.plotNumber)+"</div>"
+      +grp(t("blockedPlotS"))
+      +grid([t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],x.plots,function(y){
         return "<td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)+"</td><td>"+esc(y.approvedDate)
-          +"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; }),true,true);
-    var ow=ac("bp-o-"+i,t("blockedOwnerS"),
-      grid([t("ownerName"),t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],x.owners,function(y){
+          +"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; })
+      +grp(t("blockedOwnerS"))
+      +grid([t("ownerName"),t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],
+        x.owners,function(y){
         return "<td>"+esc(y.ownerName)+"</td><td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)
-          +"</td><td>"+esc(y.approvedDate)+"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; }),true,true);
-    subs+='<div style="border:1px solid var(--amber);padding:10px;margin:0 0 10px">'
-      +'<div style="font-size:11.5px;color:var(--muted);margin-bottom:8px">'
-      +esc(x.municipality+" / "+x.district+" / "+t("plotNumber")+" "+x.plotNumber)+"</div>"+pl+ow+"</div>";
+          +"</td><td>"+esc(y.approvedDate)+"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; })
+      +"</div>";
   });
-
-  out+=ac("b-bp",t("blockedPlots"),bpBody+subs,DEF);
-  return out;
+  return secTitle(t("blockDetails"))+panel(out);
 }
 
 /* POA / Authorized Signatory — same filter row */
@@ -1608,48 +1578,43 @@ function poaGrid(list,page,act,linkAct){
     +pager(pg.page,pg.total,act);
 }
 
-function tabPersonPoa(p){
-  return unv("unvPoa")+poaFilterRow("poaSearch")+poaGrid(poaFilter(p.poas),S.appPage,"appPage","poaOpen");
+function sectionPoa(p){
+  return secTitle(t("poaDetails"))
+    +panel(unv("unvPoa")+poaFilterRow("poaSearch")
+      +poaGrid(poaFilter(p.poas),S.poaPage,"poaPage","poaOpen"));
 }
 
 /* Documents tab — shared shape */
-function tabDocuments(r){
-  var out=seclabel(t("approvedDocuments"),true);
-  out+=grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],r.approvedDocs,function(d,i){
-    return "<td>"+(i+1)+"</td><td>"+esc(d.type)+"</td><td>"+esc(d.issueDate)+"</td><td>"+esc(d.expiryDate)
-      +'</td><td><button class="btn btn-navy sm" data-a="viewDoc" data-n="'+i+'">&#128065; '+esc(t("view"))+"</button></td>"; });
+function sectionDocuments(r){
+  var out=grp(t("approvedDocuments"))
+    +grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],r.approvedDocs,function(dc,i){
+      return "<td>"+(i+1)+"</td><td>"+esc(dc.type)+"</td><td>"+esc(dc.issueDate)+"</td><td>"+esc(dc.expiryDate)
+        +'</td><td><button class="btn sm" data-a="viewDoc" data-n="'+i+'">'+esc(t("view"))+"</button></td>"; });
 
   var pg=paged(r.completedApplications,S.appPage,5);
-  out+=seclabel(t("completedApplications"));
-  out+=grid([t("applicationNumber"),t("startUserName"),t("status"),t("createdDate"),""],pg.slice,function(a){
-    return '<td dir="ltr">'+esc(a.no)+"</td><td>"+esc(a.startUserName)+"</td><td>"+esc(st(a.status))
-      +'</td><td dir="ltr">'+esc(a.createdDate)
-      +'</td><td><button class="btn btn-navy sm" data-a="openApp" data-id="'+esc(a.no)+'">&#128065; '+esc(t("view"))+"</button></td>"; });
-  out+=pager(pg.page,pg.total,"appPage");
+  out+=grp(t("completedApplications"))
+    +grid([t("applicationNumber"),t("startUserName"),t("status"),t("createdDate"),""],pg.slice,function(a){
+      return '<td dir="ltr">'+esc(a.no)+"</td><td>"+esc(a.startUserName)+"</td><td>"+sx(a.status)
+        +'</td><td dir="ltr">'+esc(a.createdDate)
+        +'</td><td><button class="btn sm" data-a="openApp" data-id="'+esc(a.no)+'">'+esc(t("view"))+"</button></td>"; })
+    +pager(pg.page,pg.total,"appPage");
 
-  out+=seclabel(t("customerInformation"));
-  out+=frList([[t("isExempted"),st(r.isExempted)],[t("isSmartSurvey"),st(r.isSmartSurvey)]]
-    .filter(function(x){ return x[1]!==undefined; }));
-  out+='<div class="row-end right" style="margin-top:14px">'
-    +'<button class="btn btn-amber" data-a="cpuOpen">'+esc(t("editCustomerDetails"))+"</button></div>";
-  return out;
+  out+=grp(t("customerInformation"))
+    +fieldGrid([[t("isExempted"),st(r.isExempted)]]
+      .concat(r.isSmartSurvey!==undefined?[[t("isSmartSurvey"),st(r.isSmartSurvey)]]:[]))
+    +'<div class="row-end right" style="margin-top:22px">'
+    +'<button class="btn btn-search" style="width:auto;min-width:240px" data-a="cpuOpen">'
+    +esc(t("editCustomerDetails"))+"</button></div>";
+
+  return secTitle(t("documents"))+panel(out);
 }
 
 function viewPerson(){
   var p=rec(); if(!p) return "";
-  if(!S.tab) S.tab="profileDetails";
-  var tabs=PERSON_TABS.map(function(x){
-    return '<button class="tab" data-a="tab" data-id="'+x[0]+'" aria-selected="'+(S.tab===x[0])+'">'+esc(t(x[1]))+"</button>";
-  }).join("");
-  var panel = S.tab==="profileDetails" ? tabPersonProfile(p)
-    : S.tab==="blockDetails" ? tabBlocks(p)
-    : S.tab==="poaDetails" ? tabPersonPoa(p)
-    : tabDocuments(p);
-
   return '<div class="row-end right" style="margin-bottom:16px">'
     +'<button class="btn btn-navy" data-a="moi">'+esc(t("updateMoi"))+"</button></div>"
     +personSummary(p)
-    +'<div class="tabs">'+tabs+'</div><div class="tabpanel">'+panel+"</div>";
+    +sectionProfile(p)+sectionBlocks(p)+sectionPoa(p)+sectionDocuments(p);
 }
 
 /* ═══════════════════ COMPANIES detail — 7 tabs ═══════════════════ */
@@ -1659,79 +1624,76 @@ var COMPANY_TABS=[["companyInformation","companyInformation"],["blockDetails","b
 
 function viewCompany(){
   var c=rec(); if(!c) return "";
-  if(!S.tab) S.tab="companyInformation";
-  var tabs=COMPANY_TABS.map(function(x){
-    return '<button class="tab" data-a="tab" data-id="'+x[0]+'" aria-selected="'+(S.tab===x[0])+'">'+esc(t(x[1]))+"</button>";
-  }).join("");
+  var out='<div class="row-end right" style="margin-bottom:16px">'
+    +'<button class="btn btn-navy" data-a="ded">'+esc(t("updateDed"))+"</button></div>";
 
-  var panel;
-  if(S.tab==="companyInformation"){
-    panel=seclabel(t("generalInformation"),true)
-      +frList([[t("tradeLicenseNumber"),c.tradeLicenseNumber],[t("orgNameAr"),c.nameAr],[t("orgNameEn"),c.nameEn],
-        [t("licenseIssueDate"),c.general.licenseIssueDate],[t("licenseExpiryDate"),c.general.licenseExpiryDate],
-        [t("adcci"),c.general.adcci]])
-      +seclabel(t("contactInformation"))
-      +frList([[t("email"),c.contact.email],[t("mobile"),c.contact.mobile],[t("phone"),c.contact.phone],
-        [t("fax"),c.contact.fax],[t("poBox"),c.contact.poBox],[t("propertyNumber"),c.contact.propertyNumber],
-        [t("address"),c.contact.address]]);
-  } else if(S.tab==="blockDetails"){
-    panel=tabBlocks(c);
-  } else if(S.tab==="tradeLicenseActivities"){
-    var ap=paged(c.activities,S.actPage,16);
-    panel=grid(["#",t("activityCode"),t("activityNameAr"),t("activityNameEn")],ap.slice,function(a,i){
-      return "<td>"+((ap.page-1)*16+i+1)+'</td><td dir="ltr">'+esc(a.code)+"</td><td>"+esc(a.nameAr)+"</td><td>"+esc(a.nameEn)+"</td>"; })
-      +pager(ap.page,ap.total,"actPage");
-  } else if(S.tab==="owners"){
-    panel=grid(["#",t("nameAr"),t("nameEn"),t("percentage"),t("nationality"),t("relationType")],c.owners,function(o,i){
+  out+=secTitle(t("companyInformation"))+panel(
+    grp(t("generalInformation"))+fieldGrid([
+      [t("tradeLicenseNumber"),c.tradeLicenseNumber,true],[t("orgNameAr"),c.nameAr],
+      [t("orgNameEn"),c.nameEn],[t("licenseIssueDate"),c.general.licenseIssueDate],
+      [t("licenseExpiryDate"),c.general.licenseExpiryDate],[t("adcci"),c.general.adcci,true]])
+    +grp(t("contactInformation"))+fieldGrid([
+      [t("emailAddress"),c.contact.email,true],[t("mobile"),c.contact.mobile,true],
+      [t("phone"),c.contact.phone,true],[t("fax"),c.contact.fax,true],
+      [t("poBox"),c.contact.poBox,true],[t("propertyNumber"),c.contact.propertyNumber],
+      [t("address"),c.contact.address]]));
+
+  out+=sectionBlocks(c);
+
+  var ap=paged(c.activities,S.actPage,16);
+  out+=secTitle(t("tradeLicenseActivities"))+panel(
+    grid(["#",t("activityCode"),t("activityNameAr"),t("activityNameEn")],ap.slice,function(a,i){
+      return "<td>"+((ap.page-1)*16+i+1)+'</td><td dir="ltr">'+esc(a.code)+"</td><td>"+esc(a.nameAr)
+        +"</td><td>"+esc(a.nameEn)+"</td>"; })
+    +pager(ap.page,ap.total,"actPage"));
+
+  out+=secTitle(t("owners"))+panel(
+    grid(["#",t("nameAr"),t("nameEn"),t("percentage"),t("nationality"),t("relationType")],
+      c.owners,function(o,i){
       return "<td>"+(i+1)+"</td><td>"+esc(o.nameAr)+"</td><td>"+esc(o.nameEn)+"</td><td>"+esc(o.percentage)
-        +"</td><td>"+esc(o.nationality)+"</td><td>"+esc(o.relationType)+"</td>"; });
-  } else if(S.tab==="users"){
-    var up=paged(c.users,S.usrPage,10);
-    panel=grid(["#",t("nameAr"),t("nameEn"),t("email"),t("phoneNo"),t("location"),t("isAdmin"),""],up.slice,function(u,i){
+        +"</td><td>"+esc(o.nationality)+"</td><td>"+esc(o.relationType)+"</td>"; }));
+
+  var up=paged(c.users,S.usrPage,10);
+  out+=secTitle(t("users"))+panel(
+    grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin"),""],
+      up.slice,function(u,i){
       return "<td>"+((up.page-1)*10+i+1)+"</td><td>"+esc(u.nameAr)+"</td><td>"+esc(u.nameEn)
         +'</td><td dir="ltr">'+esc(u.email)+'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)
-        +"</td><td>"+esc(st(u.isAdmin))
+        +"</td><td>"+sx(u.isAdmin)
         +'</td><td><button class="btn btn-red sm" data-a="confirm" data-do="delUser" data-n="'+i
-        +'" data-nm="'+esc(u.nameEn)+'">&#128465;</button></td>'; })
-      +pager(up.page,up.total,"usrPage");
-  } else if(S.tab==="authorizedSignatory"){
-    panel=poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen");
-  } else {
-    panel=tabDocuments(c);
-  }
+        +'" data-nm="'+esc(u.nameEn)+'">'+esc(t("del"))+"</button></td>"; })
+    +pager(up.page,up.total,"usrPage"));
 
-  return '<div class="row-end right" style="margin-bottom:10px">'
-    +'<button class="btn btn-navy" data-a="ded">'+esc(t("updateDed"))+"</button></div>"
-    +'<div class="tabs">'+tabs+'</div><div class="tabpanel">'+panel+"</div>";
+  out+=secTitle(t("authorizedSignatory"))+panel(
+    poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen"));
+
+  out+=sectionDocuments(c);
+  return out;
 }
 
 /* ═══════════════════ GOV detail — 3 tabs, no Block Details ═══════════════════ */
 var GOV_TABS=[["govInformation","govInformation"],["users","users"],["documents","documents"]];
 function viewGov(){
   var g=rec(); if(!g) return "";
-  if(!S.tab) S.tab="govInformation";
-  var tabs=GOV_TABS.map(function(x){
-    return '<button class="tab" data-a="tab" data-id="'+x[0]+'" aria-selected="'+(S.tab===x[0])+'">'+esc(t(x[1]))+"</button>";
-  }).join("");
-  var panel;
-  if(S.tab==="govInformation"){
-    panel=seclabel(t("generalInformation"),true)
-      +frList([[t("orgNameAr"),g.nameAr],[t("orgNameEn"),g.nameEn]])
-      +seclabel(t("contactInformation"))
-      +frList([[t("mobile"),g.contact.mobile],[t("phone"),g.contact.phone],[t("fax"),g.contact.fax],
-        [t("poBox"),g.contact.poBox],[t("email"),g.contact.email],
-        [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]]);
-  } else if(S.tab==="users"){
-    panel=grid(["#",t("nameAr"),t("nameEn"),t("email"),t("phoneNo"),t("location"),t("isAdmin")],g.users,function(u,i){
+  var out=secTitle(t("govInformation"))+panel(
+    grp(t("generalInformation"))+fieldGrid([[t("orgNameAr"),g.nameAr],[t("orgNameEn"),g.nameEn]])
+    +grp(t("contactInformation"))+fieldGrid([
+      [t("mobile"),g.contact.mobile,true],[t("phone"),g.contact.phone,true],
+      [t("fax"),g.contact.fax,true],[t("poBox"),g.contact.poBox,true],
+      [t("emailAddress"),g.contact.email,true],
+      [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]]));
+
+  out+=secTitle(t("users"))+panel(
+    grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin")],
+      g.users,function(u,i){
       return "<td>"+(i+1)+"</td><td>"+esc(u.nameAr)+"</td><td>"+esc(u.nameEn)+'</td><td dir="ltr">'+esc(u.email)
-        +'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)+"</td><td>"+esc(st(u.isAdmin))+"</td>"; });
-  } else {
-    panel=grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],g.documents,function(d,i){
-      return "<td>"+(i+1)+"</td><td>"+esc(d.type)+"</td><td>"+esc(d.issueDate)+"</td><td>"+esc(d.expiryDate)
-        +'</td><td><button class="btn sm" data-a="viewDoc" data-n="'+i+'" style="color:var(--blue)">&#128065; '
-        +esc(t("view"))+"</button></td>"; });
-  }
-  return '<div class="tabs">'+tabs+'</div><div class="tabpanel">'+panel+"</div>";
+        +'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)+"</td><td>"+sx(u.isAdmin)+"</td>"; }));
+
+  out+=secTitle(t("documents"))+panel(
+    grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],g.documents,function(dc,i){
+      return "<td>"+(i+1)+"</td><td>"+esc(dc.type)+"</td><td>"+esc(dc.issueDate)+"</td><td>"+esc(dc.expiryDate)
+        +'</td><td><button class="btn sm" data-a="viewDoc" data-n="'+i+'">'+esc(t("view"))+"</button></td>"; }));
+  return out;
 }
 
 /* ═══════════════════ Customer Profile Update application page ═══════════════════ */
@@ -2084,8 +2046,8 @@ function render(){ renderChrome(); renderBody(); renderModal(); renderMenu(); }
 
 /* ═══════════════════ actions ═══════════════════ */
 function home(){
-  S.route={name:"list"}; S.tab=null; S.gear=null; S.cpu=null;
-  S.appPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1; S.plotOpen={};
+  S.route={name:"list"}; S.gear=null; S.cpu=null;
+  S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1; S.plotOpen={};
   S.poa={no:"",start:"",end:"",status:""};
 }
 function runConfirm(m){
@@ -2117,7 +2079,7 @@ document.addEventListener("click",function(ev){
     case "gear": S.gear=S.gear===id?null:id; renderBody(); return;
     case "excGear": S.gear=S.gear==="X"+id?null:"X"+id; renderBody(); return;
 
-    case "view": S.route={name:"detail",id:id}; S.tab=null; S.gear=null; render(); return;
+    case "view": S.route={name:"detail",id:id}; S.gear=null; render(); return;
     case "exc":  S.route={name:"exc",id:id};    S.gear=null; render(); return;
     case "edit":
       r=null; rows().forEach(function(x){ if(x.id===id) r=x; });
@@ -2134,17 +2096,16 @@ document.addEventListener("click",function(ev){
       }
       S.modal=null; toast(ar()?"تم الحفظ":"Saved"); render(); return;
 
-    case "tab": S.tab=id; S.appPage=1; S.sigPage=1; renderBody(); return;
-    case "ac": S.ac[id]=!acOpen(id,el.getAttribute("data-def")==="1"); renderBody(); return;
     case "plot": var i=+el.getAttribute("data-n"); S.plotOpen[i]=!S.plotOpen[i]; renderBody(); return;
 
     case "moi": toast(ar()?"تم التحديث من وزارة الداخلية":"Profile updated from MOI"); return;
     case "ded": toast(ar()?"تم التحديث من الاقتصادية":"Profile updated from DED"); return;
 
     case "poaSearch": case "sigSearch": renderBody(); return;
-    case "poaReset": S.poa={no:"",start:"",end:"",status:""}; renderBody(); return;
+    case "poaReset": S.poa={no:"",start:"",end:"",status:""}; S.poaPage=1; S.sigPage=1; renderBody(); return;
     case "poaOpen": toast((ar()?"الوكالة ":"POA ")+id); return;
     case "appPage": S.appPage=+el.getAttribute("data-n"); renderBody(); return;
+    case "poaPage": S.poaPage=+el.getAttribute("data-n"); renderBody(); return;
     case "sigPage": S.sigPage=+el.getAttribute("data-n"); renderBody(); return;
     case "actPage": S.actPage=+el.getAttribute("data-n"); renderBody(); return;
     case "usrPage": S.usrPage=+el.getAttribute("data-n"); renderBody(); return;
