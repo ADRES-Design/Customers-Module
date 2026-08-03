@@ -155,7 +155,10 @@ border:1px solid var(--line);border-radius:6px;font-size:15px;color:var(--ink);f
 /* pagination sits under the table, windowed with an ellipsis */
 /* page size sits under the table, opposite the pagination */
 .pgwrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
-padding:22px 0 0;flex-wrap:wrap;}
+padding:0;flex-wrap:wrap;}
+/* the results card sits directly above the pager row, so it carries less
+   bottom margin than a standalone card */
+.card.tbl-card{margin-bottom:12px;}
 
 /* ══ cards ══ */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
@@ -187,6 +190,13 @@ background-repeat:no-repeat;background-size:18px 18px;
 background-position:right 12px center;}
 body[dir=rtl] select{background-position:left 12px center;}
 select:disabled{background-image:url("data:image/svg+xml,%3Csvg%20width=%2218%22%20height=%2218%22%20viewBox=%220%200%2018%2018%22%20fill=%22none%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%20%3Cpath%20d=%22M8.99626%2011.475C8.90626%2011.475%208.82188%2011.4594%208.74313%2011.4281C8.66438%2011.3969%208.59376%2011.35%208.53126%2011.2875L4.97513%207.73138C4.83338%207.58963%204.76563%207.42812%204.77188%207.24687C4.77813%207.06562%204.85001%206.90625%204.98751%206.76875C5.12501%206.63125%205.28438%206.5625%205.46563%206.5625C5.64688%206.5625%205.80626%206.63125%205.94376%206.76875L9.00001%209.84375L12.075%206.76875C12.2125%206.63125%2012.3719%206.56562%2012.5531%206.57187C12.7344%206.57812%2012.8938%206.65%2013.0313%206.7875C13.1688%206.925%2013.2375%207.08437%2013.2375%207.26562C13.2375%207.44687%2013.1666%207.608%2013.0249%207.749L9.46876%2011.2875C9.40126%2011.35%209.32813%2011.3969%209.24938%2011.4281C9.17063%2011.4594%209.08626%2011.475%208.99626%2011.475Z%22%20fill=%22%239AA0A6%22/%3E%20%3C/svg%3E");}
+/* date fields: swap WebKit's own picker glyph for the same calendar asset
+   (Gecko draws no indicator, so this is a progressive enhancement) */
+input[type=date]::-webkit-calendar-picker-indicator{
+background-image:url("data:image/svg+xml,%3Csvg%20width=%2224%22%20height=%2224%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%20%3Cpath%20d=%22M5%2022C4.45%2022%203.97917%2021.8042%203.5875%2021.4125C3.19583%2021.0208%203%2020.55%203%2020V6C3%205.45%203.19583%204.97917%203.5875%204.5875C3.97917%204.19583%204.45%204%205%204H6V3C6%202.71667%206.09583%202.47917%206.2875%202.2875C6.47917%202.09583%206.71667%202%207%202C7.28333%202%207.52083%202.09583%207.7125%202.2875C7.90417%202.47917%208%202.71667%208%203V4H16V3C16%202.71667%2016.0958%202.47917%2016.2875%202.2875C16.4792%202.09583%2016.7167%202%2017%202C17.2833%202%2017.5208%202.09583%2017.7125%202.2875C17.9042%202.47917%2018%202.71667%2018%203V4H19C19.55%204%2020.0208%204.19583%2020.4125%204.5875C20.8042%204.97917%2021%205.45%2021%206V20C21%2020.55%2020.8042%2021.0208%2020.4125%2021.4125C20.0208%2021.8042%2019.55%2022%2019%2022H5ZM5%2020H19V10H5V20ZM5%208H19V6H5V8ZM12%2014C11.7167%2014%2011.4792%2013.9042%2011.2875%2013.7125C11.0958%2013.5208%2011%2013.2833%2011%2013C11%2012.7167%2011.0958%2012.4792%2011.2875%2012.2875C11.4792%2012.0958%2011.7167%2012%2012%2012C12.2833%2012%2012.5208%2012.0958%2012.7125%2012.2875C12.9042%2012.4792%2013%2012.7167%2013%2013C13%2013.2833%2012.9042%2013.5208%2012.7125%2013.7125C12.5208%2013.9042%2012.2833%2014%2012%2014ZM7.2875%2013.7125C7.09583%2013.5208%207%2013.2833%207%2013C7%2012.7167%207.09583%2012.4792%207.2875%2012.2875C7.47917%2012.0958%207.71667%2012%208%2012C8.28333%2012%208.52083%2012.0958%208.7125%2012.2875C8.90417%2012.4792%209%2012.7167%209%2013C9%2013.2833%208.90417%2013.5208%208.7125%2013.7125C8.52083%2013.9042%208.28333%2014%208%2014C7.71667%2014%207.47917%2013.9042%207.2875%2013.7125ZM16%2014C15.7167%2014%2015.4792%2013.9042%2015.2875%2013.7125C15.0958%2013.5208%2015%2013.2833%2015%2013C15%2012.7167%2015.0958%2012.4792%2015.2875%2012.2875C15.4792%2012.0958%2015.7167%2012%2016%2012C16.2833%2012%2016.5208%2012.0958%2016.7125%2012.2875C16.9042%2012.4792%2017%2012.7167%2017%2013C17%2013.2833%2016.9042%2013.5208%2016.7125%2013.7125C16.5208%2013.9042%2016.2833%2014%2016%2014ZM12%2018C11.7167%2018%2011.4792%2017.9042%2011.2875%2017.7125C11.0958%2017.5208%2011%2017.2833%2011%2017C11%2016.7167%2011.0958%2016.4792%2011.2875%2016.2875C11.4792%2016.0958%2011.7167%2016%2012%2016C12.2833%2016%2012.5208%2016.0958%2012.7125%2016.2875C12.9042%2016.4792%2013%2016.7167%2013%2017C13%2017.2833%2012.9042%2017.5208%2012.7125%2017.7125C12.5208%2017.9042%2012.2833%2018%2012%2018ZM7.2875%2017.7125C7.09583%2017.5208%207%2017.2833%207%2017C7%2016.7167%207.09583%2016.4792%207.2875%2016.2875C7.47917%2016.0958%207.71667%2016%208%2016C8.28333%2016%208.52083%2016.0958%208.7125%2016.2875C8.90417%2016.4792%209%2016.7167%209%2017C9%2017.2833%208.90417%2017.5208%208.7125%2017.7125C8.52083%2017.9042%208.28333%2018%208%2018C7.71667%2018%207.47917%2017.9042%207.2875%2017.7125ZM16%2018C15.7167%2018%2015.4792%2017.9042%2015.2875%2017.7125C15.0958%2017.5208%2015%2017.2833%2015%2017C15%2016.7167%2015.0958%2016.4792%2015.2875%2016.2875C15.4792%2016.0958%2015.7167%2016%2016%2016C16.2833%2016%2016.5208%2016.0958%2016.7125%2016.2875C16.9042%2016.4792%2017%2016.7167%2017%2017C17%2017.2833%2016.9042%2017.5208%2016.7125%2017.7125C16.5208%2017.9042%2016.2833%2018%2016%2018Z%22%20fill=%22black%22/%3E%20%3C/svg%3E");background-repeat:no-repeat;background-size:18px 18px;
+width:18px;height:18px;opacity:.85;cursor:pointer;}
+input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1;}
+
 /* compact page-size control: overrides the full-width form default above */
 .psize select{width:auto;min-width:88px;height:44px;padding-block:0;}
 select::-ms-expand{display:none;}
@@ -273,6 +283,7 @@ table.g tbody tr:nth-child(odd){background:var(--surface);}
 table.g tbody tr:nth-child(even){background:var(--zebra);}
 /* hover must follow the zebra rules to win on equal specificity */
 table.g tbody tr:hover{background:var(--hover);}
+tr.rowlink{cursor:pointer;}
 table.g tbody tr:last-child td{border-bottom:0;}
 
 .num{text-align:end;}
@@ -305,6 +316,16 @@ body[dir=rtl] .pager button .ar{display:inline-block;transform:scaleX(-1);}
 /* ══ persons summary card ══ */
 
 /* ══ accordions ══ */
+
+/* table header: title on the left, its create action opposite */
+.tblhead{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+.tblhead h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em;}
+.tblhead .grow{flex:1;min-width:0;}
+.btn-add{background:var(--olive);border:1px solid var(--olive);color:#fff;
+padding:11px 20px;border-radius:var(--r-sm);font-size:14px;font-weight:600;
+display:inline-flex;align-items:center;gap:8px;}
+.btn-add:hover{background:var(--olive-dk);border-color:var(--olive-dk);}
+.btn-add .plus{font-size:17px;line-height:1;}
 
 /* ══ detail tabs — underline style, one section visible at a time ══════════ */
 .tabcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
@@ -346,6 +367,7 @@ display:flex;gap:18px;align-items:flex-start;background:var(--surface);}
 .esb .t{font-weight:700;margin-bottom:5px;font-size:14px;color:var(--ink);}
 .esb .w{color:var(--amber-tx);font-size:13px;}
 .esb .r{text-align:end;font-size:12.5px;color:var(--muted);white-space:nowrap;}
+.esb .r .svgi{vertical-align:-3px;margin-inline-end:4px;}
 
 /* ══ notices ══ */
 .note{display:flex;gap:11px;padding:13px 15px;font-size:13px;border:1px solid;
@@ -465,9 +487,12 @@ function icon(name,px,cls){
 
 /* ═══════════════════ i18n ═══════════════════ */
 var D = {
-  crumbPerson:["Person Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0634\u062E\u0635"],
+  crumbPerson:["Individual Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0641\u0631\u062F"],
   crumbCompany:["Company Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0634\u0631\u0643\u0629"],
   crumbGov:["Government Entity Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062C\u0647\u0629 \u0627\u0644\u062D\u0643\u0648\u0645\u064A\u0629"],
+  addPerson:["Add Individual","\u0625\u0636\u0627\u0641\u0629 \u0641\u0631\u062F"],
+  addCompany:["Add Company","\u0625\u0636\u0627\u0641\u0629 \u0634\u0631\u0643\u0629"],
+  addGovEntity:["Add Government Entity","\u0625\u0636\u0627\u0641\u0629 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
   searchDesc:["Whether the customer is a person, a company or a government entity, you can review and make changes to their information.","\u0633\u0648\u0627\u0621 \u0643\u0627\u0646 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644 \u0634\u062E\u0635\u0627\u064B \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0648 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629\u060C \u064A\u0645\u0643\u0646\u0643 \u0645\u0631\u0627\u062C\u0639\u0629 \u0628\u064A\u0627\u0646\u0627\u062A\u0647 \u0648\u062A\u0639\u062F\u064A\u0644\u0647\u0627."],
@@ -476,7 +501,7 @@ var D = {
   clearAll:["Clear all","\u0645\u0633\u062D \u0627\u0644\u0643\u0644"],
   backToDashboard:["Back to dashboard","\u0627\u0644\u0639\u0648\u062F\u0629 \u0644\u0644\u0648\u062D\u0629"],
   mobileNumber:["Mobile Number","\u0631\u0642\u0645 \u0627\u0644\u0647\u0627\u062A\u0641 \u0627\u0644\u0645\u062A\u062D\u0631\u0643"],
-  phIdNumber:["Enter ID number","\u0623\u062F\u062E\u0644 \u0631\u0642\u0645 \u0627\u0644\u0647\u0648\u064A\u0629"],
+  phIdNumber:["Enter EID number","\u0623\u062F\u062E\u0644 \u0631\u0642\u0645 \u0627\u0644\u0647\u0648\u064A\u0629 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062A\u064A\u0629"],
   phLicense:["Enter trade license number","\u0623\u062F\u062E\u0644 \u0631\u0642\u0645 \u0627\u0644\u0631\u062E\u0635\u0629"],
   phNameAr:["Enter name in Arabic","\u0623\u062F\u062E\u0644 \u0627\u0644\u0627\u0633\u0645 \u0628\u0627\u0644\u0639\u0631\u0628\u064A\u0629"],
   phNameEn:["Enter name in English","\u0623\u062F\u062E\u0644 \u0627\u0644\u0627\u0633\u0645 \u0628\u0627\u0644\u0625\u0646\u062C\u0644\u064A\u0632\u064A\u0629"],
@@ -487,7 +512,7 @@ var D = {
   customerException:["Customer Exception","\u0627\u0633\u062A\u062B\u0646\u0627\u0621 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644"],
   noResults:["No customers match these filters.","\u0644\u0627 \u064A\u0648\u062C\u062F \u0645\u062A\u0639\u0627\u0645\u0644\u0648\u0646 \u0645\u0637\u0627\u0628\u0642\u0648\u0646."],
   customers:["Customers","المتعاملون"],
-  persons:["Persons","الأشخاص"],
+  persons:["Individuals","\u0627\u0644\u0623\u0641\u0631\u0627\u062F"],
   companies:["Companies","الشركات"],
   gov:["Government Entities","الجهات الحكومية"],
   listSuffix:["- List","- قائمة"],
@@ -502,7 +527,7 @@ var D = {
   yes:["Yes","نعم"],
   no:["Cancel","إلغاء"],
 
-  idNumber:["ID Number","رقم الهوية"],
+  idNumber:["EID Number","\u0631\u0642\u0645 \u0627\u0644\u0647\u0648\u064A\u0629 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062A\u064A\u0629"],
   tradeLicenseNumber:["Trade License Number","رقم الرخصة التجارية"],
   nameAr:["Name (Arabic)","الاسم (عربي)"],
   nameEn:["Name (English)","الاسم (إنجليزي)"],
@@ -515,20 +540,20 @@ var D = {
   isExempted:["Is Exempted From Fees","معفى من الرسوم"],
   isSmartSurvey:["Is Smart Survey Enabled","المسح الذكي مُفعّل"],
 
-  custPersons:["Customers - Persons","المتعاملون - الأشخاص"],
+  custPersons:["Customers - Individuals","\u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u0648\u0646 - \u0627\u0644\u0623\u0641\u0631\u0627\u062F"],
   custCompanies:["Customers - Companies","المتعاملون - الشركات"],
   custGov:["Customers - Government Entity","المتعاملون - جهة حكومية"],
-  custPerson:["Customers - Person","المتعاملون - شخص"],
+  custPerson:["Customers - Individual","\u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u0648\u0646 - \u0641\u0631\u062F"],
   custCompany:["Customers - Company","المتعاملون - شركة"],
 
   viewDetails:["View Details","عرض التفاصيل"],
   edit:["Edit","تعديل"],
   noRecords:["List has no records","لا توجد سجلات"],
 
-  personProfile:["Person Profile","ملف الشخص"],
+  personProfile:["Individual Profile","\u0645\u0644\u0641 \u0627\u0644\u0641\u0631\u062F"],
   companyProfile:["Company Profile","ملف الشركة"],
   govProfile:["Government Entity Profile","ملف الجهة الحكومية"],
-  updateMoi:["UPDATE PERSON PROFILE FROM MOI","تحديث بيانات الشخص من وزارة الداخلية"],
+  updateMoi:["UPDATE INDIVIDUAL PROFILE FROM MOI","تحديث بيانات الشخص من وزارة الداخلية"],
   updateDed:["UPDATE COMPANY PROFILE FROM DED","تحديث بيانات الشركة من الاقتصادية"],
 
   profileDetails:["Profile Details","تفاصيل الملف"],
@@ -545,7 +570,7 @@ var D = {
   generalInformation:["General Information","المعلومات العامة"],
   contactInformation:["Contact Information","معلومات الاتصال"],
   basicInformation:["Basic Information","المعلومات الأساسية"],
-  personDetails:["Person Details","بيانات الشخص"],
+  personDetails:["Individual Details","\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0641\u0631\u062F"],
   passport:["Passport","جواز السفر"],
   familyBookDetails:["Family Book Details","بيانات خلاصة القيد"],
 
@@ -666,8 +691,8 @@ var D = {
   areYouSure:["هل أنت متأكد؟","هل أنت متأكد؟"],
 
   unverified:["Not yet verified against UAT","لم يتم التحقق مقابل UAT"],
-  unvPoa:["The Persons POA contract drill-down is in screenshots 16-43, which have not been read. The filter row and grid below follow the Companies › Authorized Signatory Users pattern, which is evidenced.","التفاصيل الكاملة للوكالة في الصور 16-43 غير المقروءة."],
-  unvDocs:["The Persons document-section list is not evidenced. The sections below are the Companies set, which is evidenced, plus Police Clearance Certificate to exercise the 1-month rule from the ticket.","قائمة أقسام مستندات الأشخاص غير موثقة."]
+  unvPoa:["The Individuals POA contract drill-down is in screenshots 16-43, which have not been read. The filter row and grid below follow the Companies › Authorized Signatory Users pattern, which is evidenced.","التفاصيل الكاملة للوكالة في الصور 16-43 غير المقروءة."],
+  unvDocs:["The Individuals document-section list is not evidenced. The sections below are the Companies set, which is evidenced, plus Police Clearance Certificate to exercise the 1-month rule from the ticket.","قائمة أقسام مستندات الأشخاص غير موثقة."]
 };
 var STATUS_AR = {Active:"نشط",Expired:"منتهي",Terminated:"منتهٍ بالفسخ",Closed:"مغلق",
 Approved:"معتمد",Rejected:"مرفوض",true:"true",false:"false",Yes:"نعم",No:"لا"};
@@ -1106,7 +1131,11 @@ function fillCompany(o){
    owners / users / signatories / exceptions payload used by the detail tabs). */
 COMPANIES = [
   fillCompany({id:"K1", tradeLicenseNumber:"CN-5541290", nameAr:"شركة الأفق الجديد للعقارات",
-    nameEn:"New Horizon Real Estate LLC", landLine:"97125551234", email:"info@horizonre.ae",
+    nameEn:"New Horizon Real Estate LLC",
+    users:[
+      {nameAr:"طارق خالد المنصوري",nameEn:"Tariq Khalid Almansoori",email:"tariq.almansoori@adres.ae",phone:"971501122334",location:"CN-5541290",isAdmin:"true"},
+      {nameAr:"مريم حسن العبدولي",nameEn:"Maryam Hassan Alabduli",email:"maryam.alabduli@domain.ae",phone:"0501122334",location:"CN-5541290",isAdmin:"false"},
+      {nameAr:"أحمد يوسف الحمادي",nameEn:"Ahmed Yousef Alhammadi",email:"a.alhammadi@horizonre.ae",phone:"971502233445",location:"CN-5541290",isAdmin:"false"}], landLine:"97125551234", email:"info@horizonre.ae",
     isExempted:"No", isSmartSurvey:"Yes",
     general:{licenseIssueDate:"12-03-2016",licenseExpiryDate:"11-03-2028",adcci:"1283040"},
     activities:[
@@ -1115,14 +1144,23 @@ COMPANIES = [
     owners:[{nameAr:"طارق خالد المنصوري",nameEn:"Tariq Khalid Almansoori",percentage:"100",
       nationality:"United Arab Emirates",relationType:"Owner"}]}),
   fillCompany({id:"K2", tradeLicenseNumber:"CN-9923841", nameAr:"الروابي للمقاولات العامة",
-    nameEn:"Al Rawabi General Contracting", landLine:"97126774321",
+    nameEn:"Al Rawabi General Contracting",
+    users:[
+      {nameAr:"راشد محمد الطنيجي",nameEn:"Rashed Mohammed Altunaiji",email:"rashed.altunaiji@domain.ae",phone:"971557788990",location:"CN-9923841",isAdmin:"true"},
+      {nameAr:"سالم عبيد الكعبي",nameEn:"Salem Obaid Alkaabi",email:"s.alkaabi@alrawabicontracting.ae",phone:"971553344556",location:"CN-9923841",isAdmin:"false"}], landLine:"97126774321",
     email:"contact@alrawabicontracting.ae", isExempted:"Yes", isSmartSurvey:"No",
     general:{licenseIssueDate:"05-07-2013",licenseExpiryDate:"04-07-2027",adcci:""}}),
   fillCompany({id:"K3", tradeLicenseNumber:"CN-1182934", nameAr:"الواحة للخدمات التجارية",
-    nameEn:"Oasis Commercial Services", landLine:"97124448899", email:"support@oasis-services.ae",
+    nameEn:"Oasis Commercial Services",
+    users:[
+      {nameAr:"نورة عبدالله الشحي",nameEn:"Nora Abdulla Alshehhi",email:"nora.alshehhi@example.com",phone:"971506655443",location:"CN-1182934",isAdmin:"true"}], landLine:"97124448899", email:"support@oasis-services.ae",
     isExempted:"No", isSmartSurvey:"No"}),
   fillCompany({id:"K4", tradeLicenseNumber:"CN-7734012", nameAr:"القمة للاستثمارات العقارية",
-    nameEn:"Al Qemma Real Estate Investment", landLine:"97128883344", email:"info@alqemmare.ae",
+    nameEn:"Al Qemma Real Estate Investment",
+    users:[
+      {nameAr:"مديحة جاسم الشامسي",nameEn:"Madiha Jassem Alshamsi",email:"madiha.alshamsi@adres.ae",phone:"971509988776",location:"CN-7734012",isAdmin:"true"},
+      {nameAr:"خليفة راشد النعيمي",nameEn:"Khalifa Rashed Alnuaimi",email:"k.alnuaimi@alqemmare.ae",phone:"971503456789",location:"CN-7734012",isAdmin:"false"},
+      {nameAr:"عائشة سلطان الكعبي",nameEn:"Aisha Sultan Alkaabi",email:"aisha.alkaabi@example.com",phone:"0504455667",location:"CN-7734012",isAdmin:"false"}], landLine:"97128883344", email:"info@alqemmare.ae",
     isExempted:"No", isSmartSurvey:"Yes",
     completedApplications:[
       {no:"202600014120",startUserName:"Al Qemma Real Estate Investment",status:"Approved",createdDate:"24-06-2026 09:31"},
@@ -1135,10 +1173,16 @@ COMPANIES = [
        secondParty:"Sultan Ahmed Almarzooqi",status:"Active"},
       {no:"202600008920",startDate:"14-02-2026",expiryDate:"13-02-2026",
        secondParty:"Rashed Mohammed Altunaiji",status:"Expired"}],
-    users:[{nameAr:"سلطان أحمد المرزوقي",nameEn:"Sultan Ahmed Almarzooqi",
-      email:"sultan.almarzooqi@adres.ae",phone:"971552233445",location:"CN-3349205",isAdmin:"true"}]}),
+    users:[
+      {nameAr:"سلطان أحمد المرزوقي",nameEn:"Sultan Ahmed Almarzooqi",
+       email:"sultan.almarzooqi@adres.ae",phone:"971552233445",location:"CN-3349205",isAdmin:"true"},
+      {nameAr:"عمر سعيد المهيري",nameEn:"Omar Saeed Almehairi",
+       email:"omar.almehairi@example.com",phone:"023334444",location:"CN-3349205",isAdmin:"false"}]}),
   fillCompany({id:"K6", tradeLicenseNumber:"CN-6612093", nameAr:"النخيل للتجارة العامة",
-    nameEn:"Al Nakheel General Trading", landLine:"97129992211", email:"trading@nakheel.ae",
+    nameEn:"Al Nakheel General Trading",
+    users:[
+      {nameAr:"سعيد محمد القمزي",nameEn:"Saeed Mohammed Alqamzi",email:"saeed.alqamzi@example.com",phone:"971508899001",location:"CN-6612093",isAdmin:"true"},
+      {nameAr:"حصة راشد المزروعي",nameEn:"Hessa Rashed Almazrouei",email:"hessa.almazrouei@adres.ae",phone:"971554433221",location:"CN-6612093",isAdmin:"false"}], landLine:"97129992211", email:"trading@nakheel.ae",
     isExempted:"No", isSmartSurvey:"No"}),
   fillCompany({id:"K7", tradeLicenseNumber:"CN-2284950", nameAr:"الاتحاد لإدارة المشاريع",
     nameEn:"Union Project Management", landLine:"97121115588", email:"management@unionpm.ae",
@@ -1150,7 +1194,10 @@ COMPANIES = [
     nameEn:"Bright Future Contracting", landLine:"97126664433", email:"admin@brightfuture.ae",
     isExempted:"No", isSmartSurvey:"Yes"}),
   fillCompany({id:"K10", tradeLicenseNumber:"CN-9983411", nameAr:"الدار لإدارة العقارات",
-    nameEn:"Aldar Property Management", landLine:"97122229900", email:"leasing@aldarprop.ae",
+    nameEn:"Aldar Property Management",
+    users:[
+      {nameAr:"يوسف طارق البلوشي",nameEn:"Yousef Tariq Albaloushi",email:"y.albaloushi@aldarprop.ae",phone:"971505566778",location:"CN-9983411",isAdmin:"true"},
+      {nameAr:"لطيفة عبيد الكعبي",nameEn:"Latifa Obaid Alkaabi",email:"l.alkaabi@aldarprop.ae",phone:"971502211334",location:"CN-9983411",isAdmin:"false"}], landLine:"97122229900", email:"leasing@aldarprop.ae",
     isExempted:"No", isSmartSurvey:"Yes",
     exceptions:[{id:"KE1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"}]})
 ].concat(COMPANIES, [
@@ -1434,12 +1481,22 @@ function viewList(){
 
   var head='<thead><tr>'+cols.map(function(c){ return "<th>"+esc(c)+"</th>"; }).join("")+"</tr></thead>";
   var body=pg.slice.length
-    ? pg.slice.map(function(r){ return "<tr>"+rowFn(r)+"</tr>"; }).join("")
+    ? pg.slice.map(function(r){
+        /* the whole row is a second entry point to the detail page; the gear and
+           arrow buttons sit inside it and win, since the dispatcher resolves the
+           innermost [data-a] ancestor */
+        return '<tr class="rowlink" data-a="view" data-id="'+esc(r.id)+'" title="'
+          +esc(t("viewDetails"))+'">'+rowFn(r)+"</tr>";
+      }).join("")
     : '<tr><td colspan="'+cols.length+'"><div class="empty"><span class="gl">&#9993;</span>'
       +esc(t("noResults"))+"</div></td></tr>";
 
   return catTabs()+viewSearch()
-    +'<section class="card"><div class="body flush"><div class="tw fit">'
+    +'<div class="tblhead"><h2>'+esc(catLabel())+'</h2><div class="grow"></div>'
+      +'<button class="btn-add" data-a="addNew"><span class="plus">+</span>'
+      +esc(t(S.cat==="persons"?"addPerson":S.cat==="companies"?"addCompany":"addGovEntity"))
+      +"</button></div>"
+    +'<section class="card tbl-card"><div class="body flush"><div class="tw fit">'
     +'<table class="g">'+head+"<tbody>"+body+"</tbody></table></div></div></section>"
     +'<div class="pgwrap">'
       +'<div class="psize"><select data-b="pageSize" data-live="1" aria-label="'
@@ -1551,7 +1608,7 @@ function bodyBlocks(r){
     ? b.esb.map(function(e){
         return '<div class="esb"><div class="l"><div class="t">'+esc(e.title)+"</div>"
           +'<div class="w">&#9888; '+esc(e.warning)+"</div></div>"
-          +'<div class="r">'+esc(e.ref)+"<br>&#128197; "+esc(e.datetime)+"</div></div>";
+          +'<div class="r">'+esc(e.ref)+"<br>"+icon("calendar",15)+" "+esc(e.datetime)+"</div></div>";
       }).join("")
     : '<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
   out+=grp(t("esbBlocks"))+esb;
@@ -2134,6 +2191,13 @@ document.addEventListener("click",function(ev){
 
   if(S.gear && a!=="gear" && a!=="excGear"){ S.gear=null; renderBody(); }
   if(!el) return;
+  /* a row click that was really a text selection (e.g. copying an email) must
+     not navigate */
+  if(el.tagName==="TR"){
+    var selTxt="";
+    try{ selTxt=String(window.getSelection?window.getSelection():""); }catch(e){}
+    if(selTxt.length) return;
+  }
   var id=el.getAttribute("data-id"), r, m;
 
   switch(a){
