@@ -446,6 +446,9 @@ function icon(name,px,cls){
 
 /* ═══════════════════ i18n ═══════════════════ */
 var D = {
+  crumbPerson:["Person Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0634\u062E\u0635"],
+  crumbCompany:["Company Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0634\u0631\u0643\u0629"],
+  crumbGov:["Government Entity Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062C\u0647\u0629 \u0627\u0644\u062D\u0643\u0648\u0645\u064A\u0629"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
   searchDesc:["Whether the customer is a person, a company or a government entity, you can review and make changes to their information.","\u0633\u0648\u0627\u0621 \u0643\u0627\u0646 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644 \u0634\u062E\u0635\u0627\u064B \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0648 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629\u060C \u064A\u0645\u0643\u0646\u0643 \u0645\u0631\u0627\u062C\u0639\u0629 \u0628\u064A\u0627\u0646\u0627\u062A\u0647 \u0648\u062A\u0639\u062F\u064A\u0644\u0647\u0627."],
@@ -1977,12 +1980,15 @@ function renderBody(){
     crumb=[t("services"),t("custProfileUpdate"),t("backOfficeConfirm")];
     h1=t("custProfileUpdate");
   } else if(r.name==="exc"){
-    crumb=[t("customers"),catLabel(),t("customerException")];  h1=t("customerException");
+    crumb=[t("customers"),t("customerException")];  h1=t("customerException");
   } else if(r.name==="detail"){
-    crumb=[t("customers"),catLabel(),t("viewDetails")];
+    /* the category is already evident from the tab strip, so the trail names the
+       entity instead of repeating it: Customers > Company Details */
+    crumb=[t("customers"), S.cat==="persons"?t("crumbPerson")
+                         : S.cat==="companies"?t("crumbCompany") : t("crumbGov")];
     h1 = S.cat==="persons"?t("personProfile") : S.cat==="companies"?t("companyProfile") : t("govProfile");
   } else {
-    crumb=[t("customers"),catLabel()]; h1=t("customersSearch");
+    crumb=[t("customers")]; h1=t("customersSearch");
   }
   crumb=[t("backToDashboard")].concat(crumb);
   var last=crumb.length-1;
