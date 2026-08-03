@@ -297,16 +297,17 @@ color:var(--muted);font-size:14px;border-bottom:3px solid transparent;}
 border-radius:0 0 var(--r) var(--r);padding:22px;box-shadow:var(--shadow);}
 
 /* ══ persons summary card ══ */
-.psplit{display:grid;grid-template-columns:312px minmax(0,1fr);gap:20px;align-items:start;}
-@media(max-width:1060px){.psplit{grid-template-columns:1fr;}}
-.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-box-shadow:var(--shadow);overflow:hidden;position:sticky;top:16px;}
-.pcard .pn{padding:20px 16px;text-align:center;font-weight:700;font-size:16px;
-border-bottom:1px solid var(--line-2);}
-.pcard .r{display:flex;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line-2);}
-.pcard .r:last-child{border-bottom:0;}
-.pcard dt{flex:0 0 42%;font-weight:600;font-size:13px;color:var(--ink);}
-.pcard dd{margin:0;flex:1;font-size:13px;color:var(--muted);word-break:break-word;}
+/* ══ person profile: summary is the lead section, full width, attributes across ══ */
+.psummary{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+box-shadow:var(--shadow);padding:24px 28px 26px;margin-bottom:20px;}
+.psummary .pshead{padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-2);}
+.psummary .pname{font-size:21px;font-weight:700;letter-spacing:-.015em;}
+.psgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 30px;margin:0;}
+@media(max-width:1180px){.psgrid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:720px){.psgrid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.psgrid .it dt{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+color:var(--muted);margin-bottom:7px;}
+.psgrid .it dd{margin:0;font-size:14.5px;color:var(--ink);word-break:break-word;line-height:1.5;}
 
 /* ══ accordions ══ */
 .ac{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:10px;overflow:hidden;}
@@ -1449,11 +1450,16 @@ var PERSON_TABS=[["profileDetails","profileDetails"],["blockDetails","blockDetai
                  ["poaDetails","poaDetails"],["documents","documents"]];
 
 function personSummary(p){
-  return '<div class="pcard"><div class="pn">'+esc(p.nameEn||p.nameAr)+"</div><dl>"
-    +[[t("nationality"),p.nationality],[t("gender"),p.gender],[t("idNumber"),p.idNumber],
-      [t("mobile"),p.mobile],[t("email"),p.email]]
-      .map(function(r){ return '<div class="r"><dt>'+esc(r[0])+"</dt><dd>"+esc(dash(r[1]))+"</dd></div>"; }).join("")
-    +"</dl></div>";
+  var items=[[t("nationality"),p.nationality,false],[t("gender"),p.gender,false],
+             [t("idNumber"),p.idNumber,true],[t("mobile"),p.mobile,true],
+             [t("emailAddress"),p.email,true]];
+  return '<section class="psummary">'
+    +'<div class="pshead"><div class="pname">'
+      +esc(ar() ? (p.nameAr||p.nameEn) : (p.nameEn||p.nameAr))+"</div></div>"
+    +'<dl class="psgrid">'+items.map(function(r){
+        return '<div class="it"><dt>'+esc(r[0])+"</dt><dd"+(r[2]?' dir="ltr"':"")+">"
+          +esc(dash(r[1]))+"</dd></div>";
+      }).join("")+"</dl></section>";
 }
 
 function tabPersonProfile(p){
@@ -1640,10 +1646,10 @@ function viewPerson(){
     : S.tab==="poaDetails" ? tabPersonPoa(p)
     : tabDocuments(p);
 
-  return '<div class="row-end right" style="margin-bottom:10px">'
+  return '<div class="row-end right" style="margin-bottom:16px">'
     +'<button class="btn btn-navy" data-a="moi">'+esc(t("updateMoi"))+"</button></div>"
-    +'<div class="psplit">'+personSummary(p)
-    +'<div><div class="tabs">'+tabs+'</div><div class="tabpanel">'+panel+"</div></div></div>";
+    +personSummary(p)
+    +'<div class="tabs">'+tabs+'</div><div class="tabpanel">'+panel+"</div>";
 }
 
 /* ═══════════════════ COMPANIES detail — 7 tabs ═══════════════════ */
