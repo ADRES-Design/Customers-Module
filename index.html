@@ -97,9 +97,6 @@ h1.pt{margin:0;font-size:27px;font-weight:700;letter-spacing:-.015em;}
 @media(max-width:760px){.pagehead .ph-a{width:100%;}
   .pagehead .ph-a .btn{width:100%;justify-content:center;}}
 h2.sect{margin:30px 0 16px;font-size:22px;font-weight:700;letter-spacing:-.01em;}
-.sechead{display:flex;align-items:center;gap:12px;margin:30px 0 16px;}
-.sechead h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em;}
-.sechead .grow{flex:1;}
 
 
 /* ══ pills / toolbar ══ */
@@ -283,9 +280,13 @@ white-space:nowrap;}
 table.g tbody tr:nth-child(odd){background:var(--surface);}
 table.g tbody tr:nth-child(even){background:var(--zebra);}
 /* hover must follow the zebra rules to win on equal specificity */
-table.g tbody tr:hover{background:var(--hover);}
+/* only rows that lead somewhere react to the pointer */
+table.g tbody tr.rowlink:hover{background:var(--hover);}
 tr.rowlink{cursor:pointer;}
 table.g tbody tr:last-child td{border-bottom:0;}
+/* the empty-state row is not a record: no zebra fill and no hover highlight */
+table.g tbody tr.emptyrow,
+table.g tbody tr.emptyrow:hover{background:var(--surface);cursor:default;}
 
 .num{text-align:end;}
 /* stacked and centred: the badge is an inline-flex .svgi, so without a column
@@ -331,6 +332,15 @@ display:inline-flex;align-items:center;gap:8px;}
 .btn-add:hover{background:var(--olive-dk);border-color:var(--olive-dk);}
 .btn-add .plus{font-size:17px;line-height:1;}
 
+/* contract details: status pill beside the section heading */
+.statusbadge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;
+padding:6px 14px;border-radius:99px;letter-spacing:.04em;text-transform:uppercase;}
+.statusbadge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;}
+.statusbadge.g{background:var(--sage-soft);color:var(--green-tx);}
+.statusbadge.a{background:var(--amber-soft);color:var(--amber-tx);}
+.statusbadge.r{background:var(--red-soft);color:var(--red-tx);}
+.statusbadge.n{background:var(--page);color:var(--muted);}
+
 /* ══ detail tabs — underline style, one section visible at a time ══════════ */
 .tabcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
 box-shadow:var(--shadow);overflow:hidden;}
@@ -341,7 +351,6 @@ font-size:14px;border-bottom:3px solid transparent;margin-bottom:-1px;}
 .utab[aria-selected=true]{color:var(--ink);font-weight:700;border-bottom-color:var(--olive);}
 .tabbody{padding:24px 26px 28px;}
 .tabbody .grp:first-child{margin-top:0;}
-.grp.no-rule{border-bottom:0;padding-bottom:4px;}
 
 /* ══ field groups (Broker(s) Details structure) ══════════════════════════
    section title outside a bordered panel; inside, group headings each followed
@@ -350,6 +359,8 @@ font-size:14px;border-bottom:3px solid transparent;margin-bottom:-1px;}
 border-bottom:1px solid var(--line-2);margin:28px 0 20px;}
 .grp:first-child{margin-top:0;}
 .grp.no-rule{border-bottom:0;padding-bottom:4px;}
+.grp.grp-a{display:flex;align-items:center;gap:16px;}
+.grp.grp-a .gt{flex:1;min-width:0;}
 .fgrid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 30px;margin:0;}
 @media(max-width:1180px){.fgrid4{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:760px){.fgrid4{grid-template-columns:repeat(2,minmax(0,1fr));}}
@@ -391,8 +402,6 @@ body[dir=rtl] .listcard .li .ch{transform:scaleX(-1);}
 /* ══ modals ══ */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.42);display:grid;place-items:center;
 padding:24px;z-index:100;overflow:auto;}
-.modal.wide{width:min(1060px,100%);}
-.plotctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);}
 .modal.wide{width:min(1060px,100%);}
 .plotctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);
 margin-bottom:4px;}
@@ -505,6 +514,21 @@ var D = {
   phPoBox:["e.g. 40912","\u0645\u062B\u0627\u0644: 40912"],
   phRefNo:["Enter reference number","\u0623\u062F\u062E\u0644 \u0627\u0644\u0631\u0642\u0645 \u0627\u0644\u0645\u0631\u062C\u0639\u064A"],
   phReason:["Enter the reason for exemption","\u0623\u062F\u062E\u0644 \u0633\u0628\u0628 \u0627\u0644\u0625\u0639\u0641\u0627\u0621"],
+  contractDetails:["Contract Details","\u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0639\u0642\u062F"],
+  contractType:["Contract Type","\u0646\u0648\u0639 \u0627\u0644\u0639\u0642\u062F"],
+  terminateDate:["Contract Terminate Date","\u062A\u0627\u0631\u064A\u062E \u0625\u0646\u0647\u0627\u0621 \u0627\u0644\u0639\u0642\u062F"],
+  firstParty:["First Party","\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644"],
+  workflowGroups:["Workflow Groups & Workflows","\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0648\u0645\u0633\u0627\u0631\u0627\u062A \u0627\u0644\u0639\u0645\u0644"],
+  properties:["Properties","\u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062A"],
+  plots:["Plots","\u0627\u0644\u0642\u0637\u0639"],
+  units:["Units (Investment Areas)","\u0627\u0644\u0648\u062D\u062F\u0627\u062A (\u0645\u0646\u0627\u0637\u0642 \u0627\u0633\u062A\u062B\u0645\u0627\u0631\u064A\u0629)"],
+  allProperties:["All Properties","\u062C\u0645\u064A\u0639 \u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062A"],
+  workflowNames:["Workflow names","\u0623\u0633\u0645\u0627\u0621 \u0645\u0633\u0627\u0631\u0627\u062A \u0627\u0644\u0639\u0645\u0644"],
+
+  plotNo:["Plot Number","\u0631\u0642\u0645 \u0627\u0644\u0642\u0637\u0639\u0629"],
+  unitNo:["Unit Number","\u0631\u0642\u0645 \u0627\u0644\u0648\u062D\u062F\u0629"],
+  area:["Area","\u0627\u0644\u0645\u0646\u0637\u0642\u0629"],
+  usage:["Usage","\u0627\u0644\u0627\u0633\u062A\u062E\u062F\u0627\u0645"],
   all:["All","\u0627\u0644\u0643\u0644"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
@@ -704,7 +728,6 @@ var D = {
   areYouSure:["هل أنت متأكد؟","هل أنت متأكد؟"],
 
   unverified:["Not yet verified against UAT","لم يتم التحقق مقابل UAT"],
-  unvPoa:["The Individuals POA contract drill-down is in screenshots 16-43, which have not been read. The filter row and grid below follow the Companies › Authorized Signatory Users pattern, which is evidenced.","التفاصيل الكاملة للوكالة في الصور 16-43 غير المقروءة."],
   unvDocs:["The Individuals document-section list is not evidenced. The sections below are the Companies set, which is evidenced, plus Police Clearance Certificate to exercise the 1-month rule from the ticket.","قائمة أقسام مستندات الأشخاص غير موثقة."]
 };
 var STATUS_AR = {Active:"نشط",Expired:"منتهي",Terminated:"منتهٍ بالفسخ",Closed:"مغلق",
@@ -790,7 +813,16 @@ var PERSONS = [
     poas:[
       {no:"202600017723",startDate:"22-07-2026",expiryDate:"21-07-2028",secondParty:"MATAR HUMAID MAYOUF SALEM ALMANSOORI",status:"Active"},
       {no:"202600015038",startDate:"21-07-2026",expiryDate:"20-07-2028",secondParty:"MATAR HUMAID MAYOUF SALEM ALMANSOORI",status:"Active"},
-      {no:"202600014376",startDate:"12-07-2026",expiryDate:"30-04-2028",secondParty:"SAMEER HELAL HAMAD YEHIA AL-HALALA",status:"Terminated"},
+      {no:"202600014376",startDate:"12-07-2026",expiryDate:"30-04-2028",
+       secondParty:"SAMEER HELAL HAMAD YEHIA AL-HALALA",status:"Terminated",
+       contractType:"General power of attorny",issueDate:"14-07-2026",
+       terminateDate:"15-07-2026",remarks:"ok",allProperties:true,
+       groups:[{name:"Tawtheeq - Tenancy Contracts",workflows:[
+           "New Lease Contract Registration",
+           "Request for a Lease Contract Renewal",
+           "Lease Contract Details Amendment",
+           "Close Tenancy Contract"]}],
+       plots:[],units:[]},
       {no:"202600014376",startDate:"14-07-2026",expiryDate:"13-07-2028",secondParty:"SAMEER HELAL HAMAD YEHIA AL-HALALA",status:"Terminated"},
       {no:"202600014248",startDate:"13-07-2026",expiryDate:"31-12-2026",secondParty:"SAMEER HELAL HAMAD YEHIA AL-HALALA",status:"Active"},
       {no:"202600014248",startDate:"13-07-2026",expiryDate:"12-07-2028",secondParty:"SAMEER HELAL HAMAD YEHIA AL-HALALA",status:"Active"},
@@ -1065,10 +1097,41 @@ PERSONS = [
     mobile:"971501122334", email:"tariq.almansoori@adres.ae",
     personDetails:{motherNameAr:"",motherNameEn:"",placeOfBirth:"ABU DHABI",
       dateOfBirth:"14-05-1991",maritalStatus:"MARRIED",regSmartHub:"Yes"},
-    poas:[{no:"202600016420",startDate:"03-07-2026",expiryDate:"02-07-2028",
-      secondParty:"Rashed Mohammed Altunaiji",status:"Active"},
+    poas:[
+      {no:"202600016420",startDate:"03-07-2026",expiryDate:"02-07-2028",
+       secondParty:"Rashed Mohammed Altunaiji",status:"Active",
+       contractType:"General power of attorny",issueDate:"01-07-2026",
+       terminateDate:"",remarks:"ok",allProperties:true,
+       groups:[
+         {name:"Tawtheeq - Propert Management Agreements",workflows:[
+           "Property Management Agreement Issuance",
+           "Property Management Agreement Renewal",
+           "Property Management Agreement Amendments",
+           "Property Management Agreement Cancelation"]},
+         {name:"Tawtheeq - Tenancy Contracts",workflows:[
+           "New Lease Contract Registration",
+           "Request for a Lease Contract Renewal",
+           "Lease Contract Details Amendment",
+           "Close Tenancy Contract",
+           "Terminate a Lease Contract by Court Order",
+           "Request to Cancel a Lease Contract",
+           "Request Maintenance Of Leased Assets",
+           "Request Change Activity Type/Commercial Name leased Asset",
+           "Register Tenancy Contract Municipal Assets",
+           "Renew a Lease Contract of Municipal Assets",
+           "Request Clearance For MunicipaltyAssets"]}],
+       plots:[{plotNumber:"37a",municipality:"Abu Dhabi City",area:"Al Bateen",usage:"Residential Land"},
+              {plotNumber:"415",municipality:"Al Ain City",area:"Al Jimi",usage:"Commercial Land"}],
+       units:[{unitNumber:"W12-0412",municipality:"Abu Dhabi City",area:"Al Bateen",usage:"Residential"}]},
       {no:"202600009117",startDate:"12-02-2026",expiryDate:"11-02-2026",
-      secondParty:"Sultan Ahmed Almarzooqi",status:"Expired"}],
+       secondParty:"Sultan Ahmed Almarzooqi",status:"Expired",
+       contractType:"Sale power of attorny",issueDate:"10-02-2026",
+       terminateDate:"",remarks:"\u2014",allProperties:false,
+       groups:[{name:"Tawtheeq - Propert Management Agreements",workflows:[
+           "Property Management Agreement Issuance",
+           "Property Management Agreement Renewal"]}],
+       plots:[{plotNumber:"22",municipality:"Abu Dhabi City",area:"Khalifa City",usage:"Residential Land"}],
+       units:[]}],
     completedApplications:[
       {no:"202600016882",startUserName:"Tariq Khalid Almansoori",status:"Approved",createdDate:"21-07-2026 10:14"},
       {no:"202600012409",startUserName:"Tariq Khalid Almansoori",status:"Approved",createdDate:"18-05-2026 08:47"},
@@ -1338,17 +1401,23 @@ function rec(){ var a=PERSONS.concat(COMPANIES,GOV);
   for(var i=0;i<a.length;i++) if(a[i].id===S.route.id) return a[i]; return null; }
 function catLabel(){ return t(S.cat); }
 
-function grid(cols,list,rowFn,cls){
+/* trFn(row,i) -> extra <tr> attributes. Supply it only for tables whose rows
+   open something; without it the row gets no hover and no pointer. */
+function grid(cols,list,rowFn,cls,trFn){
   var h=cols.map(function(c){ return "<th>"+esc(c)+"</th>"; }).join("");
   var b=list.length
-    ? list.map(function(r,i){ return "<tr>"+rowFn(r,i)+"</tr>"; }).join("")
-    : '<tr><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+'</div></td></tr>';
+    ? list.map(function(r,i){ return "<tr"+(trFn?trFn(r,i):"")+">"+rowFn(r,i)+"</tr>"; }).join("")
+    : '<tr class="emptyrow"><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+'</div></td></tr>';
   return '<div class="tw"><table class="g'+(cls?" "+cls:"")+'"><thead><tr>'+h+"</tr></thead><tbody>"+b+"</tbody></table></div>";
 }
 function grp(txt){ return '<div class="grp">'+esc(txt)+"</div>"; }
 /* heading that sits directly above a table: the table header supplies its own
    rule, so a second one under the heading reads as a double line */
 function grpT(txt){ return '<div class="grp no-rule">'+esc(txt)+"</div>"; }
+/* heading with something aligned opposite it (e.g. a status pill) */
+function grpA(txt,right){
+  return '<div class="grp grp-a"><span class="gt">'+esc(txt)+"</span>"+(right||"")+"</div>";
+}
 function fieldGrid(items){
   return '<dl class="fgrid4">'+items.map(function(r){
     var v=(r[1]===""||r[1]===null||r[1]===undefined)?"\u2014":r[1];
@@ -1525,7 +1594,7 @@ function viewList(){
         return '<tr class="rowlink" data-a="view" data-id="'+esc(r.id)+'" title="'
           +esc(t("viewDetails"))+'">'+rowFn(r)+"</tr>";
       }).join("")
-    : '<tr><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''
+    : '<tr class="emptyrow"><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''
       +esc(t("noResults"))+"</div></td></tr>";
 
   return catTabs()+viewSearch()
@@ -1666,7 +1735,8 @@ function bodyBlocks(r){
       return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
         +"</td><td>"+esc(x.road)+'</td><td class="num">'+esc(x.plotNumber)+"</td><td>"+esc(x.landUse)
         +'</td><td><button class="iconsq" data-a="plot" data-n="'+i+'" title="'+esc(t("blockedPlots"))
-        +'" aria-label="'+esc(t("blockedPlots"))+'">'+icon("arrowRight",17,"dir")+"</button></td>"; });
+        +'" aria-label="'+esc(t("blockedPlots"))+'">'+icon("arrowRight",17,"dir")+"</button></td>"; },
+      null, function(x,i){ return ' class="rowlink" data-a="plot" data-n="'+i+'"'; });
   return out;
 }
 
@@ -1701,19 +1771,28 @@ function poaFilter(list){
     return true;
   });
 }
-function poaGrid(list,page,act,linkAct){
+/* src = the record's full contract array; the row index into it is what
+   identifies a contract, because POA numbers repeat in the source data */
+function poaGrid(list,page,act,linkAct,src){
   var pg=paged(list,page,10);
-  return grid([t("poaNo"),t("startDate"),t("expiryDate"),t("secondParty"),t("contractStatus")],
+  return grid([t("poaNo"),t("startDate"),t("expiryDate"),t("secondParty"),t("contractStatus"),""],
     pg.slice,function(c){
-      return '<td><button class="lnk" dir="ltr" data-a="'+linkAct+'" data-id="'+esc(c.no)+'">'+esc(c.no)+"</button></td>"
+      return '<td dir="ltr">'+esc(c.no)+"</td>"
         +"<td>"+esc(c.startDate)+"</td><td>"+esc(c.expiryDate)+"</td><td>"+esc(c.secondParty)
-        +"</td><td>"+esc(st(c.status))+"</td>"; })
+        +"</td><td>"+sx(c.status)+"</td>"
+        +'<td><button class="iconsq" data-a="'+linkAct+'" data-n="'+(src?src.indexOf(c):-1)+'" title="'
+        +esc(t("contractDetails"))+'" aria-label="'+esc(t("contractDetails"))+'">'
+        +icon("arrowRight",17,"dir")+"</button></td>"; },
+    null, function(c){
+      var i=src?src.indexOf(c):-1;
+      return i<0 ? "" : ' class="rowlink" data-a="'+linkAct+'" data-n="'+i+'"';
+    })
     +pager(pg.page,pg.total,act);
 }
 
 function bodyPoa(p){
-  return unv("unvPoa")+poaFilterRow("poaSearch")
-    +poaGrid(poaFilter(p.poas),S.poaPage,"poaPage","poaOpen");
+  return poaFilterRow("poaSearch")
+    +poaGrid(poaFilter(p.poas),S.poaPage,"poaPage","poaOpen",contractsOf(p));
 }
 
 /* Documents tab — shared shape */
@@ -1755,6 +1834,83 @@ function tabbed(items){
   return '<section class="tabcard">'
     +'<div class="utabs" role="tablist">'+strip+"</div>"
     +'<div class="tabbody" role="tabpanel">'+active.body()+"</div></section>";
+}
+
+/* ── Contract Details ────────────────────────────────────────────────────────
+   Sections stacked per the UAT screenshot: Basic Information, First Party,
+   Second Party, Workflow Groups & Workflows, Properties (Plots + Units).
+   Party rows are resolved from the fixture where the counterparty is a known
+   customer, so email / phone / EID come from one place rather than being
+   duplicated onto every contract. */
+function contractsOf(r){ return (r.poas||[]).concat(r.signatories||[]); }
+function partyOf(name){
+  var hit=null;
+  PERSONS.concat(COMPANIES,GOV).forEach(function(r){
+    if(!hit && (r.nameEn===name || r.nameAr===name)) hit=r;
+  });
+  return hit ? {nameAr:hit.nameAr,nameEn:hit.nameEn,email:hit.email,
+                phone:hit.mobile||hit.landLine||"",idNumber:hit.idNumber||hit.tradeLicenseNumber||""}
+             : {nameAr:"",nameEn:name,email:"",phone:"",idNumber:""};
+}
+function contractOf(r,poa){
+  return {
+    no:poa.no, type:poa.contractType||"", issueDate:poa.issueDate||"",
+    startDate:poa.startDate, expiryDate:poa.expiryDate,
+    terminateDate:poa.terminateDate||"", remarks:poa.remarks||"", status:poa.status,
+    first:{nameAr:r.nameAr,nameEn:r.nameEn,email:r.email,
+           phone:r.mobile||r.landLine||"",idNumber:r.idNumber||r.tradeLicenseNumber||""},
+    second:partyOf(poa.secondParty),
+    groups:poa.groups||[], plots:poa.plots||[], units:poa.units||[],
+    allProperties:!!poa.allProperties
+  };
+}
+function partyGrid(pty){
+  return grid([t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("idNumber")],[pty],
+    function(x){
+      return "<td>"+esc(dash(x.nameAr)||"\u2014")+"</td><td>"+esc(x.nameEn)
+        +'</td><td dir="ltr">'+esc(dash(x.email)||"\u2014")+'</td><td dir="ltr">'+esc(dash(x.phone)||"\u2014")
+        +'</td><td dir="ltr">'+esc(dash(x.idNumber)||"\u2014")+"</td>"; });
+}
+function viewContract(){
+  var r=rec(); if(!r) return "";
+  var poa=contractsOf(r)[S.route.n];
+  if(!poa) return '<div class="unv">'+esc(t("noRecords"))+"</div>";
+  var k=contractOf(r,poa);
+
+  var badge='<span class="statusbadge '+sxClass(k.status)+'">'+esc(st(k.status))+"</span>";
+  var out=grpA(t("basicInformation"),badge)
+    +fieldGrid([
+        [t("poaNo"),k.no,true],[t("contractType"),k.type],
+        [t("issueDate"),k.issueDate],[t("contractStart"),k.startDate],
+        [t("expiryDate"),k.expiryDate],[t("terminateDate"),k.terminateDate],
+        [t("remarks"),k.remarks]])
+    +grpT(t("firstParty"))+partyGrid(k.first)
+    +grpT(t("secondParty"))+partyGrid(k.second)
+    +grp(t("workflowGroups"))
+    +(k.groups.length
+        ? k.groups.map(function(gp){
+            return grpT(gp.name)
+              +grid(["#",t("workflowNames")],gp.workflows,function(nm,i){
+                  return "<td>"+(i+1)+"</td><td>"+esc(nm)+"</td>"; });
+          }).join("")
+        : grid(["#",t("workflowNames")],[],function(){ return ""; }))
+    +grp(t("properties"))
+    +'<div class="note blue"><span class="ic">'+(k.allProperties?"&#10003;":"i")+"</span><span>"
+      +esc(t("allProperties"))+": "+esc(k.allProperties?t(["Yes","\u0646\u0639\u0645"]):t(["No","\u0644\u0627"]))+"</span></div>"
+    +grpT(t("plots"))
+    +grid([t("plotNo"),t("municipality"),t("area"),t("usage")],k.plots,function(x){
+        return '<td dir="ltr">'+esc(x.plotNumber)+"</td><td>"+esc(x.municipality)+"</td><td>"
+          +esc(x.area)+"</td><td>"+esc(x.usage)+"</td>"; })
+    +grpT(t("units"))
+    +grid([t("unitNo"),t("municipality"),t("area"),t("usage")],k.units,function(x){
+        return '<td dir="ltr">'+esc(x.unitNumber)+"</td><td>"+esc(x.municipality)+"</td><td>"
+          +esc(x.area)+"</td><td>"+esc(x.usage)+"</td>"; });
+
+  return '<section class="tabcard"><div class="tabbody">'+out+"</div></section>";
+}
+function sxClass(v){
+  var g=["Active","Approved","Valid","Completed"],a=["Expired","Pending"],r=["Terminated","Cancelled","Rejected"];
+  return g.indexOf(v)>-1?"g":a.indexOf(v)>-1?"a":r.indexOf(v)>-1?"r":"n";
 }
 
 function viewPerson(){
@@ -1808,7 +1964,7 @@ function viewCompany(){
             +'" data-nm="'+esc(u.nameEn)+'">'+esc(t("del"))+"</button></td>"; })
           +pager(up.page,up.total,"usrPage"); }},
       {key:"sig",    title:t("authorizedSignatory"), body:function(){
-        return poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen"); }},
+        return poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen",contractsOf(c)); }},
       {key:"docs",   title:t("documents"), body:function(){ return bodyDocuments(c); }}
     ]);
 }
@@ -2027,12 +2183,13 @@ function renderModal(){
         row.owners,function(y){
         return "<td>"+esc(y.ownerName)+"</td><td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)
           +"</td><td>"+esc(y.approvedDate)+"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; });
-    footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>";
+    footer="";   /* read-only: dismissed with the header ✕ (or Esc / scrim) */
   }
 
   root.innerHTML='<div class="scrim" data-a="scrim"><div class="modal'+wide+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
     +"<header><h3>"+esc(title)+'</h3><button class="x" data-a="mclose">&#10005;</button></header>'
-    +'<div class="mb">'+body+"</div><footer>"+footer+"</footer></div></div>";
+    +'<div class="mb">'+body+"</div>"
+    +(footer?"<footer>"+footer+"</footer>":"")+"</div></div>";
 }
 
 /* Edit gear modal — Gov: only Land Line + Email enabled (REQ 6, evidenced Gov image9) */
@@ -2119,6 +2276,11 @@ function renderBody(){
   if(r.name==="cpu"){
     crumb=[t("services"),t("custProfileUpdate"),t("backOfficeConfirm")];
     h1=t("custProfileUpdate");
+  } else if(r.name==="contract"){
+    crumb=[t("customers"), S.cat==="persons"?t("crumbPerson")
+                         : S.cat==="companies"?t("crumbCompany") : t("crumbGov"),
+           t("contractDetails")];
+    h1=t("contractDetails");
   } else if(r.name==="exc"){
     crumb=[t("customers"),t("customerException")];  h1=t("customerException");
   } else if(r.name==="detail"){
@@ -2144,6 +2306,7 @@ function renderBody(){
   switch(r.name){
     case "detail":
       content = S.cat==="persons"?viewPerson() : S.cat==="companies"?viewCompany() : viewGov(); break;
+    case "contract": content=viewContract(); break;
     case "cpu": content=viewCpu(); break;
     case "exc": content=viewException(); break;
     default: content=viewList();
@@ -2284,7 +2447,7 @@ document.addEventListener("click",function(ev){
 
     case "poaSearch": case "sigSearch": renderBody(); return;
     case "poaReset": S.poa={no:"",start:"",end:"",status:""}; S.poaPage=1; S.sigPage=1; renderBody(); return;
-    case "poaOpen": toast((ar()?"الوكالة ":"POA ")+id); return;
+    case "poaOpen": S.route={name:"contract", id:S.route.id, n:+el.getAttribute("data-n")}; render(); return;
     case "appPage": S.appPage=+el.getAttribute("data-n"); renderBody(); return;
     case "tab": S.tab=id; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
       renderBody(); return;
