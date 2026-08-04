@@ -383,7 +383,6 @@ display:flex;gap:18px;align-items:flex-start;background:var(--surface);}
 /* ══ notices ══ */
 .note{display:flex;gap:11px;padding:13px 15px;font-size:13px;border:1px solid;
 border-radius:var(--r-sm);margin-bottom:16px;}
-.note.blue{background:#EDF3FC;border-color:#CFE0F7;color:#174F9E;}
 .note.amber{background:var(--amber-soft);border-color:#EFDCB6;color:var(--amber-tx);}
 .note .ic{font-weight:700;}
 .unv{background:var(--page);border:1px dashed #D2D2CB;border-radius:var(--r-sm);
@@ -522,13 +521,11 @@ var D = {
   properties:["Properties","\u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062A"],
   plots:["Plots","\u0627\u0644\u0642\u0637\u0639"],
   units:["Units (Investment Areas)","\u0627\u0644\u0648\u062D\u062F\u0627\u062A (\u0645\u0646\u0627\u0637\u0642 \u0627\u0633\u062A\u062B\u0645\u0627\u0631\u064A\u0629)"],
-  allProperties:["All Properties","\u062C\u0645\u064A\u0639 \u0627\u0644\u0639\u0642\u0627\u0631\u0627\u062A"],
   workflowNames:["Workflow names","\u0623\u0633\u0645\u0627\u0621 \u0645\u0633\u0627\u0631\u0627\u062A \u0627\u0644\u0639\u0645\u0644"],
 
   plotNo:["Plot Number","\u0631\u0642\u0645 \u0627\u0644\u0642\u0637\u0639\u0629"],
-  unitNo:["Unit Number","\u0631\u0642\u0645 \u0627\u0644\u0648\u062D\u062F\u0629"],
-  area:["Area","\u0627\u0644\u0645\u0646\u0637\u0642\u0629"],
-  usage:["Usage","\u0627\u0644\u0627\u0633\u062A\u062E\u062F\u0627\u0645"],
+  acquisitionType:["Acquisition Type","\u0646\u0648\u0639 \u0627\u0644\u062A\u0645\u0644\u0643"],
+  unitName:["Unit Name/Number","\u0627\u0633\u0645/\u0631\u0642\u0645 \u0627\u0644\u0648\u062D\u062F\u0629"],
   all:["All","\u0627\u0644\u0643\u0644"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
@@ -1120,9 +1117,19 @@ PERSONS = [
            "Register Tenancy Contract Municipal Assets",
            "Renew a Lease Contract of Municipal Assets",
            "Request Clearance For MunicipaltyAssets"]}],
-       plots:[{plotNumber:"37a",municipality:"Abu Dhabi City",area:"Al Bateen",usage:"Residential Land"},
-              {plotNumber:"415",municipality:"Al Ain City",area:"Al Jimi",usage:"Commercial Land"}],
-       units:[{unitNumber:"W12-0412",municipality:"Abu Dhabi City",area:"Al Bateen",usage:"Residential"}]},
+       plots:[
+         {municipality:"Abu Dhabi City",district:"Al Nahyan",community:"E22_01",road:"–",plotNumber:"C19",landUse:"Commercial Land - Commercial Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]},
+         {municipality:"Abu Dhabi City",district:"Al Bahyah",community:"Al Bahyah New",road:"–",plotNumber:"7B",landUse:"Public House - Public House",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Grant(100%)"}]},
+         {municipality:"Abu Dhabi City",district:"Al Bahyah",community:"Al Shahamah New",road:"–",plotNumber:"100",landUse:"Residential Land - Residential Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(50%)"},{ownerName:"RASHED MOHAMMED ALTUNAIJI",acquisitionType:"Buy and Sell(50%)"}]},
+         {municipality:"Abu Dhabi City",district:"Al Bahyah",community:"Al Bahyah Farms",road:"–",plotNumber:"FRM62",landUse:"Agricultural Land - Agricultural Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Inheritance(100%)"}]},
+         {municipality:"Abu Dhabi City",district:"Al Bihouth",community:"Al Dhafrah",road:"–",plotNumber:"GSM6038",landUse:"Transmission Boosting Station - Transmission Boosting Station",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]},
+         {municipality:"Abu Dhabi City",district:"Al Bateen",community:"W12",road:"–",plotNumber:"37A",landUse:"Residential Land - Residential Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]}],
+       units:[
+         {unitNumber:"103",propertyNumber:"4",municipality:"Abu Dhabi City",district:"Al Bateen",community:"W17_03",road:"–",plotNumber:"C1",landUse:"Commercial - investmentLand",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]},
+         {unitNumber:"413",propertyNumber:"3",municipality:"Abu Dhabi City",district:"Al Bateen",community:"W35",road:"–",plotNumber:"C7_C102",landUse:"Commercial - Commercial Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]},
+         {unitNumber:"911",propertyNumber:"1",municipality:"Abu Dhabi City",district:"Al Rahah",community:"RBW2",road:"–",plotNumber:"48",landUse:"Commercial - Residential Commercial",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Grant(100%)"}]},
+         {unitNumber:"208",propertyNumber:"2",municipality:"Abu Dhabi City",district:"Al Rawdah",community:"W59_01",road:"–",plotNumber:"C2",landUse:"Commercial - hotel",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(70%)"},{ownerName:"RASHED MOHAMMED ALTUNAIJI",acquisitionType:"Buy and Sell(30%)"}]},
+         {unitNumber:"101",propertyNumber:"Villa2",municipality:"Abu Dhabi City",district:"Al Reem Island",community:"RS3",road:"–",plotNumber:"C24_C25",landUse:"Commercial - Residential",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]}]},
       {no:"202600009117",startDate:"12-02-2026",expiryDate:"11-02-2026",
        secondParty:"Sultan Ahmed Almarzooqi",status:"Expired",
        contractType:"Sale power of attorny",issueDate:"10-02-2026",
@@ -1130,7 +1137,8 @@ PERSONS = [
        groups:[{name:"Tawtheeq - Propert Management Agreements",workflows:[
            "Property Management Agreement Issuance",
            "Property Management Agreement Renewal"]}],
-       plots:[{plotNumber:"22",municipality:"Abu Dhabi City",area:"Khalifa City",usage:"Residential Land"}],
+       plots:[
+         {municipality:"Abu Dhabi City",district:"Khalifa City",community:"SW2",road:"–",plotNumber:"22",landUse:"Residential Land - Residential Land",owners:[{ownerName:"TARIQ KHALID ALMANSOORI",acquisitionType:"Buy and Sell(100%)"}]}],
        units:[]}],
     completedApplications:[
       {no:"202600016882",startUserName:"Tariq Khalid Almansoori",status:"Approved",createdDate:"21-07-2026 10:14"},
@@ -1864,6 +1872,15 @@ function contractOf(r,poa){
     allProperties:!!poa.allProperties
   };
 }
+/* both property tables open an owner popup, so the arrow and the row action
+   share one definition */
+function propArrow(kind,i){
+  return '<td><button class="iconsq" data-a="propOpen" data-kind="'+kind+'" data-n="'+i+'" title="'
+    +esc(t("ownerName"))+'" aria-label="'+esc(t("ownerName"))+'">'+icon("arrowRight",17,"dir")+"</button></td>";
+}
+function propRow(kind){
+  return function(x,i){ return ' class="rowlink" data-a="propOpen" data-kind="'+kind+'" data-n="'+i+'"'; };
+}
 function partyGrid(pty){
   return grid([t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("idNumber")],[pty],
     function(x){
@@ -1895,16 +1912,22 @@ function viewContract(){
           }).join("")
         : grid(["#",t("workflowNames")],[],function(){ return ""; }))
     +grp(t("properties"))
-    +'<div class="note blue"><span class="ic">'+(k.allProperties?"&#10003;":"i")+"</span><span>"
-      +esc(t("allProperties"))+": "+esc(k.allProperties?t(["Yes","\u0646\u0639\u0645"]):t(["No","\u0644\u0627"]))+"</span></div>"
     +grpT(t("plots"))
-    +grid([t("plotNo"),t("municipality"),t("area"),t("usage")],k.plots,function(x){
-        return '<td dir="ltr">'+esc(x.plotNumber)+"</td><td>"+esc(x.municipality)+"</td><td>"
-          +esc(x.area)+"</td><td>"+esc(x.usage)+"</td>"; })
+    +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNo"),t("landUse"),""],
+      k.plots,function(x,i){
+        return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)
+          +"</td><td>"+esc(x.community)+"</td><td>"+esc(x.road)+'</td><td dir="ltr">'
+          +esc(x.plotNumber)+"</td><td>"+esc(x.landUse)+"</td>"+propArrow("plots",i); },
+      null, propRow("plots"))
     +grpT(t("units"))
-    +grid([t("unitNo"),t("municipality"),t("area"),t("usage")],k.units,function(x){
-        return '<td dir="ltr">'+esc(x.unitNumber)+"</td><td>"+esc(x.municipality)+"</td><td>"
-          +esc(x.area)+"</td><td>"+esc(x.usage)+"</td>"; });
+    +grid([t("unitName"),t("propertyNumber"),t("municipality"),t("district"),
+           t("community"),t("road"),t("plotNo"),t("landUse"),""],
+      k.units,function(x,i){
+        return '<td dir="ltr">'+esc(x.unitNumber)+"</td><td>"+esc(x.propertyNumber)
+          +"</td><td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
+          +"</td><td>"+esc(x.road)+'</td><td dir="ltr">'+esc(x.plotNumber)+"</td><td>"
+          +esc(x.landUse)+"</td>"+propArrow("units",i); },
+      null, propRow("units"));
 
   return '<section class="tabcard"><div class="tabbody">'+out+"</div></section>";
 }
@@ -2164,6 +2187,21 @@ function renderModal(){
     title=t("addDocument"); body=docModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
       +'<button class="btn btn-green" data-a="docSave">'+esc(t("addDocument"))+"</button>";
+  } else if(m.kind==="prop"){
+    /* owners of a single plot or unit — read-only, so no footer */
+    var pr2=rec(), poa2=pr2&&contractsOf(pr2)[S.route.n];
+    var row2=poa2&&(poa2[m.propKind]||[])[m.i];
+    if(!row2){ root.innerHTML=""; return; }
+    wide=" wide";
+    title=t(m.propKind==="plots"?"plots":"units");
+    var ident = m.propKind==="plots"
+      ? [row2.municipality,row2.district,row2.community,t("plotNo")+" "+row2.plotNumber,row2.landUse]
+      : [t("unitName")+" "+row2.unitNumber,t("propertyNumber")+" "+row2.propertyNumber,
+         row2.municipality,row2.district,t("plotNo")+" "+row2.plotNumber,row2.landUse];
+    body='<div class="plotctx">'+esc(ident.join(" / "))+"</div>"
+      +grid([t("ownerName"),t("acquisitionType")],row2.owners||[],function(o){
+          return "<td>"+esc(o.ownerName)+"</td><td>"+esc(o.acquisitionType)+"</td>"; });
+    footer="";
   } else if(m.kind==="plot"){
     /* the blocked-plot drill-down: two grids, so it needs the wide shell */
     var pr=rec(), row=pr&&pr.blocks.blockedPlots[m.i];
@@ -2441,6 +2479,8 @@ document.addEventListener("click",function(ev){
       S.modal=null; toast(ar()?"تم الحفظ":"Saved"); render(); return;
 
     case "plot": S.modal={kind:"plot", i:+el.getAttribute("data-n")}; renderModal(); return;
+    case "propOpen": S.modal={kind:"prop", propKind:el.getAttribute("data-kind"),
+      i:+el.getAttribute("data-n")}; renderModal(); return;
 
     case "moi": toast(ar()?"تم التحديث من وزارة الداخلية":"Profile updated from MOI"); return;
     case "ded": toast(ar()?"تم التحديث من الاقتصادية":"Profile updated from DED"); return;
