@@ -39,6 +39,7 @@
   --thead:#F3F2EA; --hover:#EFF1F3;
   --zebra:#F7F8F9; --row-line:#E5E7EB;
   --search-btn:#B8CEB1; --search-btn-dk:#A6C09D;
+  --upload:#8C2B3F;
   --pager-bg:#E9EAF0; --pager-hover:#DCDFE8; --pager-active:#A8C69B;
   --ink:#130F26; --ink-2:#3C3C3C; --muted:#6E7278; --grey:#9AA0A6;
   --r:10px; --r-sm:8px; --r-xs:6px;
@@ -169,8 +170,6 @@ border-bottom:1px solid var(--line-2);}
 .card .body.flush{padding:0;}
 .minus{background:none;border:0;color:var(--muted);font-size:17px;line-height:1;padding:0 4px;}
 .minus:hover{color:var(--ink);}
-.cols{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:20px;align-items:start;}
-@media(max-width:1160px){.cols{grid-template-columns:1fr;}}
 
 /* ══ forms ══ */
 .frow{margin-bottom:14px;}
@@ -332,6 +331,20 @@ display:inline-flex;align-items:center;gap:8px;}
 .btn-add:hover{background:var(--olive-dk);border-color:var(--olive-dk);}
 .btn-add .plus{font-size:17px;line-height:1;}
 
+/* upload rows: one per document type — icon tile, name, upload action */
+.uprow{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);
+margin-bottom:12px;}
+.uprow>.hd{display:flex;align-items:center;gap:14px;padding:13px 16px;}
+.uprow .fi{width:36px;height:36px;flex:0 0 36px;border-radius:7px;background:var(--olive-soft);
+display:grid;place-items:center;color:var(--ink);}
+.uprow .nm{flex:1;min-width:0;font-size:14px;color:var(--ink);}
+.uprow>.up{border-top:1px solid var(--line-2);padding:4px 16px 12px;}
+.btn-upload{background:var(--surface);border:1px solid var(--upload);color:var(--upload);
+padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;
+display:inline-flex;align-items:center;gap:7px;}
+.btn-upload:hover{background:#FBF2F4;}
+.svgi.up svg{transform:rotate(-90deg);}
+
 /* document cards: icon tile, file name, download action */
 .docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
 .doccard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);
@@ -448,16 +461,10 @@ overflow:hidden;background:var(--surface);}
 .dsec .b{padding:16px 18px;}
 
 /* ══ sidebar cards (application update panel) ══ */
-.sbcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;}
-.sbcard>header{display:flex;align-items:center;padding:15px 18px;border-bottom:1px solid var(--line-2);}
-.sbcard>header h3{margin:0;font-size:15px;font-weight:700;flex:1;}
-.sbcard .b{padding:16px 18px;}
-.sbrow{display:flex;gap:12px;padding:7px 0;font-size:13.5px;}
-.sbrow dt{flex:0 0 46%;text-align:end;font-weight:600;color:var(--ink);}
-.sbrow dd{margin:0;flex:1;color:var(--muted);}
-body[dir=rtl] .sbrow dt{text-align:start;}
-.applicant{display:flex;gap:14px;align-items:center;}
+.applicant{display:flex;gap:16px;align-items:center;}
+.applicant .mi .ln{display:flex;align-items:center;gap:8px;}
+.applicant .mi .ln .svgi{color:var(--muted);}
+.cpuform{max-width:720px;}
 .applicant .av{width:56px;height:56px;border-radius:50%;background:var(--olive-soft);
 display:grid;place-items:center;font-size:24px;flex:0 0 56px;}
 .applicant .mi{font-size:13px;color:var(--muted);line-height:1.7;}
@@ -535,6 +542,8 @@ var D = {
   plotNo:["Plot Number","\u0631\u0642\u0645 \u0627\u0644\u0642\u0637\u0639\u0629"],
   acquisitionType:["Acquisition Type","\u0646\u0648\u0639 \u0627\u0644\u062A\u0645\u0644\u0643"],
   unitName:["Unit Name/Number","\u0627\u0633\u0645/\u0631\u0642\u0645 \u0627\u0644\u0648\u062D\u062F\u0629"],
+  uploadDocuments:["Upload Documents","\u062A\u062D\u0645\u064A\u0644 \u0627\u0644\u0645\u0633\u062A\u0646\u062F\u0627\u062A"],
+  upload:["Upload","\u062A\u062D\u0645\u064A\u0644"],
   all:["All","\u0627\u0644\u0643\u0644"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
@@ -1881,6 +1890,25 @@ function docCards(list,src){
       +"</div>";
   }).join("")+"</div>";
 }
+/* open a document in a new tab; a blob URL is navigable top-level where a
+   data: URL is not, with document.write as the fallback */
+function openDocTab(doc,ownerName){
+  var html=docPageHtml(doc,ownerName), win=null;
+  try{
+    var burl=URL.createObjectURL(new Blob([html],{type:"text/html"}));
+    win=window.open(burl,"_blank");
+    setTimeout(function(){ try{ URL.revokeObjectURL(burl); }catch(e){} },30000);
+  }catch(e){ win=null; }
+  if(!win){
+    try{
+      win=window.open("","_blank");
+      if(win&&win.document){ win.document.write(html); win.document.close(); }
+    }catch(e2){ win=null; }
+  }
+  if(!win) toast(ar()
+    ? "\u064A\u064F\u0641\u062A\u062D \u0627\u0644\u0645\u0633\u062A\u0646\u062F \u0641\u064A \u062A\u0628\u0648\u064A\u0628 \u062C\u062F\u064A\u062F \u2014 \u062A\u0645 \u062D\u062C\u0628\u0647 \u0645\u0646 \u0627\u0644\u0645\u062A\u0635\u0641\u062D"
+    : "The document opens in a new tab — your browser blocked it.");
+}
 function docPageHtml(doc,ownerName){
   var rows=[[t("documentType"),doc.type],["File",docFileName(doc)],
             [t("issueDate"),doc.issueDate||"\u2014"],
@@ -2085,29 +2113,33 @@ function viewCpu(){
 
   var secs=cpuSections().map(function(name){
     var list=C.docs[name]||[];
-    var body = list.length
-      ? '<div class="tw"><table class="g"><thead><tr><th></th><th>'+esc(t("referenceNumber"))
-        +"</th><th>"+esc(t("issueDate"))+"</th><th>"+esc(t("expiryDate"))+"</th><th></th></tr></thead><tbody>"
-        +list.map(function(d,i){
-            var police = name===POLICE_SECTION;
-            return '<tr><td><button class="iconbtn" title="upload">&#11123;</button> '
-              +'<button class="iconbtn" title="preview">&#128065;</button></td>'
-              +'<td>'+esc(d.ref||"")+"</td><td>"+esc(d.issueDate)+"</td><td>"+esc(d.expiryDate)
-              +(police?' <span class="newtag">1 '+esc(ar()?"شهر":"month")+"</span>":"")
-              +'</td><td><button class="btn btn-red sm" data-a="confirm" data-do="delCpuDoc" '
-              +'data-sec="'+esc(name)+'" data-n="'+i+'">&#128465;</button></td></tr>';
+    var police=name===POLICE_SECTION;
+    var uploaded = list.length
+      ? '<div class="up"><div class="tw"><table class="g"><thead><tr>'
+        +"<th>"+esc(t("referenceNumber"))+"</th><th>"+esc(t("issueDate"))+"</th><th>"
+        +esc(t("expiryDate"))+"</th><th></th></tr></thead><tbody>"
+        +list.map(function(dc,i){
+            return "<tr><td>"+esc(dc.ref||"\u2014")+"</td><td>"+esc(dc.issueDate)+"</td><td>"
+              +esc(dc.expiryDate)
+              +(police?' <span class="newtag">1 '+esc(ar()?"\u0634\u0647\u0631":"month")+"</span>":"")
+              +'</td><td class="num">'
+              +'<button class="iconsq" data-a="viewCpuDoc" data-sec="'+esc(name)+'" data-n="'+i+'" title="'
+                +esc(t("view"))+'">'+icon("view",16)+"</button> "
+              +'<button class="btn btn-red sm" data-a="confirm" data-do="delCpuDoc" data-sec="'
+                +esc(name)+'" data-n="'+i+'">'+esc(t("del"))+"</button></td></tr>";
           }).join("")
-        +"</tbody></table></div>"
+        +"</tbody></table></div></div>"
       : "";
-    return '<div class="dsec"><header><h4>'+esc(name)+"</h4></header>"
-      +'<div class="b">'+body
-      +'<div class="row-end right" style="margin-top:'+(list.length?"10px":"0")+'">'
-      +'<button class="btn btn-green sm" data-a="cpuAddDoc" data-sec="'+esc(name)+'">+ '+esc(t("addDocument"))+"</button>"
-      +"</div></div></div>";
+    return '<div class="uprow"><div class="hd">'
+      +'<span class="fi">'+icon("docfile",19)+"</span>"
+      +'<span class="nm">'+esc(name)+"</span>"
+      +'<button class="btn-upload" data-a="cpuAddDoc" data-sec="'+esc(name)+'">'
+        +icon("arrowRight",15,"up")+esc(t("upload"))+"</button>"
+      +"</div>"+uploaded+"</div>";
   }).join("");
 
   var e=C.errs;
-  var info='<div class="dsec"><header><h4>'+esc(t("customerInformation"))+"</h4></header><div class=\"b\">"
+  var info='<div class="cpuform">'
     +'<div class="frow"><label>'+esc(t("name"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(C.name)+'" disabled></div></div>'
     +'<div class="frow"><label>'+esc(t("email"))+'<span class="req">*</span></label><div class="ctl">'
@@ -2135,29 +2167,34 @@ function viewCpu(){
       +'<textarea rows="3" data-b="cpu.reasonForExemption" placeholder="'+esc(t("phReason"))+'"'+(e.reason?' aria-invalid="true"':"")+">"
       +esc(C.reasonForExemption)+"</textarea>"
       +(e.reason?'<div class="err">'+esc(e.reason)+"</div>":"")+"</div></div>"
-    +"</div></div>";
+    +"</div>";
 
-  var side='<div class="sbcard"><header><h3>&#9776; '+esc(t("applicationDetails"))
-    +'</h3><button class="minus">&minus;</button></header><div class="b">'
-    +'<div class="sbrow"><dt>'+esc(t("service"))+"</dt><dd>"+esc(t("custProfileUpdate"))+"</dd></div>"
-    +'<div class="sbrow"><dt>'+esc(t("applicationNumber"))+'</dt><dd dir="ltr">'+esc(C.appNo)+"</dd></div>"
-    +'<div class="sbrow"><dt>'+esc(t("applicationStartDate"))+'</dt><dd dir="ltr">'+esc(C.startDate)+"</dd></div>"
-    +'<div class="sbrow"><dt>'+esc(t("onBehalfOf"))+"</dt><dd>Abu Dhabi City Municipality</dd></div>"
-    +"</div></div>"
-    +'<div class="sbcard"><header><h3>&#128100; '+esc(t("applicantDetails"))
-    +'</h3><button class="minus">&minus;</button></header><div class="b">'
-    +'<div class="applicant"><div class="av">&#128100;</div><div class="mi">'
-    +"<b>ADM Back Office Full Admin</b>"
-    +'&#128233; Admin@this.me<br>&#128222; 11111111111122<br>&#127970; GOV-999</div></div>'
-    +"</div></div>";
+  var appDetails=fieldGrid([
+      [t("service"), t("custProfileUpdate")],
+      [t("applicationNumber"), C.appNo, true],
+      [t("applicationStartDate"), C.startDate, true],
+      [t("onBehalfOf"), "Abu Dhabi City Municipality"]]);
 
+  var applicant='<div class="applicant"><div class="av">'+icon("profile",26)+"</div>"
+    +'<div class="mi"><b>ADM Back Office Full Admin</b>'
+    +'<span class="ln">'+icon("bell",15)+' Admin@this.me</span>'
+    +'<span class="ln">'+icon("profile",15)+' 11111111111122</span>'
+    +'<span class="ln">'+icon("docfile",15)+" GOV-999</span></div></div>";
+
+  /* one vertical flow: application -> applicant -> documents -> customer info */
   return (S.cat!=="companies" ? unv("unvDocs") : "")
     +'<div class="row-end right" style="margin-bottom:12px">'
-    +'<button class="btn btn-red" data-a="confirm" data-do="delApp">&#128465; '+esc(t("del"))+"</button></div>"
-    +'<div class="cols"><div>'+secs+info
-    +'<div class="row-end right" style="margin-top:14px">'
-    +'<button class="btn btn-amber" data-a="cpuSubmit">'+esc(t("submit"))+"</button></div>"
-    +"</div><div>"+side+"</div></div>";
+    +'<button class="btn btn-red" data-a="confirm" data-do="delApp">'+esc(t("del"))+"</button></div>"
+    +'<section class="tabcard"><div class="tabbody">'
+      +grp(t("applicationDetails"))+appDetails
+      +grp(t("applicantDetails"))+applicant
+      +grp(t("uploadDocuments"))+secs
+      +grp(t("customerInformation"))+info
+      +'<div class="row-end right" style="margin-top:24px">'
+      +'<button class="btn-search" style="width:auto;min-width:220px" data-a="cpuSubmit">'
+      +esc(t("submit"))+"</button></div>"
+    +"</div></section>";
+
 }
 
 /* ═══════════════════ Customer Exception ═══════════════════ */
@@ -2449,7 +2486,7 @@ function renderMenu(){
   var html;
   if(isExc){
     html='<button role="menuitem" data-a="confirm" data-do="delExc" data-id="'+esc(id)+'">'
-      +"&#128465; "+esc(t("del").charAt(0)+t("del").slice(1).toLowerCase())+"</button>";
+      +icon("exception",17)+esc(t("del").charAt(0)+t("del").slice(1).toLowerCase())+"</button>";
   } else {
     /* Persons: View Details + Edit only.
        Companies / Government Entities keep [CustomerException]. */
@@ -2555,26 +2592,19 @@ document.addEventListener("click",function(ev){
     case "actPage": S.actPage=+el.getAttribute("data-n"); renderBody(); return;
     case "usrPage": S.usrPage=+el.getAttribute("data-n"); renderBody(); return;
 
+    case "viewCpuDoc": {
+      var cs=el.getAttribute("data-sec"), ci=+el.getAttribute("data-n");
+      var cd=S.cpu&&S.cpu.docs[cs]&&S.cpu.docs[cs][ci];
+      if(!cd) return;
+      var cdoc={type:cs, issueDate:cd.issueDate, expiryDate:cd.expiryDate, file:cd.ref};
+      openDocTab(cdoc, S.cpu.name||"");
+      return;
+    }
     case "viewDoc": {
       var dr=rec(), dsrc=el.getAttribute("data-src")||"approvedDocs";
       var doc=dr&&(dr[dsrc]||[])[+el.getAttribute("data-n")];
       if(!doc) return;
-      var html=docPageHtml(doc, dr.nameEn||dr.nameAr||"");
-      var win=null;
-      try{
-        /* a blob URL is navigable top-level, unlike a data: URL */
-        var burl=URL.createObjectURL(new Blob([html],{type:"text/html"}));
-        win=window.open(burl,"_blank");
-        setTimeout(function(){ try{ URL.revokeObjectURL(burl); }catch(e){} }, 30000);
-      }catch(e){ win=null; }
-      if(!win){                     /* no blob support -> write into the new tab */
-        try{
-          win=window.open("","_blank");
-          if(win&&win.document){ win.document.write(html); win.document.close(); }
-        }catch(e2){ win=null; }
-      }
-      if(!win) toast(ar()?"\u064A\u064F\u0641\u062A\u062D \u0627\u0644\u0645\u0633\u062A\u0646\u062F \u0641\u064A \u062A\u0628\u0648\u064A\u0628 \u062C\u062F\u064A\u062F \u2014 \u062A\u0645 \u062D\u062C\u0628\u0647 \u0645\u0646 \u0627\u0644\u0645\u062A\u0635\u0641\u062D"
-                          : "The document opens in a new tab — your browser blocked it.");
+      openDocTab(doc, dr.nameEn||dr.nameAr||"");
       return;
     }
     case "openApp": toast((ar()?"الطلب ":"Application ")+id); return;
