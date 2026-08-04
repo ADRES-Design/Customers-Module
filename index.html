@@ -151,6 +151,7 @@ display:inline-flex;align-items:center;gap:9px;}
 border:1px solid var(--line);border-radius:6px;font-size:15px;color:var(--ink);font-weight:400;}
 .btn-clear:hover{background:var(--page);}
 .factions .btn-search{width:auto;min-width:232px;min-height:52px;border-radius:6px;font-size:15px;}
+.tabbody .factions{margin:24px 0 22px;}
 
 /* pagination sits under the table, windowed with an ellipsis */
 /* page size sits under the table, opposite the pagination */
@@ -233,7 +234,7 @@ justify-content:center;gap:9px;font-size:14px;font-weight:600;letter-spacing:.03
 .btn-red-solid{background:var(--red);border-color:var(--red);color:#fff;}
 .btn-red-solid:hover{background:#D13A3F;}
 .btn-grey{background:var(--surface);border-color:var(--line);color:var(--muted);}
-.btn.sm{padding:6px 12px;font-size:13px;}
+.btn.sm{padding:6px 12px;font-size:13px;display:inline-flex;align-items:center;gap:6px;}
 .row-end{display:flex;gap:10px;flex-wrap:wrap;}
 .row-end.right{justify-content:flex-end;}
 
@@ -287,8 +288,11 @@ tr.rowlink{cursor:pointer;}
 table.g tbody tr:last-child td{border-bottom:0;}
 
 .num{text-align:end;}
-.empty{padding:34px 18px;text-align:center;color:var(--muted);font-size:14px;}
-.empty .gl{display:block;font-size:30px;color:#C8CBCE;margin-bottom:10px;}
+/* stacked and centred: the badge is an inline-flex .svgi, so without a column
+   flow it would sit on the same line as the message */
+.empty{padding:52px 18px;text-align:center;color:var(--muted);font-size:15px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.empty .gl{margin:0;flex:0 0 auto;}
 .lnk{background:none;border:0;padding:0;color:var(--blue);font-weight:600;font-size:14px;}
 .lnk:hover{text-decoration:underline;}
 
@@ -355,10 +359,6 @@ word-break:break-word;line-height:1.45;}
 
 /* ══ field rows ══ */
 
-.drill{border:1px solid #E2DCBE;background:var(--olive-soft);border-radius:var(--r-sm);
-padding:16px 18px;margin:14px 0 6px;}
-.drill-h{font-size:12.5px;color:var(--olive-dk);font-weight:600;margin-bottom:12px;}
-.drill .grp{margin-top:18px;border-bottom-color:#E2DCBE;}
 
 /* ══ ESB cards ══ */
 .esb{border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:10px;
@@ -391,6 +391,11 @@ body[dir=rtl] .listcard .li .ch{transform:scaleX(-1);}
 /* ══ modals ══ */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.42);display:grid;place-items:center;
 padding:24px;z-index:100;overflow:auto;}
+.modal.wide{width:min(1060px,100%);}
+.plotctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);}
+.modal.wide{width:min(1060px,100%);}
+.plotctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);
+margin-bottom:4px;}
 .modal{background:var(--surface);border-radius:14px;width:min(700px,100%);
 max-height:90vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.24);}
 .modal>header{padding:20px 24px;border-bottom:1px solid var(--line-2);display:flex;align-items:center;}
@@ -464,6 +469,7 @@ border-inline-start:3px solid var(--olive);}
 
 /* ── Brand assets: inlined from the uploaded SVGs ── */
 var ICONS = {
+"empty": "<svg viewBox=\"0 0 45 45\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"45\" height=\"45\" rx=\"22.5\" fill=\"#EBEEF3\"/> <path d=\"M19 27.75H26V26H19V27.75ZM19 24.25H26V22.5H19V24.25ZM17.25 31.25C16.7687 31.25 16.3568 31.0786 16.0141 30.7359C15.6714 30.3932 15.5 29.9812 15.5 29.5V15.5C15.5 15.0187 15.6714 14.6068 16.0141 14.2641C16.3568 13.9214 16.7687 13.75 17.25 13.75H24.25L29.5 19V29.5C29.5 29.9812 29.3286 30.3932 28.9859 30.7359C28.6432 31.0786 28.2312 31.25 27.75 31.25H17.25ZM23.375 19.875V15.5H17.25V29.5H27.75V19.875H23.375Z\" fill=\"#484456\"/> </svg>",
 "exception": "<svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M2.725 21C2.54167 21 2.375 20.9542 2.225 20.8625C2.075 20.7708 1.95834 20.65 1.875 20.5C1.79167 20.35 1.74584 20.1875 1.7375 20.0125C1.72917 19.8375 1.775 19.6667 1.875 19.5L11.125 3.5C11.225 3.33333 11.3542 3.20833 11.5125 3.125C11.6708 3.04167 11.8333 3 12 3C12.1667 3 12.3292 3.04167 12.4875 3.125C12.6458 3.20833 12.775 3.33333 12.875 3.5L22.125 19.5C22.225 19.6667 22.2708 19.8375 22.2625 20.0125C22.2542 20.1875 22.2083 20.35 22.125 20.5C22.0417 20.65 21.925 20.7708 21.775 20.8625C21.625 20.9542 21.4583 21 21.275 21H2.725ZM4.45 19H19.55L12 6L4.45 19ZM12.7125 17.7125C12.9042 17.5208 13 17.2833 13 17C13 16.7167 12.9042 16.4792 12.7125 16.2875C12.5208 16.0958 12.2833 16 12 16C11.7167 16 11.4792 16.0958 11.2875 16.2875C11.0958 16.4792 11 16.7167 11 17C11 17.2833 11.0958 17.5208 11.2875 17.7125C11.4792 17.9042 11.7167 18 12 18C12.2833 18 12.5208 17.9042 12.7125 17.7125ZM12.7125 14.7125C12.9042 14.5208 13 14.2833 13 14V11C13 10.7167 12.9042 10.4792 12.7125 10.2875C12.5208 10.0958 12.2833 10 12 10C11.7167 10 11.4792 10.0958 11.2875 10.2875C11.0958 10.4792 11 10.7167 11 11V14C11 14.2833 11.0958 14.5208 11.2875 14.7125C11.4792 14.9042 11.7167 15 12 15C12.2833 15 12.5208 14.9042 12.7125 14.7125Z\" fill=\"currentColor\"/>\n</svg>",
 "search": "<svg viewBox=\"42.5 13 15 15\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\"><path d=\"M49.2502 25.7485C52.563 25.7485 55.2485 23.063 55.2485 19.7502C55.2485 16.4375 52.563 13.752 49.2502 13.752C45.9375 13.752 43.252 16.4375 43.252 19.7502C43.252 23.063 45.9375 25.7485 49.2502 25.7485Z\" stroke=\"currentColor\" stroke-width=\"1.49957\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M56.7494 27.2492L53.5244 24.0242\" stroke=\"currentColor\" stroke-width=\"1.49957\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
 "view": "<svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M15.1874 14.6875C16.0624 13.8125 16.4999 12.75 16.4999 11.5C16.4999 10.25 16.0624 9.1875 15.1874 8.3125C14.3124 7.4375 13.2499 7 11.9999 7C10.7499 7 9.6874 7.4375 8.8124 8.3125C7.9374 9.1875 7.4999 10.25 7.4999 11.5C7.4999 12.75 7.9374 13.8125 8.8124 14.6875C9.6874 15.5625 10.7499 16 11.9999 16C13.2499 16 14.3124 15.5625 15.1874 14.6875ZM10.0874 13.4125C9.5624 12.8875 9.2999 12.25 9.2999 11.5C9.2999 10.75 9.5624 10.1125 10.0874 9.5875C10.6124 9.0625 11.2499 8.8 11.9999 8.8C12.7499 8.8 13.3874 9.0625 13.9124 9.5875C14.4374 10.1125 14.6999 10.75 14.6999 11.5C14.6999 12.25 14.4374 12.8875 13.9124 13.4125C13.3874 13.9375 12.7499 14.2 11.9999 14.2C11.2499 14.2 10.6124 13.9375 10.0874 13.4125ZM5.8874 17.2C4.04574 16 2.59157 14.4167 1.5249 12.45C1.44157 12.3 1.37907 12.1458 1.3374 11.9875C1.29574 11.8292 1.2749 11.6667 1.2749 11.5C1.2749 11.3333 1.29574 11.1708 1.3374 11.0125C1.37907 10.8542 1.44157 10.7 1.5249 10.55C2.59157 8.58333 4.04574 7 5.8874 5.8C7.72907 4.6 9.76657 4 11.9999 4C14.2332 4 16.2707 4.6 18.1124 5.8C19.9541 7 21.4082 8.58333 22.4749 10.55C22.5582 10.7 22.6207 10.8542 22.6624 11.0125C22.7041 11.1708 22.7249 11.3333 22.7249 11.5C22.7249 11.6667 22.7041 11.8292 22.6624 11.9875C22.6207 12.1458 22.5582 12.3 22.4749 12.45C21.4082 14.4167 19.9541 16 18.1124 17.2C16.2707 18.4 14.2332 19 11.9999 19C9.76657 19 7.72907 18.4 5.8874 17.2ZM17.1874 15.5125C18.7624 14.5208 19.9666 13.1833 20.7999 11.5C19.9666 9.81667 18.7624 8.47917 17.1874 7.4875C15.6124 6.49583 13.8832 6 11.9999 6C10.1166 6 8.3874 6.49583 6.8124 7.4875C5.2374 8.47917 4.03324 9.81667 3.1999 11.5C4.03324 13.1833 5.2374 14.5208 6.8124 15.5125C8.3874 16.5042 10.1166 17 11.9999 17C13.8832 17 15.6124 16.5042 17.1874 15.5125Z\" fill=\"currentColor\"/>\n</svg>",
@@ -493,6 +499,13 @@ var D = {
   addPerson:["Add Individual","\u0625\u0636\u0627\u0641\u0629 \u0641\u0631\u062F"],
   addCompany:["Add Company","\u0625\u0636\u0627\u0641\u0629 \u0634\u0631\u0643\u0629"],
   addGovEntity:["Add Government Entity","\u0625\u0636\u0627\u0641\u0629 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629"],
+  phPoaNo:["e.g. 202600016420","\u0645\u062B\u0627\u0644: 202600016420"],
+  phLandLine:["e.g. 97123334455","\u0645\u062B\u0627\u0644: 97123334455"],
+  phFax:["e.g. 97124445566","\u0645\u062B\u0627\u0644: 97124445566"],
+  phPoBox:["e.g. 40912","\u0645\u062B\u0627\u0644: 40912"],
+  phRefNo:["Enter reference number","\u0623\u062F\u062E\u0644 \u0627\u0644\u0631\u0642\u0645 \u0627\u0644\u0645\u0631\u062C\u0639\u064A"],
+  phReason:["Enter the reason for exemption","\u0623\u062F\u062E\u0644 \u0633\u0628\u0628 \u0627\u0644\u0625\u0639\u0641\u0627\u0621"],
+  all:["All","\u0627\u0644\u0643\u0644"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
   customersSearch:["Customers search","\u0628\u062D\u0637 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644\u064A\u0646"],
   searchDesc:["Whether the customer is a person, a company or a government entity, you can review and make changes to their information.","\u0633\u0648\u0627\u0621 \u0643\u0627\u0646 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644 \u0634\u062E\u0635\u0627\u064B \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0648 \u062C\u0647\u0629 \u062D\u0643\u0648\u0645\u064A\u0629\u060C \u064A\u0645\u0643\u0646\u0643 \u0645\u0631\u0627\u062C\u0639\u0629 \u0628\u064A\u0627\u0646\u0627\u062A\u0647 \u0648\u062A\u0639\u062F\u064A\u0644\u0647\u0627."],
@@ -506,7 +519,7 @@ var D = {
   phNameAr:["Enter name in Arabic","\u0623\u062F\u062E\u0644 \u0627\u0644\u0627\u0633\u0645 \u0628\u0627\u0644\u0639\u0631\u0628\u064A\u0629"],
   phNameEn:["Enter name in English","\u0623\u062F\u062E\u0644 \u0627\u0644\u0627\u0633\u0645 \u0628\u0627\u0644\u0625\u0646\u062C\u0644\u064A\u0632\u064A\u0629"],
   phEmail:["Enter email address","\u0623\u062F\u062E\u0644 \u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A"],
-  phPhone:["eg. 971501122334","\u0645\u062B\u0627\u0644: 971501122334"],
+  phPhone:["e.g. 971501122334","\u0645\u062B\u0627\u0644: 971501122334"],
   viewMore:["More","\u0627\u0644\u0645\u0632\u064A\u062F"],
   actions:["Actions","\u0627\u0644\u0625\u062C\u0631\u0627\u0621\u0627\u062A"],
   customerException:["Customer Exception","\u0627\u0633\u062A\u062B\u0646\u0627\u0621 \u0627\u0644\u0645\u062A\u0639\u0627\u0645\u0644"],
@@ -695,6 +708,7 @@ var D = {
   unvDocs:["The Individuals document-section list is not evidenced. The sections below are the Companies set, which is evidenced, plus Police Clearance Certificate to exercise the 1-month rule from the ticket.","قائمة أقسام مستندات الأشخاص غير موثقة."]
 };
 var STATUS_AR = {Active:"نشط",Expired:"منتهي",Terminated:"منتهٍ بالفسخ",Closed:"مغلق",
+Cancelled:"ملغى",
 Approved:"معتمد",Rejected:"مرفوض",true:"true",false:"false",Yes:"نعم",No:"لا"};
 
 /* ═══════════════════ data ═══════════════════ */
@@ -1030,7 +1044,18 @@ PERSONS = [
     blocks:{esb:[
         {title:"Municipal Violation",warning:"storing materials and dumping wastes at sites other than those designated for collecting wastes and garbage.",ref:"202600418277",datetime:"14-05-2026, 09:22:41"},
         {title:"Municipal Violation",warning:"carrying out construction work without obtaining the required permit from the competent authority.",ref:"202600361904",datetime:"02-03-2026, 13:47:05"}],
-      elmsOwner:[],elmsPartial:[],smartHub:[],blockedPlots:[]},
+      elmsOwner:[],elmsPartial:[],smartHub:[],
+      blockedPlots:[
+        {municipality:"Abu Dhabi City",district:"Al Bateen",community:"W12",road:"~",plotNumber:"37a",landUse:"Residential Land",
+         plots:[],
+         owners:[{ownerName:"TARIQ KHALID ALMANSOORI",authoritySource:"His Royal Highness Crown",blockDate:"17-05-2026",approvedDate:"19-05-2026",reason:"ادارة التنظيم والاداربة",remarks:"555"},
+           {ownerName:"TARIQ KHALID ALMANSOORI",authoritySource:"Abu Dhabi Court legitimacy",blockDate:"04-04-2026",approvedDate:"11-04-2026",reason:"Court order",remarks:"—"}]},
+        {municipality:"Abu Dhabi City",district:"Khalifa City",community:"SW2",road:"~",plotNumber:"22",landUse:"Residential Land",
+         plots:[],
+         owners:[{ownerName:"TARIQ KHALID ALMANSOORI",authoritySource:"Armed Forces",blockDate:"22-02-2026",approvedDate:"28-02-2026",reason:"Pending clearance",remarks:"ok"}]},
+        {municipality:"Al Ain City",district:"Al Jimi",community:"AJ04",road:"BLOCK-112",plotNumber:"415",landUse:"Commercial Land",
+         plots:[{authoritySource:"His Highness the Crown Prince Diwan (Sheikh Khalifa Bin Zayed Al Nahyan)",blockDate:"09-06-2026",approvedDate:"12-06-2026",reason:"Transfer restricted",remarks:"—"}],
+         owners:[{ownerName:"TARIQ KHALID ALMANSOORI",authoritySource:"His Highness the Crown Prince Diwan (Sheikh Khalifa Bin Zayed Al Nahyan)",blockDate:"09-06-2026",approvedDate:"12-06-2026",reason:"Transfer restricted",remarks:"—"}]}]},
     familyBook:{familySequence:"41582", city:"ABU DHABI", wivesCount:"1", childrenCount:"2",
       head:[{nameAr:"خالد سعيد المنصوري",nameEn:"KHALID SAEED ALMANSOORI",motherNameAr:"فاطمة راشد الحوسني",motherNameEn:"FATIMA RASHED ALHOSNI",idNumber:"784196201134872",dateOfBirth:"09-04-1962",placeOfBirth:"ABU DHABI",maritalStatus:"MARRIED",religion:"ISLAM",nationality:"UNITED ARAB EMIRATES"}],
       dependents:[
@@ -1072,7 +1097,11 @@ PERSONS = [
     nameEn:"Omar Saeed Almehairi", familyName:"Almehairi",
     blocks:{esb:[
         {title:"Municipal Violation",warning:"failure to maintain the external appearance of the building and its surrounding boundary wall.",ref:"202600289513",datetime:"19-01-2026, 11:08:33"}],
-      elmsOwner:[],elmsPartial:[],smartHub:[],blockedPlots:[]},
+      elmsOwner:[],elmsPartial:[],smartHub:[],
+      blockedPlots:[
+        {municipality:"Al Dhafra Region",district:"Madinat Zayed",community:"MZW21",road:"~",plotNumber:"2",landUse:"Residential Compund",
+         plots:[],
+         owners:[{ownerName:"OMAR SAEED ALMEHAIRI",authoritySource:"Abu Dhabi Court legitimacy",blockDate:"14-01-2026",approvedDate:"20-01-2026",reason:"Court order",remarks:"test"}]}]},
     mobile:"023334444", email:"omar.almehairi@example.com",
     personDetails:{motherNameAr:"",motherNameEn:"",placeOfBirth:"AL DHAFRA",
       dateOfBirth:"19-06-1986",maritalStatus:"MARRIED",regSmartHub:"Yes"}}),
@@ -1085,7 +1114,15 @@ PERSONS = [
     nameEn:"Sultan Ahmed Almarzooqi", familyName:"Almarzooqi",
     blocks:{esb:[
         {title:"Municipal Violation",warning:"occupying part of a public road or public property without obtaining a licence.",ref:"202600447860",datetime:"28-06-2026, 16:31:57"}],
-      elmsOwner:[],elmsPartial:[],smartHub:[],blockedPlots:[]},
+      elmsOwner:[],elmsPartial:[],smartHub:[],
+      blockedPlots:[
+        {municipality:"Abu Dhabi City",district:"Musaffah",community:"M17",road:"~",plotNumber:"79",landUse:"Industrial Land",
+         plots:[],
+         owners:[{ownerName:"SULTAN AHMED ALMARZOOQI",authoritySource:"His Royal Highness Crown",blockDate:"30-06-2026",approvedDate:"02-07-2026",reason:"ادارة التنظيم والاداربة",remarks:"—"},
+           {ownerName:"SULTAN AHMED ALMARZOOQI",authoritySource:"Armed Forces",blockDate:"18-05-2026",approvedDate:"25-05-2026",reason:"Pending clearance",remarks:"ok"}]},
+        {municipality:"Abu Dhabi City",district:"Al Nahyan",community:"E22_01",road:"~",plotNumber:"C19",landUse:"Commercial Land",
+         plots:[],
+         owners:[{ownerName:"SULTAN AHMED ALMARZOOQI",authoritySource:"Abu Dhabi Court legitimacy",blockDate:"03-03-2026",approvedDate:"09-03-2026",reason:"Court order",remarks:"—"}]}]},
     familyBook:{familySequence:"44970", city:"ABU DHABI", wivesCount:"1", childrenCount:"3",
       head:[{nameAr:"أحمد سلطان المرزوقي",nameEn:"AHMED SULTAN ALMARZOOQI",motherNameAr:"عائشة حمد الظاهري",motherNameEn:"AISHA HAMAD ALDHAHERI",idNumber:"784195907741320",dateOfBirth:"14-07-1959",placeOfBirth:"ABU DHABI",maritalStatus:"MARRIED",religion:"ISLAM",nationality:"UNITED ARAB EMIRATES"}],
       dependents:[
@@ -1273,7 +1310,7 @@ var S = {
   draft:{}, applied:{}, pageSize:"10", listPage:1,
   route:{name:"list"},
   tab:null, gear:null,
-  tab:null, plotOpen:{},
+  tab:null,
   poa:{no:"",start:"",end:"",status:""},
   appPage:1, poaPage:1, sigPage:1, actPage:1, usrPage:1,
   cpu:null,           /* Customer Profile Update page state */
@@ -1305,7 +1342,7 @@ function grid(cols,list,rowFn,cls){
   var h=cols.map(function(c){ return "<th>"+esc(c)+"</th>"; }).join("");
   var b=list.length
     ? list.map(function(r,i){ return "<tr>"+rowFn(r,i)+"</tr>"; }).join("")
-    : '<tr><td colspan="'+cols.length+'"><div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+'</div></td></tr>';
+    : '<tr><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+'</div></td></tr>';
   return '<div class="tw"><table class="g'+(cls?" "+cls:"")+'"><thead><tr>'+h+"</tr></thead><tbody>"+b+"</tbody></table></div>";
 }
 function grp(txt){ return '<div class="grp">'+esc(txt)+"</div>"; }
@@ -1355,7 +1392,7 @@ function pager(page,total,act){
 function sx(v){
   var g=["Completed","Approved","Active","Valid","New","true","Yes"],
       a=["In Progress","Under auditing","Returned","Expired","Suspended","Pending"],
-      r=["Rejected","Terminated","Blocked"];
+      r=["Rejected","Terminated","Cancelled","Blocked"];
   var c = g.indexOf(v)>-1?"g" : a.indexOf(v)>-1?"a" : r.indexOf(v)>-1?"r" : "n";
   return '<span class="stx '+c+'">'+esc(st(v))+"</span>";
 }
@@ -1488,7 +1525,7 @@ function viewList(){
         return '<tr class="rowlink" data-a="view" data-id="'+esc(r.id)+'" title="'
           +esc(t("viewDetails"))+'">'+rowFn(r)+"</tr>";
       }).join("")
-    : '<tr><td colspan="'+cols.length+'"><div class="empty"><span class="gl">&#9993;</span>'
+    : '<tr><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''
       +esc(t("noResults"))+"</div></td></tr>";
 
   return catTabs()+viewSearch()
@@ -1523,14 +1560,17 @@ function catTabs(){
 function addModalBody(){
   if(S.cat==="persons")
     return '<div class="frow"><label>'+esc(t("idNumber"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="modal.d.idNumber" value="'+esc(S.modal.d.idNumber||"")+'"></div></div>';
+      +'<input type="text" dir="ltr" data-b="modal.d.idNumber" placeholder="'+esc(t("phIdNumber"))+'" value="'+esc(S.modal.d.idNumber||"")+'"></div></div>';
   if(S.cat==="companies")
     return '<div class="frow"><label>'+esc(t("tradeLicenseNumber"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="modal.d.tradeLicenseNumber" value="'+esc(S.modal.d.tradeLicenseNumber||"")+'"></div></div>';
+      +'<input type="text" dir="ltr" data-b="modal.d.tradeLicenseNumber" placeholder="'+esc(t("phLicense"))+'" value="'+esc(S.modal.d.tradeLicenseNumber||"")+'"></div></div>';
   return ["nameAr","nameEn","landLine","email"].map(function(k){
     return '<div class="frow"><label>'+esc(t(k==="nameAr"?"nameAr":k==="nameEn"?"nameEn":k==="landLine"?"landLine":"email"))
       +'</label><div class="ctl"><input type="text"'+(k==="email"||k==="landLine"?' dir="ltr"':"")
-      +' data-b="modal.d.'+k+'" value="'+esc(S.modal.d[k]||"")+'"></div></div>';
+      +' data-b="modal.d.'+k+'"'
+      +' placeholder="'+esc(t(k==="nameAr"?"phNameAr":k==="nameEn"?"phNameEn"
+                            :k==="landLine"?"phLandLine":"phEmail"))+'"'
+      +' value="'+esc(S.modal.d[k]||"")+'"></div></div>';
   }).join("");
 }
 
@@ -1571,7 +1611,7 @@ function bodyProfile(p){
 
   out+=grp(t("familyBookDetails"));
   if(!p.familyBook){
-    out+='<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
+    out+='<div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+"</div>";
   } else {
     var fb=p.familyBook;
     out+=fieldGrid([[t("familySequence"),fb.familySequence,true],[t("city"),fb.city],
@@ -1610,7 +1650,7 @@ function bodyBlocks(r){
           +'<div class="w">&#9888; '+esc(e.warning)+"</div></div>"
           +'<div class="r">'+esc(e.ref)+"<br>"+icon("calendar",15)+" "+esc(e.datetime)+"</div></div>";
       }).join("")
-    : '<div class="empty"><span class="gl">&#9993;</span>'+esc(t("noRecords"))+"</div>";
+    : '<div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+"</div>";
   out+=grp(t("esbBlocks"))+esb;
 
   out+=grpT(t("elmsOwner"))+grid(["#",t("ownerName"),t("reason"),t("blockDate")],b.elmsOwner,function(x){
@@ -1623,27 +1663,10 @@ function bodyBlocks(r){
   out+=grpT(t("blockedPlots"))
     +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNumber"),t("landUse"),""],
       b.blockedPlots,function(x,i){
-      var open=!!S.plotOpen[i];
       return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
         +"</td><td>"+esc(x.road)+'</td><td class="num">'+esc(x.plotNumber)+"</td><td>"+esc(x.landUse)
-        +'</td><td><button class="btn btn-sage sm" data-a="plot" data-n="'+i+'" aria-expanded="'+open+'">'
-        +(open?"&minus;":"+")+"</button></td>"; });
-
-  b.blockedPlots.forEach(function(x,i){
-    if(!S.plotOpen[i]) return;
-    out+='<div class="drill">'
-      +'<div class="drill-h">'+esc(x.municipality+" / "+x.district+" / "+t("plotNumber")+" "+x.plotNumber)+"</div>"
-      +grpT(t("blockedPlotS"))
-      +grid([t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],x.plots,function(y){
-        return "<td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)+"</td><td>"+esc(y.approvedDate)
-          +"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; })
-      +grpT(t("blockedOwnerS"))
-      +grid([t("ownerName"),t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],
-        x.owners,function(y){
-        return "<td>"+esc(y.ownerName)+"</td><td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)
-          +"</td><td>"+esc(y.approvedDate)+"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; })
-      +"</div>";
-  });
+        +'</td><td><button class="iconsq" data-a="plot" data-n="'+i+'" title="'+esc(t("blockedPlots"))
+        +'" aria-label="'+esc(t("blockedPlots"))+'">'+icon("arrowRight",17,"dir")+"</button></td>"; });
   return out;
 }
 
@@ -1651,26 +1674,30 @@ function bodyBlocks(r){
 function poaFilterRow(searchAct){
   return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px 24px;margin-bottom:6px">'
     +'<div class="frow"><label>'+esc(t("poaNo"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="poa.no" value="'+esc(S.poa.no)+'"></div></div>'
+      +'<input type="text" dir="ltr" data-b="poa.no" placeholder="'+esc(t("phPoaNo"))+'" value="'+esc(S.poa.no)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("contractStart"))+'</label><div class="ctl">'
       +'<input type="date" data-b="poa.start" value="'+esc(S.poa.start)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("contractEnd"))+'</label><div class="ctl">'
       +'<input type="date" data-b="poa.end" value="'+esc(S.poa.end)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("contractStatus"))+'</label><div class="ctl">'
       +'<select data-b="poa.status"><option value="">'+esc(t("select"))+"</option>"
-      +["Active","Expired","Terminated","Closed"].map(function(s){
-          return '<option value="'+s+'"'+(S.poa.status===s?" selected":"")+">"+esc(st(s))+"</option>"; }).join("")
+      /* UAT order: alphabetical, with "All" sitting between Active and Cancelled */
+      +[["Active","Active"],["all",t("all")],["Cancelled","Cancelled"],["Closed","Closed"],
+        ["Expired","Expired"],["Terminated","Terminated"]].map(function(o){
+          var lbl = o[0]==="all" ? o[1] : st(o[0]);
+          return '<option value="'+o[0]+'"'+(S.poa.status===o[0]?" selected":"")+">"+esc(lbl)+"</option>";
+        }).join("")
       +"</select></div></div>"
     +"</div>"
-    +'<div class="row-end right" style="margin-bottom:16px">'
-    +'<button class="btn btn-grey" data-a="poaReset">'+esc(t("reset"))+"</button>"
-    +'<button class="btn btn-amber" data-a="'+searchAct+'">&#9906; '+esc(t("searchBtn"))+"</button></div>";
+    +'<div class="factions">'
+    +'<button class="btn-clear" data-a="poaReset">'+esc(t("clearAll"))+"</button>"
+    +'<button class="btn-search" data-a="'+searchAct+'">'+icon("search",17)+esc(t("searchBtn"))+"</button></div>";
 }
 function poaFilter(list){
   var f=S.poa;
   return list.filter(function(c){
     if(f.no && String(c.no).indexOf(f.no)===-1) return false;
-    if(f.status && c.status!==f.status) return false;
+    if(f.status && f.status!=="all" && c.status!==f.status) return false;
     return true;
   });
 }
@@ -1858,17 +1885,17 @@ function viewCpu(){
     +'<div class="frow"><label>'+esc(t("name"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(C.name)+'" disabled></div></div>'
     +'<div class="frow"><label>'+esc(t("email"))+'<span class="req">*</span></label><div class="ctl">'
-      +'<input type="email" dir="ltr" data-b="cpu.email" value="'+esc(C.email)+'"'+(e.email?' aria-invalid="true"':"")+">"
+      +'<input type="email" dir="ltr" data-b="cpu.email"'+' placeholder="'+esc(t("phEmail"))+'"'+' value="'+esc(C.email)+'"'+(e.email?' aria-invalid="true"':"")+">"
       +(e.email?'<div class="err">'+esc(e.email)+"</div>":"")+"</div></div>"
     +'<div class="frow"><label>'+esc(t("mobile"))+'<span class="req">*</span></label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.mobile" value="'+esc(C.mobile)+'"'+(e.mobile?' aria-invalid="true"':"")+">"
+      +'<input type="text" dir="ltr" data-b="cpu.mobile"'+' placeholder="'+esc(t("phPhone"))+'"'+' value="'+esc(C.mobile)+'"'+(e.mobile?' aria-invalid="true"':"")+">"
       +(e.mobile?'<div class="err">'+esc(e.mobile)+"</div>":"")+"</div></div>"
     +'<div class="frow"><label>'+esc(t("landLine"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.landLine" value="'+esc(C.landLine)+'"></div></div>'
+      +'<input type="text" dir="ltr" data-b="cpu.landLine"'+' placeholder="'+esc(t("phLandLine"))+'"'+' value="'+esc(C.landLine)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("fax"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.fax" value="'+esc(C.fax)+'"></div></div>'
+      +'<input type="text" dir="ltr" data-b="cpu.fax"'+' placeholder="'+esc(t("phFax"))+'"'+' value="'+esc(C.fax)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("poBox"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.poBox" value="'+esc(C.poBox)+'"></div></div>'
+      +'<input type="text" dir="ltr" data-b="cpu.poBox"'+' placeholder="'+esc(t("phPoBox"))+'"'+' value="'+esc(C.poBox)+'"></div></div>'
     +'<div class="frow"><label></label><div class="ctl">'
       +'<label style="display:flex;gap:8px;align-items:center;'+(C.isExempted?"color:var(--green-dk);font-weight:600":"")+'">'
       +'<input type="checkbox" class="chk" data-a="cpuExempt"'+(C.isExempted?" checked":"")+"> "
@@ -1879,7 +1906,7 @@ function viewCpu(){
       +esc(t("isSmartSurvey"))+"</label></div></div>"
     +'<div class="frow"><label>'+esc(t("reasonForExemption"))
       +(C.isExempted?'<span class="req">*</span>':"")+'</label><div class="ctl">'
-      +'<textarea rows="3" data-b="cpu.reasonForExemption"'+(e.reason?' aria-invalid="true"':"")+">"
+      +'<textarea rows="3" data-b="cpu.reasonForExemption" placeholder="'+esc(t("phReason"))+'"'+(e.reason?' aria-invalid="true"':"")+">"
       +esc(C.reasonForExemption)+"</textarea>"
       +(e.reason?'<div class="err">'+esc(e.reason)+"</div>":"")+"</div></div>"
     +"</div></div>";
@@ -1938,7 +1965,7 @@ function excModalBody(){
       +(d.kind==="RoleActivity"?" checked":"")+"> "+esc(t("roleActivity"))+"</label>"
     +"</div>"
     +'<div class="row-end right" style="margin-bottom:12px">'
-    +'<button class="btn btn-outline sm" data-a="excSearch">&#9906; '+esc(t("searchBtn"))+"</button></div>"
+    +'<button class="btn sm" data-a="excSearch">'+icon("search",15)+" "+esc(t("searchBtn"))+"</button></div>"
     +grid(["",t("nameEn"),t("nameAr")],pg.slice,function(w){
         var on=d.picked.indexOf(w[0])>-1;
         return '<td><input type="checkbox" class="chk" data-a="excPick" data-v="'+esc(w[0])+'"'+(on?" checked":"")+"></td>"
@@ -1962,7 +1989,7 @@ function renderModal(){
     return;
   }
 
-  var title,body,footer;
+  var title,body,footer,wide="";
   if(m.kind==="add"){
     title = S.cat==="persons"?t("custPerson") : S.cat==="companies"?t("custCompany") : t("custGov");
     body=addModalBody();
@@ -1981,9 +2008,29 @@ function renderModal(){
     title=t("addDocument"); body=docModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
       +'<button class="btn btn-green" data-a="docSave">'+esc(t("addDocument"))+"</button>";
+  } else if(m.kind==="plot"){
+    /* the blocked-plot drill-down: two grids, so it needs the wide shell */
+    var pr=rec(), row=pr&&pr.blocks.blockedPlots[m.i];
+    if(!row){ root.innerHTML=""; return; }
+    wide=" wide";
+    title=t("blockedPlots");
+    body='<div class="plotctx">'
+      +esc(row.municipality+" / "+row.district+" / "+row.community
+           +" / "+t("plotNumber")+" "+row.plotNumber+" / "+row.landUse)+"</div>"
+      +grpT(t("blockedPlotS"))
+      +grid([t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],
+        row.plots,function(y){
+        return "<td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)+"</td><td>"+esc(y.approvedDate)
+          +"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; })
+      +grpT(t("blockedOwnerS"))
+      +grid([t("ownerName"),t("authoritySource"),t("blockDate"),t("approvedDate"),t("reason"),t("remarks")],
+        row.owners,function(y){
+        return "<td>"+esc(y.ownerName)+"</td><td>"+esc(y.authoritySource)+"</td><td>"+esc(y.blockDate)
+          +"</td><td>"+esc(y.approvedDate)+"</td><td>"+esc(y.reason)+"</td><td>"+esc(y.remarks)+"</td>"; });
+    footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>";
   }
 
-  root.innerHTML='<div class="scrim" data-a="scrim"><div class="modal" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
+  root.innerHTML='<div class="scrim" data-a="scrim"><div class="modal'+wide+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
     +"<header><h3>"+esc(title)+'</h3><button class="x" data-a="mclose">&#10005;</button></header>'
     +'<div class="mb">'+body+"</div><footer>"+footer+"</footer></div></div>";
 }
@@ -2006,9 +2053,9 @@ function editIdBody(){
     +'<div class="frow"><label>'+esc(t("nameEn"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.nameEn)+'" disabled></div></div>'
     +'<div class="frow"><label>'+esc(t("landLine"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="modal.d.landLine" value="'+esc(d.landLine)+'"></div></div>'
+      +'<input type="text" dir="ltr" data-b="modal.d.landLine" placeholder="'+esc(t("phLandLine"))+'" value="'+esc(d.landLine)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("email"))+'</label><div class="ctl">'
-      +'<input type="email" dir="ltr" data-b="modal.d.email" value="'+esc(d.email)+'"></div></div>';
+      +'<input type="email" dir="ltr" data-b="modal.d.email" placeholder="'+esc(t("phEmail"))+'" value="'+esc(d.email)+'"></div></div>';
 }
 
 /* Add Document — mandatory issue/expiry + police clearance 1-month rule (ticket) */
@@ -2019,7 +2066,7 @@ function docModalBody(){
   return '<div class="frow"><label>'+esc(t("documentType"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.section)+'" disabled></div></div>'
     +'<div class="frow"><label>'+esc(t("referenceNumber"))+'</label><div class="ctl">'
-      +'<input type="text" data-b="modal.d.ref" value="'+esc(d.ref)+'"></div></div>'
+      +'<input type="text" data-b="modal.d.ref" placeholder="'+esc(t("phRefNo"))+'" value="'+esc(d.ref)+'"></div></div>'
     +'<div class="frow"><label>'+esc(t("issueDate"))+'<span class="req">*</span></label><div class="ctl">'
       +'<input type="date" data-b="modal.d.issueDate" data-live="1" value="'+esc(d.issueDate)+'"'
       +(e.issueDate?' aria-invalid="true"':"")+">"
@@ -2174,7 +2221,7 @@ function render(){ renderChrome(); renderBody(); renderModal(); renderMenu(); }
 /* ═══════════════════ actions ═══════════════════ */
 function home(){
   S.route={name:"list"}; S.gear=null; S.cpu=null;
-  S.tab=null; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1; S.plotOpen={};
+  S.tab=null; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
   S.poa={no:"",start:"",end:"",status:""};
 }
 function runConfirm(m){
@@ -2230,7 +2277,7 @@ document.addEventListener("click",function(ev){
       }
       S.modal=null; toast(ar()?"تم الحفظ":"Saved"); render(); return;
 
-    case "plot": var i=+el.getAttribute("data-n"); S.plotOpen[i]=!S.plotOpen[i]; renderBody(); return;
+    case "plot": S.modal={kind:"plot", i:+el.getAttribute("data-n")}; renderModal(); return;
 
     case "moi": toast(ar()?"تم التحديث من وزارة الداخلية":"Profile updated from MOI"); return;
     case "ded": toast(ar()?"تم التحديث من الاقتصادية":"Profile updated from DED"); return;
