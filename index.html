@@ -464,7 +464,14 @@ overflow:hidden;background:var(--surface);}
 .applicant{display:flex;gap:16px;align-items:center;}
 .applicant .mi .ln{display:flex;align-items:center;gap:8px;}
 .applicant .mi .ln .svgi{color:var(--muted);}
-.cpuform{max-width:720px;}
+.fieldpanel{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);
+padding:24px 26px;}
+.fgrid .frow.wide{grid-column:span 2;}
+@media(max-width:720px){.fgrid .frow.wide{grid-column:span 1;}}
+.chkrow{display:flex;gap:32px;flex-wrap:wrap;margin-top:22px;
+padding-top:20px;border-top:1px solid var(--line-2);}
+.chkline{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink-2);}
+.chkline.on{color:var(--sage-dk);font-weight:600;}
 .applicant .av{width:56px;height:56px;border-radius:50%;background:var(--olive-soft);
 display:grid;place-items:center;font-size:24px;flex:0 0 56px;}
 .applicant .mi{font-size:13px;color:var(--muted);line-height:1.7;}
@@ -712,7 +719,6 @@ var D = {
 
   services:["Services","الخدمات"],
   custProfileUpdate:["Customer Profile Update","تحديث ملف المتعامل"],
-  backOfficeConfirm:["Back Office Confirm","تأكيد المكتب الخلفي"],
   applicationDetails:["Application Details","تفاصيل الطلب"],
   applicantDetails:["Applicant Details","تفاصيل مقدم الطلب"],
   service:["Service","الخدمة"],
@@ -2139,34 +2145,36 @@ function viewCpu(){
   }).join("");
 
   var e=C.errs;
-  var info='<div class="cpuform">'
-    +'<div class="frow"><label>'+esc(t("name"))+'</label><div class="ctl">'
-      +'<input type="text" value="'+esc(C.name)+'" disabled></div></div>'
-    +'<div class="frow"><label>'+esc(t("email"))+'<span class="req">*</span></label><div class="ctl">'
-      +'<input type="email" dir="ltr" data-b="cpu.email"'+' placeholder="'+esc(t("phEmail"))+'"'+' value="'+esc(C.email)+'"'+(e.email?' aria-invalid="true"':"")+">"
-      +(e.email?'<div class="err">'+esc(e.email)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("mobile"))+'<span class="req">*</span></label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.mobile"'+' placeholder="'+esc(t("phPhone"))+'"'+' value="'+esc(C.mobile)+'"'+(e.mobile?' aria-invalid="true"':"")+">"
-      +(e.mobile?'<div class="err">'+esc(e.mobile)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("landLine"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.landLine"'+' placeholder="'+esc(t("phLandLine"))+'"'+' value="'+esc(C.landLine)+'"></div></div>'
-    +'<div class="frow"><label>'+esc(t("fax"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.fax"'+' placeholder="'+esc(t("phFax"))+'"'+' value="'+esc(C.fax)+'"></div></div>'
-    +'<div class="frow"><label>'+esc(t("poBox"))+'</label><div class="ctl">'
-      +'<input type="text" dir="ltr" data-b="cpu.poBox"'+' placeholder="'+esc(t("phPoBox"))+'"'+' value="'+esc(C.poBox)+'"></div></div>'
-    +'<div class="frow"><label></label><div class="ctl">'
-      +'<label style="display:flex;gap:8px;align-items:center;'+(C.isExempted?"color:var(--green-dk);font-weight:600":"")+'">'
-      +'<input type="checkbox" class="chk" data-a="cpuExempt"'+(C.isExempted?" checked":"")+"> "
-      +esc(t("isExempted"))+"</label></div></div>"
-    +'<div class="frow"><label></label><div class="ctl">'
-      +'<label style="display:flex;gap:8px;align-items:center">'
-      +'<input type="checkbox" class="chk" data-a="cpuSurvey"'+(C.isSmartSurvey?" checked":"")+"> "
-      +esc(t("isSmartSurvey"))+"</label></div></div>"
-    +'<div class="frow"><label>'+esc(t("reasonForExemption"))
-      +(C.isExempted?'<span class="req">*</span>':"")+'</label><div class="ctl">'
-      +'<textarea rows="3" data-b="cpu.reasonForExemption" placeholder="'+esc(t("phReason"))+'"'+(e.reason?' aria-invalid="true"':"")+">"
-      +esc(C.reasonForExemption)+"</textarea>"
-      +(e.reason?'<div class="err">'+esc(e.reason)+"</div>":"")+"</div></div>"
+  function fld(label,bind,opts){
+    var o=opts||{};
+    return '<div class="frow'+(o.wide?" wide":"")+'"><label>'+esc(t(label))
+      +(o.req?'<span class="req">*</span>':"")+'</label><div class="ctl">'
+      +(o.area
+        ? '<textarea rows="3" data-b="'+bind+'" placeholder="'+esc(t(o.ph))+'"'
+          +(o.err?' aria-invalid="true"':"")+">"+esc(o.val)+"</textarea>"
+        : '<input type="'+(o.type||"text")+'"'+(o.dir?' dir="'+o.dir+'"':"")
+          +(bind?' data-b="'+bind+'"':"")+(o.ph?' placeholder="'+esc(t(o.ph))+'"':"")
+          +' value="'+esc(o.val)+'"'+(o.dis?" disabled":"")+(o.err?' aria-invalid="true"':"")+">")
+      +(o.err?'<div class="err">'+esc(o.err)+"</div>":"")+"</div></div>";
+  }
+  function chk(act,label,on){
+    return '<label class="chkline'+(on?" on":"")+'">'
+      +'<input type="checkbox" class="chk" data-a="'+act+'"'+(on?" checked":"")+"> "
+      +esc(t(label))+"</label>";
+  }
+  /* four across, labels above inputs, inside a bordered panel */
+  var info='<div class="fieldpanel"><div class="fgrid">'
+    +fld("name",null,{val:C.name,dis:true})
+    +fld("emailAddress","cpu.email",{type:"email",dir:"ltr",ph:"phEmail",val:C.email,req:true,err:e.email})
+    +fld("mobile","cpu.mobile",{dir:"ltr",ph:"phPhone",val:C.mobile,req:true,err:e.mobile})
+    +fld("landLine","cpu.landLine",{dir:"ltr",ph:"phLandLine",val:C.landLine})
+    +fld("fax","cpu.fax",{dir:"ltr",ph:"phFax",val:C.fax})
+    +fld("poBox","cpu.poBox",{dir:"ltr",ph:"phPoBox",val:C.poBox})
+    +fld("reasonForExemption","cpu.reasonForExemption",
+         {area:true,ph:"phReason",val:C.reasonForExemption,req:C.isExempted,err:e.reason,wide:true})
+    +"</div>"
+    +'<div class="chkrow">'+chk("cpuExempt","isExempted",C.isExempted)
+      +chk("cpuSurvey","isSmartSurvey",C.isSmartSurvey)+"</div>"
     +"</div>";
 
   var appDetails=fieldGrid([
@@ -2396,7 +2404,8 @@ function renderBody(){
 
   var r=S.route, crumb, h1;
   if(r.name==="cpu"){
-    crumb=[t("services"),t("custProfileUpdate"),t("backOfficeConfirm")];
+    /* the trail ends on the page itself, so "Customer Profile Update" is the leaf */
+    crumb=[t("services"),t("custProfileUpdate")];
     h1=t("custProfileUpdate");
   } else if(r.name==="contract"){
     /* the middle crumb routes back to the profile, keeping its own tab position */
