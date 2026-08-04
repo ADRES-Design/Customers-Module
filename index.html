@@ -94,7 +94,7 @@ h1.pt{margin:0;font-size:27px;font-weight:700;letter-spacing:-.015em;}
 /* page header: breadcrumb + title on one side, the profile-sync action opposite */
 .pagehead{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
 .pagehead .ph-l{flex:1;min-width:0;}
-.pagehead .ph-a{flex:0 0 auto;}
+.pagehead .ph-a{flex:0 0 auto;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
 @media(max-width:760px){.pagehead .ph-a{width:100%;}
   .pagehead .ph-a .btn{width:100%;justify-content:center;}}
 h2.sect{margin:30px 0 16px;font-size:22px;font-weight:700;letter-spacing:-.01em;}
@@ -333,6 +333,7 @@ padding:11px 20px;border-radius:var(--r-sm);font-size:14px;font-weight:600;
 display:inline-flex;align-items:center;gap:8px;}
 .btn-add:hover{background:var(--olive-dk);border-color:var(--olive-dk);}
 .btn-add .plus{font-size:17px;line-height:1;}
+.btn-add.sm{padding:7px 15px;font-size:13px;}
 
 /* upload rows: one per document type — icon tile, name, upload action */
 .uprow{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);
@@ -732,14 +733,14 @@ var D = {
   reqField:["This field is required.","هذا الحقل مطلوب."],
 
   exceptionPage:["Customer - [CustomerExceptions]","المتعامل - [استثناءات المتعامل]"],
-  exception:["[Exception]","[استثناء]"],
-  addException:["[AddCustomerException]","[إضافة استثناء متعامل]"],
+  exception:["Exception","\u0627\u0633\u062A\u062B\u0646\u0627\u0621"],
+  addException:["Add Customer Exception","\u0625\u0636\u0627\u0641\u0629 \u0627\u0633\u062A\u062B\u0646\u0627\u0621 \u0645\u062A\u0639\u0627\u0645\u0644"],
   customer:["Customer","المتعامل"],
   workflow:["Workflow","سير العمل"],
-  nameA:["[ NameA ]","[ الاسم عربي ]"],
-  nameE:["[ NameE ]","[ الاسم إنجليزي ]"],
-  redirection:["[Redirection]","[إعادة توجيه]"],
-  roleActivity:["[RoleActivity]","[نشاط الدور]"],
+  nameA:["Name (Arabic)","\u0627\u0644\u0627\u0633\u0645 (\u0639\u0631\u0628\u064A)"],
+  nameE:["Name (English)","\u0627\u0644\u0627\u0633\u0645 (\u0625\u0646\u062C\u0644\u064A\u0632\u064A)"],
+  redirection:["Redirection","\u0625\u0639\u0627\u062F\u0629 \u062A\u0648\u062C\u064A\u0647"],
+  roleActivity:["Role Activity","\u0646\u0634\u0627\u0637 \u0627\u0644\u062F\u0648\u0631"],
   numberOfItems:["Number Of Items:","عدد العناصر:"],
   deleteWarning:["Delete Warning Message","رسالة تحذير الحذف"],
   deleteCustomer:["Delete Customer","حذف المتعامل"],
@@ -1269,6 +1270,11 @@ function fillCompany(o){
 COMPANIES = [
   fillCompany({id:"K1", tradeLicenseNumber:"CN-5541290", nameAr:"شركة الأفق الجديد للعقارات",
     nameEn:"New Horizon Real Estate LLC",
+    exceptions:[
+      {id:"XA0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XA1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XA2",workflow:WORKFLOWS[7],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XA3",workflow:WORKFLOWS[11],nameAr:"Redirection",nameEn:"Redirection"}],
     approvedDocs:[
       {type:"Copy of Trade License",issueDate:"12-03-2016",expiryDate:"11-03-2028"},
       {type:"Memorandum of Association",issueDate:"12-03-2016",expiryDate:""},
@@ -1296,6 +1302,10 @@ COMPANIES = [
       nationality:"United Arab Emirates",relationType:"Owner"}]}),
   fillCompany({id:"K2", tradeLicenseNumber:"CN-9923841", nameAr:"الروابي للمقاولات العامة",
     nameEn:"Al Rawabi General Contracting",
+    exceptions:[
+      {id:"XB0",workflow:WORKFLOWS[1],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XB1",workflow:WORKFLOWS[3],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XB2",workflow:WORKFLOWS[4],nameAr:"Redirection",nameEn:"Redirection"}],
     approvedDocs:[
       {type:"Copy of Trade License",issueDate:"05-07-2013",expiryDate:"04-07-2027"},
       {type:"Escrow Account Trustee Registration Certificate",issueDate:"14-04-2026",expiryDate:"13-04-2028"},
@@ -1317,6 +1327,9 @@ COMPANIES = [
     isExempted:"No", isSmartSurvey:"No"}),
   fillCompany({id:"K4", tradeLicenseNumber:"CN-7734012", nameAr:"القمة للاستثمارات العقارية",
     nameEn:"Al Qemma Real Estate Investment",
+    exceptions:[
+      {id:"XC0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XC1",workflow:WORKFLOWS[6],nameAr:"Redirection",nameEn:"Redirection"}],
     signatories:[
       {no:"202600016115",startDate:"27-06-2026",expiryDate:"31-12-2026",secondParty:"Maryam Hassan Alabduli",status:"Active"},
       {no:"202600016115",startDate:"27-06-2026",expiryDate:"26-06-2028",secondParty:"Maryam Hassan Alabduli",status:"Active"}],
@@ -1330,6 +1343,12 @@ COMPANIES = [
       {no:"202600010884",startUserName:"Al Qemma Real Estate Investment",status:"Rejected",createdDate:"07-05-2026 16:02"}]}),
   fillCompany({id:"K5", tradeLicenseNumber:"CN-3349205", nameAr:"صقر الأمارات للخدمات اللوجستية",
     nameEn:"Emirates Falcon Logistics",
+    exceptions:[
+      {id:"XD0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XD1",workflow:WORKFLOWS[5],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XD2",workflow:WORKFLOWS[8],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XD3",workflow:WORKFLOWS[9],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"XD4",workflow:WORKFLOWS[10],nameAr:"Redirection",nameEn:"Redirection"}],
     approvedDocs:[
       {type:"Copy of Trade License",issueDate:"20-09-2015",expiryDate:"19-09-2027"},
       {type:"Central Bank License",issueDate:"11-11-2025",expiryDate:"10-11-2027"},
@@ -1353,6 +1372,8 @@ COMPANIES = [
        email:"omar.almehairi@example.com",phone:"023334444",location:"CN-3349205",isAdmin:"false"}]}),
   fillCompany({id:"K6", tradeLicenseNumber:"CN-6612093", nameAr:"النخيل للتجارة العامة",
     nameEn:"Al Nakheel General Trading",
+    exceptions:[
+      {id:"XE0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"}],
     users:[
       {nameAr:"سعيد محمد القمزي",nameEn:"Saeed Mohammed Alqamzi",email:"saeed.alqamzi@example.com",phone:"971508899001",location:"CN-6612093",isAdmin:"true"},
       {nameAr:"حصة راشد المزروعي",nameEn:"Hessa Rashed Almazrouei",email:"hessa.almazrouei@adres.ae",phone:"971554433221",location:"CN-6612093",isAdmin:"false"}], landLine:"97129992211", email:"trading@nakheel.ae",
@@ -1406,7 +1427,12 @@ function fillGov(o){
    and Documents payload, GOV-1000471 the exceptions). */
 GOV = [
   fillGov({id:"V1", idNumber:"GOV-4001", nameAr:"وزارة الطاقة والبنية التحتية",
-    nameEn:"Ministry of Energy and Infrastructure", mobile:"97123334455",
+    nameEn:"Ministry of Energy and Infrastructure",
+    exceptions:[
+      {id:"GA0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GA1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GA2",workflow:WORKFLOWS[7],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GA3",workflow:WORKFLOWS[8],nameAr:"Redirection",nameEn:"Redirection"}], mobile:"97123334455",
     email:"info@moei.gov.ae", isExempted:"Yes",
     users:[
       {nameAr:"طارق خالد المنصوري",nameEn:"Tariq Khalid Almansoori",email:"tariq.almansoori@adres.ae",
@@ -1418,7 +1444,10 @@ GOV = [
     nameEn:"Department of Municipalities and Transport", mobile:"97124445566",
     email:"contact@dmt.gov.ae", isExempted:"No"}),
   fillGov({id:"V3", idNumber:"GOV-4003", nameAr:"هيئة أبوظبي للرعاية الرقمية",
-    nameEn:"Abu Dhabi Digital Authority", mobile:"97125556677",
+    nameEn:"Abu Dhabi Digital Authority",
+    exceptions:[
+      {id:"GB0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GB1",workflow:WORKFLOWS[6],nameAr:"Redirection",nameEn:"Redirection"}], mobile:"97125556677",
     email:"info@adda.gov.ae", isExempted:"Yes"}),
   fillGov({id:"V4", idNumber:"GOV-4004", nameAr:"دائرة الثقافة والسياحة",
     nameEn:"Department of Culture and Tourism", mobile:"97126667788",
@@ -1427,17 +1456,27 @@ GOV = [
       {id:"VE1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
       {id:"VE2",workflow:WORKFLOWS[6],nameAr:"Redirection",nameEn:"Redirection"}]}),
   fillGov({id:"V5", idNumber:"GOV-4005", nameAr:"هيئة البيئة - أبوظبي",
-    nameEn:"Environment Agency - Abu Dhabi", mobile:"97127778899",
+    nameEn:"Environment Agency - Abu Dhabi",
+    exceptions:[
+      {id:"GC0",workflow:WORKFLOWS[5],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GC1",workflow:WORKFLOWS[9],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GC2",workflow:WORKFLOWS[11],nameAr:"Redirection",nameEn:"Redirection"}], mobile:"97127778899",
     email:"info@ead.gov.ae", isExempted:"Yes",
     documents:[{type:"Copy of Trade License",issueDate:"18-09-2025",expiryDate:"17-09-2027"}]}),
   fillGov({id:"V6", idNumber:"GOV-4006", nameAr:"مركز أبوظبي لإدارة النفايات",
     nameEn:"Abu Dhabi Waste Management Center", mobile:"97128889900",
     email:"support@tadweer.ae", isExempted:"No"}),
   fillGov({id:"V7", idNumber:"GOV-4007", nameAr:"دائرة التنمية الاقتصادية",
-    nameEn:"Department of Economic Development", mobile:"97129990011",
+    nameEn:"Department of Economic Development",
+    exceptions:[
+      {id:"GD0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"}], mobile:"97129990011",
     email:"info@ded.abudhabi.ae", isExempted:"No"}),
   fillGov({id:"V8", idNumber:"GOV-4008", nameAr:"هيئة مياه وكهرباء أبوظبي",
-    nameEn:"Abu Dhabi Water and Electricity Authority", mobile:"97121112233",
+    nameEn:"Abu Dhabi Water and Electricity Authority",
+    exceptions:[
+      {id:"GE0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GE1",workflow:WORKFLOWS[3],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"GE2",workflow:WORKFLOWS[4],nameAr:"Redirection",nameEn:"Redirection"}], mobile:"97121112233",
     email:"contact@adwea.gov.ae", isExempted:"Yes"}),
   fillGov({id:"V9", idNumber:"GOV-4009", nameAr:"مركز أبوظبي للصحة العامة",
     nameEn:"Abu Dhabi Public Health Center", mobile:"97122223344",
@@ -1574,7 +1613,10 @@ function searchFields(){
     {k:"nameEn",label:"nameEn",     dir:"ltr", ph:"phNameEn"},
     {k:"email", label:"emailAddress",dir:"ltr", ph:"phEmail", type:"email"},
     {k:"phone", label:"phoneNumber",dir:"ltr", ph:"phPhone", more:true}
-  ];
+  ].filter(function(f){
+    /* Government Entities search on identity and name only */
+    return !(S.cat==="gov" && (f.k==="email" || f.k==="phone"));
+  });
 }
 function filterCtl(x){
   return '<input type="'+(x.type==="email"?"email":"text")+'" data-b="draft.'+x.k+'"'
@@ -1599,7 +1641,8 @@ function viewSearch(){
      "Show less" appears below the revealed filters rather than between them */
   return '<div class="fpanel">'
     +'<div class="fgrid">'+primary.map(filterRow).join("")+"</div>"
-    +(S.moreFilters
+    +(extra.length===0 ? '<div class="fmore"><span class="rule"></span></div>'
+      : S.moreFilters
         ? '<div class="fgrid">'+extra.map(filterRow).join("")+"</div>"+toggle
         : toggle)
     +'<div class="factions">'
@@ -1725,6 +1768,12 @@ function addModalBody(){
 var PERSON_TABS=[["profileDetails","profileDetails"],["blockDetails","blockDetails"],
                  ["poaDetails","poaDetails"],["documents","documents"]];
 
+/* the two customer flags — shown on each category's first tab */
+function custInfoBlock(r){
+  return grp(t("customerInformation"))
+    +fieldGrid([[t("isExempted"),st(r.isExempted)]]
+      .concat(r.isSmartSurvey!==undefined?[[t("isSmartSurvey"),st(r.isSmartSurvey)]]:[]));
+}
 function bodyMain(p){
   return fieldGrid([
     [t("name"), ar() ? (p.nameAr||p.nameEn) : (p.nameEn||p.nameAr)],
@@ -1733,7 +1782,7 @@ function bodyMain(p){
     [t("idNumber"), p.idNumber, true],
     [t("mobile"), p.mobile, true],
     [t("emailAddress"), p.email, true]
-  ]);
+  ])+custInfoBlock(p);
 }
 
 function bodyProfile(p){
@@ -1884,13 +1933,6 @@ function bodyDocuments(r){
         +'</td><td dir="ltr">'+esc(a.createdDate)
         +'</td><td><button class="btn sm" data-a="openApp" data-id="'+esc(a.no)+'">'+esc(t("view"))+"</button></td>"; })
     +pager(pg.page,pg.total,"appPage");
-
-  out+=grp(t("customerInformation"))
-    +fieldGrid([[t("isExempted"),st(r.isExempted)]]
-      .concat(r.isSmartSurvey!==undefined?[[t("isSmartSurvey"),st(r.isSmartSurvey)]]:[]))
-    +'<div class="row-end right" style="margin-top:22px">'
-    +'<button class="btn btn-search" style="width:auto;min-width:240px" data-a="cpuOpen">'
-    +esc(t("editCustomerDetails"))+"</button></div>";
 
   return out;
 }
@@ -2088,7 +2130,8 @@ function viewCompany(){
           [t("emailAddress"),c.contact.email,true],[t("mobile"),c.contact.mobile,true],
           [t("phone"),c.contact.phone,true],[t("fax"),c.contact.fax,true],
           [t("poBox"),c.contact.poBox,true],[t("propertyNumber"),c.contact.propertyNumber],
-          [t("address"),c.contact.address]]); }},
+          [t("address"),c.contact.address]])
+        +custInfoBlock(c); }},
       {key:"blocks", title:t("blockDetails"), body:function(){ return bodyBlocks(c); }},
       {key:"acts",   title:t("tradeLicenseActivities"), body:function(){
         var ap=paged(c.activities,S.actPage,16);
@@ -2128,7 +2171,8 @@ function viewGov(){
           [t("mobile"),g.contact.mobile,true],[t("phone"),g.contact.phone,true],
           [t("fax"),g.contact.fax,true],[t("poBox"),g.contact.poBox,true],
           [t("emailAddress"),g.contact.email,true],
-          [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]]); }},
+          [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]])
+        +custInfoBlock(g); }},
     {key:"users", title:t("users"), body:function(){
       return grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin")],
         g.users,function(u,i){
@@ -2254,14 +2298,15 @@ function viewException(){
   var r=rec(); if(!r) return "";
   if(!r.exceptions) r.exceptions=[];
   return '<section class="card"><header><h2>'+esc(t("exception"))+'</h2><div class="grow"></div>'
-    +'<button class="btn btn-amber sm" data-a="excAdd">'+esc(t("add"))+"</button>"
-    +'<button class="minus">&minus;</button></header><div class="body flush">'
-    +grid(["",t("customer"),t("workflow"),t("nameAr"),t("nameEn")],r.exceptions,function(x){
-      var open=S.gear==="X"+x.id;
-      return '<td><div class="gearwrap"><button class="gear" data-a="excGear" data-id="'+esc(x.id)+'" aria-expanded="'+open+'" aria-haspopup="menu" aria-label="'+esc(t("viewMore"))+'" title="'+esc(t("viewMore"))+'">'
-        +icon("more",18)+"</button></div></td>"
-        +"<td>"+esc(r.nameEn||r.nameAr)+"</td><td>"+esc(t(x.workflow))+"</td>"
-        +"<td>"+esc(x.nameAr)+"</td><td>"+esc(x.nameEn)+"</td>"; })
+    +'<button class="btn-add sm" data-a="excAdd">'+esc(t("add"))+"</button></header>"
+    +'<div class="body flush">'
+    /* action column last, matching every other table in the build */
+    +grid([t("customer"),t("workflow"),t("nameAr"),t("nameEn"),""],r.exceptions,function(x){
+      return "<td>"+esc(r.nameEn||r.nameAr)+"</td><td>"+esc(t(x.workflow))+"</td>"
+        +"<td>"+esc(x.nameAr)+"</td><td>"+esc(x.nameEn)+"</td>"
+        +'<td><button class="iconsq danger" data-a="confirm" data-do="delExc" data-id="'
+        +esc(x.id)+'" title="'+esc(t("del"))+'" aria-label="'+esc(t("del"))+" "+esc(t(x.workflow))+'">'
+        +icon("del",17)+"</button></td>"; })
     +"</div></section>";
 }
 function excModalBody(){
@@ -2497,10 +2542,17 @@ function renderBody(){
 
   /* the profile-sync button belongs to the header, beside the breadcrumb and title */
   var headAct="";
-  if(r.name==="detail" && S.cat==="persons")
-    headAct='<button class="btn btn-navy" data-a="moi">'+esc(t("updateMoi"))+"</button>";
-  else if(r.name==="detail" && S.cat==="companies")
-    headAct='<button class="btn btn-navy" data-a="ded">'+esc(t("updateDed"))+"</button>";
+  if(r.name==="detail"){
+    /* record-level actions live in the header, so they are reachable from any tab */
+    var acts=[];
+    if(S.cat==="persons")   acts.push('<button class="btn" data-a="moi">'+esc(t("updateMoi"))+"</button>");
+    if(S.cat==="companies") acts.push('<button class="btn" data-a="ded">'+esc(t("updateDed"))+"</button>");
+    /* Government Entities have no profile-update application */
+    if(S.cat!=="gov")
+      acts.push('<button class="btn-search" style="width:auto;min-width:230px" data-a="cpuOpen">'
+        +esc(t("editCustomerDetails"))+"</button>");
+    headAct=acts.join("");
+  }
   else if(r.name==="contract"){
     /* the status belongs to the whole contract, so it sits with the title */
     var cr=rec(), cpoa=cr&&contractsOf(cr)[r.n];
@@ -2533,18 +2585,13 @@ function renderMenu(){
   if(!root) return;
   if(!S.gear){ root.innerHTML=""; return; }
 
-  var isExc = String(S.gear).charAt(0)==="X";
-  var id = isExc ? String(S.gear).slice(1) : S.gear;
-  var btn = document.querySelector(isExc
-    ? '[data-a="excGear"][data-id="'+id+'"]'
-    : '[data-a="gear"][data-id="'+id+'"]');
+  var id=S.gear;
+  var btn=document.querySelector('[data-a="gear"][data-id="'+id+'"]');
   if(!btn){ root.innerHTML=""; return; }   /* trigger scrolled out of the DOM */
 
   var html;
-  if(isExc){
-    html='<button role="menuitem" data-a="confirm" data-do="delExc" data-id="'+esc(id)+'">'
-      +icon("del",17)+esc(t("del").charAt(0)+t("del").slice(1).toLowerCase())+"</button>";
-  } else {
+  {
+
     /* Persons: View Details + Edit only.
        Companies / Government Entities keep [CustomerException]. */
     var items=[["view",icon("view",19),t("viewDetails")],["edit",icon("edit",19),t("edit")]];
@@ -2587,7 +2634,7 @@ document.addEventListener("click",function(ev){
   var el=ev.target.closest?ev.target.closest("[data-a]"):null;
   var a=el?el.getAttribute("data-a"):null;
 
-  if(S.gear && a!=="gear" && a!=="excGear"){ S.gear=null; renderBody(); }
+  if(S.gear && a!=="gear"){ S.gear=null; renderBody(); }
   if(!el) return;
   /* a row click that was really a text selection (e.g. copying an email) must
      not navigate */
@@ -2611,7 +2658,6 @@ document.addEventListener("click",function(ev){
     case "listPage": var n=+el.getAttribute("data-n"); if(n>=1){ S.listPage=n; renderBody(); } return;
 
     case "gear": S.gear=S.gear===id?null:id; renderBody(); return;
-    case "excGear": S.gear=S.gear==="X"+id?null:"X"+id; renderBody(); return;
 
     case "view": S.route={name:"detail",id:id}; S.gear=null; render(); return;
     case "exc":  S.route={name:"exc",id:id};    S.gear=null; render(); return;
