@@ -332,6 +332,15 @@ display:inline-flex;align-items:center;gap:8px;}
 .btn-add:hover{background:var(--olive-dk);border-color:var(--olive-dk);}
 .btn-add .plus{font-size:17px;line-height:1;}
 
+/* document cards: icon tile, file name, download action */
+.docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+.doccard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);
+border-radius:var(--r-sm);padding:12px 14px;background:var(--surface);}
+.doccard .fi{width:38px;height:38px;flex:0 0 38px;border-radius:7px;background:var(--olive-soft);
+display:grid;place-items:center;color:var(--ink);}
+.doccard .fn{flex:1;min-width:0;font-size:14px;color:var(--ink);
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
 /* contract details: status pill beside the section heading */
 .statusbadge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;
 padding:6px 14px;border-radius:99px;letter-spacing:.04em;text-transform:uppercase;}
@@ -359,8 +368,6 @@ font-size:14px;border-bottom:3px solid transparent;margin-bottom:-1px;}
 border-bottom:1px solid var(--line-2);margin:28px 0 20px;}
 .grp:first-child{margin-top:0;}
 .grp.no-rule{border-bottom:0;padding-bottom:4px;}
-.grp.grp-a{display:flex;align-items:center;gap:16px;}
-.grp.grp-a .gt{flex:1;min-width:0;}
 .fgrid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 30px;margin:0;}
 @media(max-width:1180px){.fgrid4{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:760px){.fgrid4{grid-template-columns:repeat(2,minmax(0,1fr));}}
@@ -477,6 +484,8 @@ border-inline-start:3px solid var(--olive);}
 
 /* ── Brand assets: inlined from the uploaded SVGs ── */
 var ICONS = {
+"docfile": "<svg viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M7.875 11.375H13.125C13.3729 11.375 13.5807 11.2911 13.7484 11.1234C13.9161 10.9557 14 10.7479 14 10.5C14 10.2521 13.9161 10.0443 13.7484 9.87656C13.5807 9.70885 13.3729 9.625 13.125 9.625H7.875C7.62708 9.625 7.41927 9.70885 7.25156 9.87656C7.08385 10.0443 7 10.2521 7 10.5C7 10.7479 7.08385 10.9557 7.25156 11.1234C7.41927 11.2911 7.62708 11.375 7.875 11.375ZM7.875 14H13.125C13.3729 14 13.5807 13.9161 13.7484 13.7484C13.9161 13.5807 14 13.3729 14 13.125C14 12.8771 13.9161 12.6693 13.7484 12.5016C13.5807 12.3339 13.3729 12.25 13.125 12.25H7.875C7.62708 12.25 7.41927 12.3339 7.25156 12.5016C7.08385 12.6693 7 12.8771 7 13.125C7 13.3729 7.08385 13.5807 7.25156 13.7484C7.41927 13.9161 7.62708 14 7.875 14ZM7.875 16.625H10.5C10.7479 16.625 10.9557 16.5411 11.1234 16.3734C11.2911 16.2057 11.375 15.9979 11.375 15.75C11.375 15.5021 11.2911 15.2943 11.1234 15.1266C10.9557 14.9589 10.7479 14.875 10.5 14.875H7.875C7.62708 14.875 7.41927 14.9589 7.25156 15.1266C7.08385 15.2943 7 15.5021 7 15.75C7 15.9979 7.08385 16.2057 7.25156 16.3734C7.41927 16.5411 7.62708 16.625 7.875 16.625ZM5.25 19.25C4.76875 19.25 4.35677 19.0786 4.01406 18.7359C3.67135 18.3932 3.5 17.9812 3.5 17.5V3.5C3.5 3.01875 3.67135 2.60677 4.01406 2.26406C4.35677 1.92135 4.76875 1.75 5.25 1.75H11.5281C11.7615 1.75 11.9839 1.79375 12.1953 1.88125C12.4068 1.96875 12.5927 2.09271 12.7531 2.25312L16.9969 6.49687C17.1573 6.65729 17.2812 6.84323 17.3687 7.05469C17.4562 7.26615 17.5 7.48854 17.5 7.72187V17.5C17.5 17.9812 17.3286 18.3932 16.9859 18.7359C16.6432 19.0786 16.2312 19.25 15.75 19.25H5.25ZM15.75 7.875H12.6875C12.3229 7.875 12.013 7.7474 11.7578 7.49219C11.5026 7.23698 11.375 6.92708 11.375 6.5625V3.5H5.25V17.5H15.75V7.875Z\" fill=\"currentColor\"/> </svg>",
+"download": "<svg viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M10.5 13.6281C10.3833 13.6281 10.274 13.6099 10.1719 13.5734C10.0698 13.537 9.975 13.475 9.8875 13.3875L6.7375 10.2375C6.5625 10.0625 6.47865 9.85833 6.48594 9.625C6.49323 9.39167 6.57708 9.1875 6.7375 9.0125C6.9125 8.8375 7.12031 8.74635 7.36094 8.73906C7.60156 8.73177 7.80937 8.81562 7.98437 8.99062L9.625 10.6312V4.375C9.625 4.12708 9.70885 3.91927 9.87656 3.75156C10.0443 3.58385 10.2521 3.5 10.5 3.5C10.7479 3.5 10.9557 3.58385 11.1234 3.75156C11.2911 3.91927 11.375 4.12708 11.375 4.375V10.6312L13.0156 8.99062C13.1906 8.81562 13.3984 8.73177 13.6391 8.73906C13.8797 8.74635 14.0875 8.8375 14.2625 9.0125C14.4229 9.1875 14.5068 9.39167 14.5141 9.625C14.5214 9.85833 14.4375 10.0625 14.2625 10.2375L11.1125 13.3875C11.025 13.475 10.9302 13.537 10.8281 13.5734C10.726 13.6099 10.6167 13.6281 10.5 13.6281ZM5.25 17.5C4.76875 17.5 4.35677 17.3286 4.01406 16.9859C3.67135 16.6432 3.5 16.2312 3.5 15.75V14C3.5 13.7521 3.58385 13.5443 3.75156 13.3766C3.91927 13.2089 4.12708 13.125 4.375 13.125C4.62292 13.125 4.83073 13.2089 4.99844 13.3766C5.16615 13.5443 5.25 13.7521 5.25 14V15.75H15.75V14C15.75 13.7521 15.8339 13.5443 16.0016 13.3766C16.1693 13.2089 16.3771 13.125 16.625 13.125C16.8729 13.125 17.0807 13.2089 17.2484 13.3766C17.4161 13.5443 17.5 13.7521 17.5 14V15.75C17.5 16.2312 17.3286 16.6432 16.9859 16.9859C16.6432 17.3286 16.2312 17.5 15.75 17.5H5.25Z\" fill=\"currentColor\"/> </svg>",
 "empty": "<svg viewBox=\"0 0 45 45\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <rect width=\"45\" height=\"45\" rx=\"22.5\" fill=\"#EBEEF3\"/> <path d=\"M19 27.75H26V26H19V27.75ZM19 24.25H26V22.5H19V24.25ZM17.25 31.25C16.7687 31.25 16.3568 31.0786 16.0141 30.7359C15.6714 30.3932 15.5 29.9812 15.5 29.5V15.5C15.5 15.0187 15.6714 14.6068 16.0141 14.2641C16.3568 13.9214 16.7687 13.75 17.25 13.75H24.25L29.5 19V29.5C29.5 29.9812 29.3286 30.3932 28.9859 30.7359C28.6432 31.0786 28.2312 31.25 27.75 31.25H17.25ZM23.375 19.875V15.5H17.25V29.5H27.75V19.875H23.375Z\" fill=\"#484456\"/> </svg>",
 "exception": "<svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M2.725 21C2.54167 21 2.375 20.9542 2.225 20.8625C2.075 20.7708 1.95834 20.65 1.875 20.5C1.79167 20.35 1.74584 20.1875 1.7375 20.0125C1.72917 19.8375 1.775 19.6667 1.875 19.5L11.125 3.5C11.225 3.33333 11.3542 3.20833 11.5125 3.125C11.6708 3.04167 11.8333 3 12 3C12.1667 3 12.3292 3.04167 12.4875 3.125C12.6458 3.20833 12.775 3.33333 12.875 3.5L22.125 19.5C22.225 19.6667 22.2708 19.8375 22.2625 20.0125C22.2542 20.1875 22.2083 20.35 22.125 20.5C22.0417 20.65 21.925 20.7708 21.775 20.8625C21.625 20.9542 21.4583 21 21.275 21H2.725ZM4.45 19H19.55L12 6L4.45 19ZM12.7125 17.7125C12.9042 17.5208 13 17.2833 13 17C13 16.7167 12.9042 16.4792 12.7125 16.2875C12.5208 16.0958 12.2833 16 12 16C11.7167 16 11.4792 16.0958 11.2875 16.2875C11.0958 16.4792 11 16.7167 11 17C11 17.2833 11.0958 17.5208 11.2875 17.7125C11.4792 17.9042 11.7167 18 12 18C12.2833 18 12.5208 17.9042 12.7125 17.7125ZM12.7125 14.7125C12.9042 14.5208 13 14.2833 13 14V11C13 10.7167 12.9042 10.4792 12.7125 10.2875C12.5208 10.0958 12.2833 10 12 10C11.7167 10 11.4792 10.0958 11.2875 10.2875C11.0958 10.4792 11 10.7167 11 11V14C11 14.2833 11.0958 14.5208 11.2875 14.7125C11.4792 14.9042 11.7167 15 12 15C12.2833 15 12.5208 14.9042 12.7125 14.7125Z\" fill=\"currentColor\"/>\n</svg>",
 "search": "<svg viewBox=\"42.5 13 15 15\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\"><path d=\"M49.2502 25.7485C52.563 25.7485 55.2485 23.063 55.2485 19.7502C55.2485 16.4375 52.563 13.752 49.2502 13.752C45.9375 13.752 43.252 16.4375 43.252 19.7502C43.252 23.063 45.9375 25.7485 49.2502 25.7485Z\" stroke=\"currentColor\" stroke-width=\"1.49957\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M56.7494 27.2492L53.5244 24.0242\" stroke=\"currentColor\" stroke-width=\"1.49957\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
@@ -1070,6 +1079,14 @@ function fillPerson(o){
 PERSONS = [
   fillPerson({id:"P101", idNumber:"7841991234567", nameAr:"طارق خالد المنصوري",
     nameEn:"Tariq Khalid Almansoori", familyName:"Almansoori",
+    approvedDocs:[
+      {type:"Tenancy Agreement Contract (Industrial Plot)",issueDate:"28-11-2020",expiryDate:"30-10-2022"},
+      {type:"Educational Qualification Certificate (Graduation)",issueDate:"29-11-2020",expiryDate:""},
+      {type:"Educational Qualification Certificate",issueDate:"24-03-2025",expiryDate:""},
+      {type:"sworn translator certificate",issueDate:"",expiryDate:""},
+      {type:"Material Source Declaration Justification (MSDJ)",issueDate:"15-07-2023",expiryDate:"30-07-2023"},
+      {type:"Personal Photo (size: 4.5cm * 3.5cm with white background)",issueDate:"",expiryDate:""},
+      {type:"Experience Letter",issueDate:"",expiryDate:""}],
     blocks:{esb:[
         {title:"Municipal Violation",warning:"storing materials and dumping wastes at sites other than those designated for collecting wastes and garbage.",ref:"202600418277",datetime:"14-05-2026, 09:22:41"},
         {title:"Municipal Violation",warning:"carrying out construction work without obtaining the required permit from the competent authority.",ref:"202600361904",datetime:"02-03-2026, 13:47:05"}],
@@ -1380,7 +1397,7 @@ var S = {
   moreFilters:false,
   draft:{}, applied:{}, pageSize:"10", listPage:1,
   route:{name:"list"},
-  tab:null, gear:null,
+  tab:null, ctab:null, gear:null,
   tab:null,
   poa:{no:"",start:"",end:"",status:""},
   appPage:1, poaPage:1, sigPage:1, actPage:1, usrPage:1,
@@ -1422,10 +1439,7 @@ function grp(txt){ return '<div class="grp">'+esc(txt)+"</div>"; }
 /* heading that sits directly above a table: the table header supplies its own
    rule, so a second one under the heading reads as a double line */
 function grpT(txt){ return '<div class="grp no-rule">'+esc(txt)+"</div>"; }
-/* heading with something aligned opposite it (e.g. a status pill) */
-function grpA(txt,right){
-  return '<div class="grp grp-a"><span class="gt">'+esc(txt)+"</span>"+(right||"")+"</div>";
-}
+
 function fieldGrid(items){
   return '<dl class="fgrid4">'+items.map(function(r){
     var v=(r[1]===""||r[1]===null||r[1]===undefined)?"\u2014":r[1];
@@ -1805,10 +1819,7 @@ function bodyPoa(p){
 
 /* Documents tab — shared shape */
 function bodyDocuments(r){
-  var out=grpT(t("approvedDocuments"))
-    +grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],r.approvedDocs,function(dc,i){
-      return "<td>"+(i+1)+"</td><td>"+esc(dc.type)+"</td><td>"+esc(dc.issueDate)+"</td><td>"+esc(dc.expiryDate)
-        +'</td><td><button class="btn sm" data-a="viewDoc" data-n="'+i+'">'+esc(t("view"))+"</button></td>"; });
+  var out=grp(t("approvedDocuments"))+docCards(r.approvedDocs,"approvedDocs");
 
   var pg=paged(r.completedApplications,S.appPage,5);
   out+=grpT(t("completedApplications"))
@@ -1830,11 +1841,12 @@ function bodyDocuments(r){
 
 /* tabs(list) — list items are {key,title,body:function}. Only the active body is
    invoked, so hidden sections cost nothing and cannot fight over shared state. */
-function tabbed(items){
+function tabbed(items,stateKey){
+  var sk=stateKey||"tab";
   var keys=items.map(function(x){ return x.key; });
-  var cur = (S.tab && keys.indexOf(S.tab)>-1) ? S.tab : keys[0];
+  var cur = (S[sk] && keys.indexOf(S[sk])>-1) ? S[sk] : keys[0];
   var strip=items.map(function(x){
-    return '<button class="utab" data-a="tab" data-id="'+esc(x.key)+'" role="tab" aria-selected="'
+    return '<button class="utab" data-a="tab" data-sk="'+sk+'" data-id="'+esc(x.key)+'" role="tab" aria-selected="'
       +(x.key===cur)+'">'+esc(x.title)+"</button>";
   }).join("");
   var active=null;
@@ -1850,6 +1862,44 @@ function tabbed(items){
    Party rows are resolved from the fixture where the counterparty is a known
    customer, so email / phone / EID come from one place rather than being
    duplicated onto every contract. */
+/* the standalone page a document opens as. Kept separate from the click handler
+   so its output can be asserted directly. */
+/* file name falls back to the document type when the record has none */
+function docFileName(doc){
+  return doc.file || (String(doc.type||"").replace(/[\\/:*?"<>|]/g,"")+".pdf");
+}
+function docCards(list,src){
+  if(!list||!list.length)
+    return '<div class="empty">'+icon("empty",45,"gl")+esc(t("noRecords"))+"</div>";
+  return '<div class="docgrid">'+list.map(function(dc,i){
+    var nm=docFileName(dc);
+    return '<div class="doccard">'
+      +'<span class="fi">'+icon("docfile",20)+"</span>"
+      +'<span class="fn" title="'+esc(nm)+'">'+esc(nm)+"</span>"
+      +'<button class="iconsq" data-a="viewDoc" data-src="'+src+'" data-n="'+i+'" title="'
+        +esc(t("view"))+'" aria-label="'+esc(t("view"))+" "+esc(nm)+'">'+icon("download",18)+"</button>"
+      +"</div>";
+  }).join("")+"</div>";
+}
+function docPageHtml(doc,ownerName){
+  var rows=[[t("documentType"),doc.type],["File",docFileName(doc)],
+            [t("issueDate"),doc.issueDate||"\u2014"],
+            [t("expiryDate"),doc.expiryDate||"\u2014"],
+            [t("customers"),ownerName]];
+  return '<!doctype html><html lang="'+(ar()?"ar":"en")+'" dir="'+(ar()?"rtl":"ltr")+'">'
+    +"<head><meta charset=\"utf-8\"><title>"+esc(doc.type)+"</title><style>"
+    +'body{margin:0;padding:48px;font:15px/1.6 Inter,"Segoe UI",system-ui,sans-serif;color:#130F26;background:#F7F7F5;}'
+    +'.sheet{max-width:820px;margin:0 auto;background:#fff;border:1px solid #E8E8E4;border-radius:10px;padding:36px 40px;}'
+    +'h1{margin:0 0 4px;font-size:22px;letter-spacing:-.01em;}'
+    +'p.sub{margin:0 0 28px;color:#6E7278;font-size:14px;}'
+    +'dl{display:grid;grid-template-columns:200px 1fr;gap:12px 24px;margin:0;}'
+    +'dt{color:#6E7278;font-size:13px;}dd{margin:0;font-weight:600;}'
+    +'.ph{margin-top:32px;border:1px dashed #D2D2CB;border-radius:8px;padding:56px;text-align:center;color:#8A8A8A;}'
+    +"</style></head><body><div class=\"sheet\"><h1>"+esc(doc.type)+"</h1>"
+    +'<p class="sub">'+esc(t("approvedDocuments"))+"</p><dl>"
+    +rows.map(function(r){ return "<dt>"+esc(r[0])+"</dt><dd>"+esc(r[1])+"</dd>"; }).join("")
+    +'</dl><div class="ph">'+esc(t("view"))+" \u2014 "+esc(doc.type)+"</div></div></body></html>";
+}
 function contractsOf(r){ return (r.poas||[]).concat(r.signatories||[]); }
 function partyOf(name){
   var hit=null;
@@ -1894,42 +1944,41 @@ function viewContract(){
   if(!poa) return '<div class="unv">'+esc(t("noRecords"))+"</div>";
   var k=contractOf(r,poa);
 
-  var badge='<span class="statusbadge '+sxClass(k.status)+'">'+esc(st(k.status))+"</span>";
-  var out=grpA(t("basicInformation"),badge)
-    +fieldGrid([
+  return tabbed([
+    {key:"basic", title:t("basicInformation"), body:function(){
+      return fieldGrid([
         [t("poaNo"),k.no,true],[t("contractType"),k.type],
         [t("issueDate"),k.issueDate],[t("contractStart"),k.startDate],
         [t("expiryDate"),k.expiryDate],[t("terminateDate"),k.terminateDate],
-        [t("remarks"),k.remarks]])
-    +grpT(t("firstParty"))+partyGrid(k.first)
-    +grpT(t("secondParty"))+partyGrid(k.second)
-    +grp(t("workflowGroups"))
-    +(k.groups.length
+        [t("remarks"),k.remarks]]); }},
+    {key:"first",  title:t("firstParty"),  body:function(){ return partyGrid(k.first); }},
+    {key:"second", title:t("secondParty"), body:function(){ return partyGrid(k.second); }},
+    {key:"wf",     title:t("workflowGroups"), body:function(){
+      return k.groups.length
         ? k.groups.map(function(gp){
             return grpT(gp.name)
               +grid(["#",t("workflowNames")],gp.workflows,function(nm,i){
                   return "<td>"+(i+1)+"</td><td>"+esc(nm)+"</td>"; });
           }).join("")
-        : grid(["#",t("workflowNames")],[],function(){ return ""; }))
-    +grp(t("properties"))
-    +grpT(t("plots"))
-    +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNo"),t("landUse"),""],
-      k.plots,function(x,i){
-        return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)
-          +"</td><td>"+esc(x.community)+"</td><td>"+esc(x.road)+'</td><td dir="ltr">'
-          +esc(x.plotNumber)+"</td><td>"+esc(x.landUse)+"</td>"+propArrow("plots",i); },
-      null, propRow("plots"))
-    +grpT(t("units"))
-    +grid([t("unitName"),t("propertyNumber"),t("municipality"),t("district"),
-           t("community"),t("road"),t("plotNo"),t("landUse"),""],
-      k.units,function(x,i){
-        return '<td dir="ltr">'+esc(x.unitNumber)+"</td><td>"+esc(x.propertyNumber)
-          +"</td><td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
-          +"</td><td>"+esc(x.road)+'</td><td dir="ltr">'+esc(x.plotNumber)+"</td><td>"
-          +esc(x.landUse)+"</td>"+propArrow("units",i); },
-      null, propRow("units"));
-
-  return '<section class="tabcard"><div class="tabbody">'+out+"</div></section>";
+        : grid(["#",t("workflowNames")],[],function(){ return ""; }); }},
+    {key:"props",  title:t("properties"), body:function(){
+      return grpT(t("plots"))
+        +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNo"),t("landUse"),""],
+          k.plots,function(x,i){
+            return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)
+              +"</td><td>"+esc(x.community)+"</td><td>"+esc(x.road)+'</td><td dir="ltr">'
+              +esc(x.plotNumber)+"</td><td>"+esc(x.landUse)+"</td>"+propArrow("plots",i); },
+          null, propRow("plots"))
+        +grpT(t("units"))
+        +grid([t("unitName"),t("propertyNumber"),t("municipality"),t("district"),
+               t("community"),t("road"),t("plotNo"),t("landUse"),""],
+          k.units,function(x,i){
+            return '<td dir="ltr">'+esc(x.unitNumber)+"</td><td>"+esc(x.propertyNumber)
+              +"</td><td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
+              +"</td><td>"+esc(x.road)+'</td><td dir="ltr">'+esc(x.plotNumber)+"</td><td>"
+              +esc(x.landUse)+"</td>"+propArrow("units",i); },
+          null, propRow("units")); }}
+  ],"ctab");
 }
 function sxClass(v){
   var g=["Active","Approved","Valid","Completed"],a=["Expired","Pending"],r=["Terminated","Cancelled","Rejected"];
@@ -2010,9 +2059,7 @@ function viewGov(){
         return "<td>"+(i+1)+"</td><td>"+esc(u.nameAr)+"</td><td>"+esc(u.nameEn)+'</td><td dir="ltr">'+esc(u.email)
           +'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)+"</td><td>"+sx(u.isAdmin)+"</td>"; }); }},
     {key:"docs",  title:t("documents"), body:function(){
-      return grid(["#",t("documentType"),t("issueDate"),t("expiryDate"),""],g.documents,function(dc,i){
-        return "<td>"+(i+1)+"</td><td>"+esc(dc.type)+"</td><td>"+esc(dc.issueDate)+"</td><td>"+esc(dc.expiryDate)
-          +'</td><td><button class="btn sm" data-a="viewDoc" data-n="'+i+'">'+esc(t("view"))+"</button></td>"; }); }}
+      return docCards(g.documents,"documents"); }}
   ]);
 }
 
@@ -2315,8 +2362,10 @@ function renderBody(){
     crumb=[t("services"),t("custProfileUpdate"),t("backOfficeConfirm")];
     h1=t("custProfileUpdate");
   } else if(r.name==="contract"){
-    crumb=[t("customers"), S.cat==="persons"?t("crumbPerson")
-                         : S.cat==="companies"?t("crumbCompany") : t("crumbGov"),
+    /* the middle crumb routes back to the profile, keeping its own tab position */
+    crumb=[t("customers"), {label:(S.cat==="persons"?t("crumbPerson")
+                         : S.cat==="companies"?t("crumbCompany") : t("crumbGov")),
+                            act:"toDetail"},
            t("contractDetails")];
     h1=t("contractDetails");
   } else if(r.name==="exc"){
@@ -2333,8 +2382,10 @@ function renderBody(){
   crumb=[t("backToDashboard")].concat(crumb);
   var last=crumb.length-1;
   var cl=crumb.map(function(c,i){
-    return (i===last ? "<span>"+esc(c)+"</span>"
-                     : '<a data-a="home">'+esc(c)+"</a>");
+    var label = (c && c.label!==undefined) ? c.label : c;
+    var act   = (c && c.act) ? c.act : "home";
+    return (i===last ? "<span>"+esc(label)+"</span>"
+                     : '<a data-a="'+act+'">'+esc(label)+"</a>");
   }).join('<span class="sep">&#8250;</span>');
 
   /* no Back button: the breadcrumb's "Customers" crumb and the active nav item
@@ -2356,6 +2407,11 @@ function renderBody(){
     headAct='<button class="btn btn-navy" data-a="moi">'+esc(t("updateMoi"))+"</button>";
   else if(r.name==="detail" && S.cat==="companies")
     headAct='<button class="btn btn-navy" data-a="ded">'+esc(t("updateDed"))+"</button>";
+  else if(r.name==="contract"){
+    /* the status belongs to the whole contract, so it sits with the title */
+    var cr=rec(), cpoa=cr&&contractsOf(cr)[r.n];
+    if(cpoa) headAct='<span class="statusbadge '+sxClass(cpoa.status)+'">'+esc(st(cpoa.status))+"</span>";
+  }
 
   document.body.classList.toggle("screen-search", r.name==="list");
   document.getElementById("page").innerHTML=
@@ -2422,7 +2478,7 @@ function render(){ renderChrome(); renderBody(); renderModal(); renderMenu(); }
 /* ═══════════════════ actions ═══════════════════ */
 function home(){
   S.route={name:"list"}; S.gear=null; S.cpu=null;
-  S.tab=null; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
+  S.tab=null; S.ctab=null; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
   S.poa={no:"",start:"",end:"",status:""};
 }
 function runConfirm(m){
@@ -2452,6 +2508,8 @@ document.addEventListener("click",function(ev){
     case "noop": return;
     case "cat": S.cat=id; S.draft={}; S.applied={}; S.listPage=1; S.tab=null; home(); render(); return;
     case "home": home(); render(); return;
+    /* back to the customer, leaving S.tab alone so the POA tab is still selected */
+    case "toDetail": S.route={name:"detail", id:S.route.id}; S.ctab=null; render(); return;
 
     case "search": S.applied=JSON.parse(JSON.stringify(S.draft)); S.listPage=1; renderBody(); return;
     case "reset": S.draft={}; S.applied={}; S.listPage=1; renderBody(); return;
@@ -2489,18 +2547,36 @@ document.addEventListener("click",function(ev){
     case "poaReset": S.poa={no:"",start:"",end:"",status:""}; S.poaPage=1; S.sigPage=1; renderBody(); return;
     case "poaOpen": S.route={name:"contract", id:S.route.id, n:+el.getAttribute("data-n")}; render(); return;
     case "appPage": S.appPage=+el.getAttribute("data-n"); renderBody(); return;
-    case "tab": S.tab=id; S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
+    case "tab": S[el.getAttribute("data-sk")||"tab"]=id;
+      S.appPage=1; S.poaPage=1; S.sigPage=1; S.actPage=1; S.usrPage=1;
       renderBody(); return;
     case "poaPage": S.poaPage=+el.getAttribute("data-n"); renderBody(); return;
     case "sigPage": S.sigPage=+el.getAttribute("data-n"); renderBody(); return;
     case "actPage": S.actPage=+el.getAttribute("data-n"); renderBody(); return;
     case "usrPage": S.usrPage=+el.getAttribute("data-n"); renderBody(); return;
 
-    case "viewDoc":
-      var w=window.open("","_blank");
-      if(w&&w.document){ w.document.write("<title>Document</title><body style='font:14px system-ui;padding:40px'>Document viewer target</body>"); w.document.close(); }
-      else toast(ar()?"يُفتح في تبويب جديد":"Opens in a new tab");
+    case "viewDoc": {
+      var dr=rec(), dsrc=el.getAttribute("data-src")||"approvedDocs";
+      var doc=dr&&(dr[dsrc]||[])[+el.getAttribute("data-n")];
+      if(!doc) return;
+      var html=docPageHtml(doc, dr.nameEn||dr.nameAr||"");
+      var win=null;
+      try{
+        /* a blob URL is navigable top-level, unlike a data: URL */
+        var burl=URL.createObjectURL(new Blob([html],{type:"text/html"}));
+        win=window.open(burl,"_blank");
+        setTimeout(function(){ try{ URL.revokeObjectURL(burl); }catch(e){} }, 30000);
+      }catch(e){ win=null; }
+      if(!win){                     /* no blob support -> write into the new tab */
+        try{
+          win=window.open("","_blank");
+          if(win&&win.document){ win.document.write(html); win.document.close(); }
+        }catch(e2){ win=null; }
+      }
+      if(!win) toast(ar()?"\u064A\u064F\u0641\u062A\u062D \u0627\u0644\u0645\u0633\u062A\u0646\u062F \u0641\u064A \u062A\u0628\u0648\u064A\u0628 \u062C\u062F\u064A\u062F \u2014 \u062A\u0645 \u062D\u062C\u0628\u0647 \u0645\u0646 \u0627\u0644\u0645\u062A\u0635\u0641\u062D"
+                          : "The document opens in a new tab — your browser blocked it.");
       return;
+    }
     case "openApp": toast((ar()?"الطلب ":"Application ")+id); return;
 
     case "addNew":
