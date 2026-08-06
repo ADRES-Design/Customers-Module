@@ -1694,10 +1694,7 @@ function searchFields(){
     {k:"nameEn",label:"nameEn",     dir:"ltr", ph:"phNameEn"},
     {k:"email", label:"emailAddress",dir:"ltr", ph:"phEmail", type:"email"},
     {k:"phone", label:"phoneNumber",dir:"ltr", ph:"phPhone", more:true}
-  ].filter(function(f){
-    /* Government Entities search on identity and name only */
-    return !(S.cat==="gov" && (f.k==="email" || f.k==="phone"));
-  });
+  ];
 }
 function filterCtl(x){
   return '<input type="'+(x.type==="email"?"email":"text")+'" data-b="draft.'+x.k+'"'
@@ -1722,8 +1719,7 @@ function viewSearch(){
      "Show less" appears below the revealed filters rather than between them */
   return '<div class="fpanel">'
     +'<div class="fgrid">'+primary.map(filterRow).join("")+"</div>"
-    +(extra.length===0 ? '<div class="fmore"><span class="rule"></span></div>'
-      : S.moreFilters
+    +(S.moreFilters
         ? '<div class="fgrid">'+extra.map(filterRow).join("")+"</div>"+toggle
         : toggle)
     +'<div class="factions">'
