@@ -798,7 +798,6 @@ var D = {
   areYouSure:["هل أنت متأكد؟","هل أنت متأكد؟"],
 
   unverified:["Not yet verified against UAT","لم يتم التحقق مقابل UAT"],
-  unvDocs:["The Individuals document-section list is not evidenced. The sections below are the Companies set, which is evidenced, plus Police Clearance Certificate to exercise the 1-month rule from the ticket.","قائمة أقسام مستندات الأشخاص غير موثقة."]
 };
 var STATUS_AR = {Active:"نشط",Expired:"منتهي",Terminated:"منتهٍ بالفسخ",Closed:"مغلق",
 Cancelled:"ملغى",
@@ -846,13 +845,16 @@ var DOC_RULES = {
 };
 function docRules(sec){ return DOC_RULES[sec] || {}; }
 
-/* Persons doc sections - NOT evidenced. Police Clearance included for the ticket rule. */
+/* Individuals doc sections, as supplied by the business */
 var PERSON_DOC_SECTIONS = [
-  "Copy of Emirates ID",
-  "Copy of Passport",
-  "Family Book Extract",
+  "Fee Exemption Letter",
   "Police Clearance Certificate",
-  "Fee Exemption Letter"
+  "Experience Letter",
+  "Educational Qualification Certificate",
+  "Training Completion Certificate for Evaluators",
+  "Training Completion Certificate for Auctioneers",
+  "Training Completion Certificate for Brokers",
+  "Training Completion Certificate for Surveyors"
 ];
 var POLICE_SECTION = "Police Clearance Certificate";
 
@@ -2421,8 +2423,7 @@ function viewCpu(){
       [t("entityId"), "GOV-999", true]]);
 
   /* one vertical flow: application -> applicant -> documents -> customer info */
-  return (S.cat!=="companies" ? unv("unvDocs") : "")
-    +'<div class="row-end right" style="margin-bottom:12px">'
+  return '<div class="row-end right" style="margin-bottom:12px">'
     +'<button class="btn btn-red" data-a="confirm" data-do="delApp">'+esc(t("del"))+"</button></div>"
     +section(t("applicationDetails"),appDetails)
     +section(t("applicantDetails"),applicant)
