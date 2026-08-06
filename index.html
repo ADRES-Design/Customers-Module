@@ -343,10 +343,20 @@ margin-bottom:12px;}
 display:grid;place-items:center;color:var(--ink);}
 .uprow .nm{flex:1;min-width:0;font-size:14px;color:var(--ink);}
 .uprow>.up{border-top:1px solid var(--line-2);padding:4px 16px 12px;}
-.btn-upload{background:var(--surface);border:1px solid var(--upload);color:var(--upload);
-padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;
-display:inline-flex;align-items:center;gap:7px;}
-.btn-upload:hover{background:#FBF2F4;}
+.filelist{display:flex;flex-direction:column;gap:8px;padding-top:12px;}
+.fileline{display:flex;align-items:center;gap:12px;border:1px solid var(--line);
+border-radius:var(--r-sm);padding:9px 12px;background:var(--surface);}
+.fileline .fi{width:32px;height:32px;flex:0 0 32px;border-radius:6px;
+background:var(--olive-soft);display:grid;place-items:center;color:var(--ink);}
+.fileline .fn{flex:1;min-width:0;font-size:14px;color:var(--ink);
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+label.btn-upload{cursor:pointer;}
+/* same treatment as "Clear all" on the search screen: white, thin grey border,
+   dark label — sized for a row rather than the filter panel */
+.btn-upload{background:var(--surface);border:1px solid var(--line);color:var(--ink);
+padding:8px 16px;border-radius:6px;font-size:14px;font-weight:400;
+display:inline-flex;align-items:center;gap:8px;}
+.btn-upload:hover{background:var(--page);}
 .svgi.up svg{transform:rotate(-90deg);}
 
 /* document cards: icon tile, file name, download action */
@@ -821,6 +831,21 @@ var COMPANY_DOC_SECTIONS = [
   "Fee Exemption Letter",
   "Copy of Trade License"
 ];
+/* Which fields each document section requires. Anything absent is optional;
+   a section with an empty object requires nothing. */
+var DOC_RULES = {
+  "Brokers certificate of professional indemnity insurance": {expiry:true},
+  "Audited Financial Statements":                            {issue:true},
+  "Non-bankruptcy Certificate":                              {expiry:true},
+  "Memorandum of Association":                               {issue:true, expiry:true},
+  "Central Bank License":                                    {ref:true, expiry:true},
+  "Escrow Account Trustee Registration Certificate":          {issue:true},
+  /* uploaded straight from the file picker — no dialog, no fields */
+  "Fee Exemption Letter":                                    {direct:true},
+  "Copy of Trade License":                                   {direct:true}
+};
+function docRules(sec){ return DOC_RULES[sec] || {}; }
+
 /* Persons doc sections - NOT evidenced. Police Clearance included for the ticket rule. */
 var PERSON_DOC_SECTIONS = [
   "Copy of Emirates ID",
@@ -2304,7 +2329,22 @@ function viewCpu(){
   var secs=cpuSections().map(function(name){
     var list=C.docs[name]||[];
     var police=name===POLICE_SECTION;
-    var uploaded = list.length
+    var direct=docRules(name).direct;
+    var uploaded = !list.length ? ""
+      : direct
+      ? '<div class="up"><div class="filelist">'
+        +list.map(function(dc,i){
+            return '<div class="fileline">'
+              +'<span class="fi">'+icon("docfile",18)+"</span>"
+              +'<span class="fn">'+esc(dc.file||docFileName(dc))+"</span>"
+              +'<button class="iconsq doc" data-a="viewCpuDoc" data-sec="'+esc(name)+'" data-n="'+i+'" title="'
+                +esc(t("view"))+'">'+icon("download",17)+"</button>"
+              +'<button class="iconsq danger" data-a="confirm" data-do="delCpuDoc" data-sec="'
+                +esc(name)+'" data-n="'+i+'" title="'+esc(t("del"))+'">'+icon("del",17)+"</button>"
+              +"</div>";
+          }).join("")
+        +"</div></div>"
+      : list.length
       ? '<div class="up"><div class="tw"><table class="g"><thead><tr>'
         +"<th>"+esc(t("referenceNumber"))+"</th><th>"+esc(t("issueDate"))+"</th><th>"
         +esc(t("expiryDate"))+"</th><th></th></tr></thead><tbody>"
@@ -2324,8 +2364,11 @@ function viewCpu(){
     return '<div class="uprow"><div class="hd">'
       +'<span class="fi">'+icon("docfile",19)+"</span>"
       +'<span class="nm">'+esc(name)+"</span>"
-      +'<button class="btn-upload" data-a="cpuAddDoc" data-sec="'+esc(name)+'">'
-        +icon("arrowRight",15,"up")+esc(t("upload"))+"</button>"
+      +(docRules(name).direct
+        ? '<label class="btn-upload"><input type="file" data-a="docFile" data-sec="'+esc(name)
+          +'" style="display:none">'+icon("arrowRight",15,"up")+esc(t("upload"))+"</label>"
+        : '<button class="btn-upload" data-a="cpuAddDoc" data-sec="'+esc(name)+'">'
+          +icon("arrowRight",15,"up")+esc(t("upload"))+"</button>")
       +"</div>"+uploaded+"</div>";
   }).join("");
 
@@ -2550,19 +2593,19 @@ function editIdBody(){
 /* Add Document — mandatory issue/expiry + police clearance 1-month rule (ticket) */
 function docModalBody(){
   var m=S.modal, d=m.d, e=m.errs||{};
-  var police = d.section===POLICE_SECTION;
+  var police = d.section===POLICE_SECTION, R = docRules(d.section);
   var expiry = police ? addMonth(d.issueDate) : d.expiryDate;
   return '<div class="frow"><label>'+esc(t("documentType"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.section)+'" disabled></div></div>'
-    +'<div class="frow"><label>'+esc(t("referenceNumber"))+'<span class="req">*</span></label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("referenceNumber"))+(R.ref?'<span class="req">*</span>':"")+'</label><div class="ctl">'
       +'<input type="text" data-b="modal.d.ref" placeholder="'+esc(t("phRefNo"))+'" value="'+esc(d.ref)+'"'
       +(e.ref?' aria-invalid="true"':"")+">"
       +(e.ref?'<div class="err">'+esc(e.ref)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("issueDate"))+'</label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("issueDate"))+(R.issue?'<span class="req">*</span>':"")+'</label><div class="ctl">'
       +'<input type="date" data-b="modal.d.issueDate" data-live="1" value="'+esc(d.issueDate)+'"'
       +(e.issueDate?' aria-invalid="true"':"")+">"
       +(e.issueDate?'<div class="err">'+esc(e.issueDate)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("expiryDate"))+'</label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("expiryDate"))+(R.expiry?'<span class="req">*</span>':"")+'</label><div class="ctl">'
       +'<input type="date" data-b="modal.d.expiryDate" value="'+esc(expiry)+'"'
       +(police?" disabled":"")+(e.expiryDate?' aria-invalid="true"':"")+">"
       +(e.expiryDate?'<div class="err">'+esc(e.expiryDate)+"</div>":"")
@@ -2860,10 +2903,13 @@ document.addEventListener("click",function(ev){
       var police=m.d.section===POLICE_SECTION;
       var exp=police?addMonth(m.d.issueDate):m.d.expiryDate;
       var de={};
-      /* reference number is the only required field; dates are optional, but if
-         both are supplied the expiry must still follow the issue date */
-      if(!String(m.d.ref||"").trim()) de.ref=t("reqField");
-      if(m.d.issueDate&&exp&&exp<=m.d.issueDate) de.expiryDate=t("expiryAfter");
+      /* required fields come from DOC_RULES; regardless of those, if both dates
+         are supplied the expiry must still follow the issue date */
+      var R2=docRules(m.d.section);
+      if(R2.ref    && !String(m.d.ref||"").trim()) de.ref=t("reqField");
+      if(R2.issue  && !m.d.issueDate)              de.issueDate=t("reqField");
+      if(R2.expiry && !exp)                        de.expiryDate=t("reqField");
+      if(m.d.issueDate&&exp&&exp<=m.d.issueDate)   de.expiryDate=t("expiryAfter");
       if(Object.keys(de).length){ m.errs=de; renderModal(); return; }
       S.cpu.docs[m.d.section].push({ref:m.d.ref,issueDate:m.d.issueDate,expiryDate:exp});
       S.modal=null; toast(ar()?"تم إضافة المستند":"Document added"); render(); return;
@@ -2926,7 +2972,18 @@ document.addEventListener("input",function(ev){
 },false);
 
 document.addEventListener("change",function(ev){
-  var el=ev.target, b=el.getAttribute&&el.getAttribute("data-b");
+  var el=ev.target;
+  if(el.getAttribute&&el.getAttribute("data-a")==="docFile"){
+    var sec=el.getAttribute("data-sec");
+    var f=el.files&&el.files[0];
+    if(f&&S.cpu&&S.cpu.docs[sec]){
+      S.cpu.docs[sec].push({file:f.name, ref:"", issueDate:"", expiryDate:""});
+      el.value="";
+      renderBody(); toast(t("upload")+": "+f.name);
+    }
+    return;
+  }
+  var b=el.getAttribute&&el.getAttribute("data-b");
   if(b&&el.tagName==="SELECT"){
     setPath(b,el.value);
     if(el.getAttribute("data-live")){ S.listPage=1; b.indexOf("modal.")===0?renderModal():renderBody(); }
