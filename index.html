@@ -46,7 +46,8 @@
   --shadow:0 1px 2px rgba(20,20,20,.04);
 }
 html,body{margin:0;padding:0;}
-body{background:var(--page);color:var(--ink);
+/* white page throughout; panels and cards are defined by their borders */
+body{background:var(--surface);color:var(--ink);
 font:14px/1.55 Inter,"Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
 -webkit-font-smoothing:antialiased;}
 body[dir=rtl]{font-family:"Noto Kufi Arabic",Inter,"Segoe UI",Tahoma,sans-serif;}
@@ -112,7 +113,6 @@ color:#1F3315;font-weight:700;}
 
 
 /* ══ search screen (Owners-search structure) ══════════════════════════════ */
-body.screen-search{background:var(--surface);}
 .pdesc{margin:0 0 30px;color:var(--muted);font-size:16px;line-height:1.6;max-width:1040px;}
 
 /* folder tabs — active sheet merges into the panel below */
@@ -151,7 +151,7 @@ border:1px solid var(--line);border-radius:6px;font-size:15px;color:var(--ink);f
 .factions .btn-search{width:auto;min-width:232px;min-height:52px;border-radius:6px;font-size:15px;}
 .modal>footer .btn-search{width:auto;min-width:132px;min-height:42px;
 border-radius:var(--r-sm);font-size:14px;}
-.tabbody .factions{margin:24px 0 22px;}
+.panel .factions{margin:24px 0 4px;}
 
 /* pagination sits under the table, windowed with an ellipsis */
 /* page size sits under the table, opposite the pagination */
@@ -350,13 +350,21 @@ display:inline-flex;align-items:center;gap:7px;}
 .svgi.up svg{transform:rotate(-90deg);}
 
 /* document cards: icon tile, file name, download action */
-.docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
-.doccard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);
-border-radius:var(--r-sm);padding:12px 14px;background:var(--surface);}
+.docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:14px;}
+.doccard{border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px 16px;
+background:var(--surface);}
+.doccard .hd{display:flex;align-items:center;gap:14px;}
 .doccard .fi{width:38px;height:38px;flex:0 0 38px;border-radius:7px;background:var(--olive-soft);
 display:grid;place-items:center;color:var(--ink);}
-.doccard .fn{flex:1;min-width:0;font-size:14px;color:var(--ink);
+.doccard .fn{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--ink);
 overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.doccard .dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+gap:4px 24px;margin:16px 0 0;}
+.doccard .dates dt{font-size:12.5px;color:var(--muted);margin-bottom:4px;}
+.doccard .dates dd{margin:0;font-size:14px;font-weight:600;color:var(--ink);}
+/* download action, outlined in the same tone as Upload */
+.iconsq.doc{border-color:var(--upload);color:var(--upload);}
+.iconsq.doc:hover{background:#FBF2F4;border-color:var(--upload);}
 
 /* contract details: status pill beside the section heading */
 .statusbadge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;
@@ -368,15 +376,19 @@ padding:6px 14px;border-radius:99px;letter-spacing:.04em;text-transform:uppercas
 .statusbadge.n{background:var(--page);color:var(--muted);}
 
 /* ══ detail tabs — underline style, one section visible at a time ══════════ */
-.tabcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-box-shadow:var(--shadow);overflow:hidden;}
-.utabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 10px;overflow-x:auto;}
-.utab{background:none;border:0;padding:17px 18px 14px;white-space:nowrap;color:var(--muted);
-font-size:14px;border-bottom:3px solid transparent;margin-bottom:-1px;}
-.utab:hover{color:var(--ink-2);}
-.utab[aria-selected=true]{color:var(--ink);font-weight:700;border-bottom-color:var(--olive);}
-.tabbody{padding:24px 26px 28px;}
-.tabbody .grp:first-child{margin-top:0;}
+/* section title outside a bordered white panel */
+.sect-t{font-size:17px;font-weight:600;color:var(--ink);margin:30px 0 10px;letter-spacing:-.005em;}
+.tabflow>.sect-t:first-child{margin-top:0;}
+.sect-t.sect-a{display:flex;align-items:center;gap:16px;}
+.sect-t.sect-a .st{flex:1;min-width:0;}
+table.g td.align-left{text-align:left;}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+padding:24px 26px;}
+.panel+.sect-t{margin-top:30px;}
+.tabflow{padding-top:26px;}
+.tabflow>.panel:first-child{margin-top:0;}
+
+.panel .grp:first-child{margin-top:0;}
 
 /* ══ field groups (Broker(s) Details structure) ══════════════════════════
    section title outside a bordered panel; inside, group headings each followed
@@ -452,10 +464,32 @@ padding:11px 26px;border-radius:var(--r-sm);font-weight:600;}
 padding:11px 32px;border-radius:var(--r-sm);font-weight:600;}
 .cfm .yes:hover{background:var(--olive-dk);}
 
-.radios{display:flex;gap:40px;justify-content:center;margin:20px 0;}
-.radios label{display:flex;align-items:center;gap:8px;color:var(--sage-dk);
-font-size:14px;font-weight:600;}
+.radios{display:flex;gap:34px;justify-content:flex-start;margin:20px 0;}
+.radios label{display:flex;align-items:center;gap:10px;color:var(--ink);
+font-size:14px;font-weight:600;cursor:pointer;}
+/* custom radio: dark ring when unselected, sage ring with a filled dot when selected */
+.radios input[type=radio]{appearance:none;-webkit-appearance:none;margin:0;
+width:20px;height:20px;flex:0 0 20px;border-radius:50%;border:2px solid var(--ink);
+background:var(--surface);position:relative;cursor:pointer;}
+.radios input[type=radio]:checked{border-color:var(--search-btn);background:var(--sage-soft);}
+.radios input[type=radio]:checked::after{content:"";position:absolute;inset:3px;
+border-radius:50%;background:var(--green);}
 .chk{width:17px;height:17px;accent-color:var(--olive);}
+
+/* selection list: the checkbox column is only as wide as the control */
+table.g.picklist th:first-child,
+table.g.picklist td.pickcell{width:1%;white-space:nowrap;padding-inline-end:0;}
+table.g.picklist td:nth-child(2),
+table.g.picklist th:nth-child(2){padding-inline-start:12px;}
+/* selection count sits opposite the pager, as on the results list */
+.pickfoot{display:flex;align-items:center;justify-content:space-between;gap:16px;
+margin-top:10px;flex-wrap:wrap;}
+.pickfoot .pickcount{font-size:12.5px;color:var(--ink-2);}
+.pickfoot .pager{padding:0;}
+/* 4. tighter pagination inside a dialog */
+.modal .pager{gap:6px;padding:12px 0 0;}
+.modal .pager button{min-width:34px;height:34px;font-size:13px;}
+.modal .pager .ell{min-width:34px;height:34px;}
 
 /* ══ doc sections ══ */
 .dsec{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:14px;
@@ -471,6 +505,7 @@ padding:24px 26px;}
 @media(max-width:720px){.fgrid .frow.wide{grid-column:span 1;}}
 .chkrow{display:flex;gap:32px;flex-wrap:wrap;margin-top:22px;
 padding-top:20px;border-top:1px solid var(--line-2);}
+.fgrid.after-chk{margin-top:22px;}
 .chkline{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink-2);}
 .chkline.on{color:var(--sage-dk);font-weight:600;}
 
@@ -549,6 +584,14 @@ var D = {
   unitName:["Unit Name/Number","\u0627\u0633\u0645/\u0631\u0642\u0645 \u0627\u0644\u0648\u062D\u062F\u0629"],
   uploadDocuments:["Upload Documents","\u062A\u062D\u0645\u064A\u0644 \u0627\u0644\u0645\u0633\u062A\u0646\u062F\u0627\u062A"],
   entityId:["Entity ID","\u0631\u0642\u0645 \u0627\u0644\u062C\u0647\u0629"],
+  docIssueDate:["Document issue date","\u062A\u0627\u0631\u064A\u062E \u0625\u0635\u062F\u0627\u0631 \u0627\u0644\u0645\u0633\u062A\u0646\u062F"],
+  docEndDate:["Document end date","\u062A\u0627\u0631\u064A\u062E \u0627\u0646\u062A\u0647\u0627\u0621 \u0627\u0644\u0645\u0633\u062A\u0646\u062F"],
+  addresses:["Addresses","\u0627\u0644\u0639\u0646\u0627\u0648\u064A\u0646"],
+  addressNameEn:["Address Name (English)","\u0627\u0644\u0639\u0646\u0648\u0627\u0646 (\u0625\u0646\u062C\u0644\u064A\u0632\u064A)"],
+  addressNameAr:["Address Name (Arabic)","\u0627\u0644\u0639\u0646\u0648\u0627\u0646 (\u0639\u0631\u0628\u064A)"],
+  addNewAddress:["Add New Address","\u0625\u0636\u0627\u0641\u0629 \u0639\u0646\u0648\u0627\u0646"],
+  editAddress:["Edit Address","\u062A\u0639\u062F\u064A\u0644 \u0627\u0644\u0639\u0646\u0648\u0627\u0646"],
+  update:["Update","\u062A\u062D\u062F\u064A\u062B"],
   upload:["Upload","\u062A\u062D\u0645\u064A\u0644"],
   all:["All","\u0627\u0644\u0643\u0644"],
   mainDetails:["Main Details","\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629"],
@@ -727,8 +770,6 @@ var D = {
   name:["Name","الاسم"],
   reasonForExemption:["Reason For Exemption","سبب الإعفاء"],
   policeRule:["Police clearance certificates are valid for 1 month from the issue date. Expiry is set automatically.","شهادة حسن السيرة والسلوك صالحة لمدة شهر من تاريخ الإصدار. يتم تحديد تاريخ الانتهاء تلقائياً."],
-  reqIssue:["Enter the issue date.","أدخل تاريخ الإصدار."],
-  reqExpiry:["Enter the expiry date.","أدخل تاريخ الانتهاء."],
   expiryAfter:["Expiry date must fall after the issue date.","يجب أن يكون تاريخ الانتهاء بعد تاريخ الإصدار."],
   reqField:["This field is required.","هذا الحقل مطلوب."],
 
@@ -1071,6 +1112,20 @@ var GOV = [
    category past 10 so page 1 fills and the pager renders. Same shape as the
    records above, with empty collections so every tab and empty state is
    exercised. Delete this block to return to the minimal fixture.           */
+/* four rows, per the UAT screenshot; a new array each time so records do not
+   share one reference */
+function defaultAddresses(){
+  return [
+    {en:"5, Al Shifa Bint Abdullah St, Al Reem Island, Abu Dhabi 22667",
+     ar:"5 \u060C\u0634\u0627\u0631\u0639 \u0627\u0644\u0634\u0641\u0627\u0621 \u0628\u0646\u062A \u0639\u0628\u062F\u0627\u0644\u0644\u0647\u060C \u062C\u0632\u064A\u0631\u0629 \u0627\u0644\u0631\u064A\u0645\u060C \u0623\u0628\u0648\u0638\u0628\u064A 22667"},
+    {en:"15, Lane 2530, Dhaharat Al Teeb, Abu Dhabi 20858",
+     ar:"15 \u060C\u0645\u0645\u0631 2530\u060C \u0638\u0647\u0627\u0631\u0629 \u0627\u0644\u0637\u064A\u0628\u060C \u0623\u0628\u0648\u0638\u0628\u064A 20858"},
+    {en:"22, Al Bateen St, W12, Abu Dhabi 11554",
+     ar:"22 \u060C\u0634\u0627\u0631\u0639 \u0627\u0644\u0628\u0637\u064A\u0646\u060C W12\u060C \u0623\u0628\u0648\u0638\u0628\u064A 11554"},
+    {en:"7, Khalifa City SW2, Abu Dhabi 30412",
+     ar:"7 \u060C\u0645\u062F\u064A\u0646\u0629 \u062E\u0644\u064A\u0641\u0629 SW2\u060C \u0623\u0628\u0648\u0638\u0628\u064A 30412"}
+  ];
+}
 function fillPerson(o){
   var base={
     kind:"persons", familyName:"", nationality:"UNITED ARAB EMIRATES", gender:"Male",
@@ -1080,7 +1135,8 @@ function fillPerson(o){
     passport:{number:"",issuePlace:"",issueDate:"01-01-0001",expiryDate:"01-01-0001"},
     familyBook:null,
     blocks:{esb:[],elmsOwner:[],elmsPartial:[],smartHub:[],blockedPlots:[]},
-    poas:[], approvedDocs:[], completedApplications:[], exceptions:[]
+    poas:[], approvedDocs:[], completedApplications:[], exceptions:[],
+    addresses:defaultAddresses()
   };
   for(var k in o) base[k]=o[k];
   base.contact={mobile:base.mobile,phone:"",fax:"",poBox:"",email:base.email,propertyNumber:"",address:""};
@@ -1091,7 +1147,11 @@ function fillPerson(o){
    full block / family-book / POA / documents payload used by the detail tabs). */
 PERSONS = [
   fillPerson({id:"P101", idNumber:"7841991234567", nameAr:"طارق خالد المنصوري",
-    nameEn:"Tariq Khalid Almansoori", familyName:"Almansoori",
+    nameEn:"Tariq Khalid Almansoori",
+    exceptions:[
+      {id:"PA0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PA1",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PA2",workflow:WORKFLOWS[6],nameAr:"Redirection",nameEn:"Redirection"}], familyName:"Almansoori",
     approvedDocs:[
       {type:"Tenancy Agreement Contract (Industrial Plot)",issueDate:"28-11-2020",expiryDate:"30-10-2022"},
       {type:"Educational Qualification Certificate (Graduation)",issueDate:"29-11-2020",expiryDate:""},
@@ -1175,7 +1235,9 @@ PERSONS = [
       {no:"202600012409",startUserName:"Tariq Khalid Almansoori",status:"Approved",createdDate:"18-05-2026 08:47"},
       {no:"202600004771",startUserName:"Tariq Khalid Almansoori",status:"Rejected",createdDate:"09-02-2026 13:31"}]}),
   fillPerson({id:"P102", idNumber:"7841987890123", nameAr:"عائشة سلطان الكعبي",
-    nameEn:"Aisha Sultan Alkaabi", familyName:"Alkaabi", gender:"Female",
+    nameEn:"Aisha Sultan Alkaabi",
+    exceptions:[
+      {id:"PB0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"}], familyName:"Alkaabi", gender:"Female",
     familyBook:{familySequence:"38104", city:"AL AIN", wivesCount:"0", childrenCount:"0",
       head:[{nameAr:"سلطان علي الكعبي",nameEn:"SULTAN ALI ALKAABI",motherNameAr:"مريم صالح النعيمي",motherNameEn:"MARYAM SALEH ALNUAIMI",idNumber:"784195803329117",dateOfBirth:"27-02-1958",placeOfBirth:"AL AIN",maritalStatus:"MARRIED",religion:"ISLAM",nationality:"UNITED ARAB EMIRATES"}],
       dependents:[], wives:[]},
@@ -1195,7 +1257,12 @@ PERSONS = [
     completedApplications:[
       {no:"202600015003",startUserName:"Madiha Jassem Alshamsi",status:"Approved",createdDate:"02-07-2026 11:52"}]}),
   fillPerson({id:"P105", idNumber:"7841986112233", nameAr:"عمر سعيد المهيري",
-    nameEn:"Omar Saeed Almehairi", familyName:"Almehairi",
+    nameEn:"Omar Saeed Almehairi",
+    exceptions:[
+      {id:"PC0",workflow:WORKFLOWS[1],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PC1",workflow:WORKFLOWS[3],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PC2",workflow:WORKFLOWS[4],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PC3",workflow:WORKFLOWS[10],nameAr:"Redirection",nameEn:"Redirection"}], familyName:"Almehairi",
     blocks:{esb:[
         {title:"Municipal Violation",warning:"failure to maintain the external appearance of the building and its surrounding boundary wall.",ref:"202600289513",datetime:"19-01-2026, 11:08:33"}],
       elmsOwner:[],elmsPartial:[],smartHub:[],
@@ -1212,7 +1279,10 @@ PERSONS = [
     personDetails:{motherNameAr:"",motherNameEn:"",placeOfBirth:"AL AIN",
       dateOfBirth:"30-01-1990",maritalStatus:"MARRIED",regSmartHub:"Yes"}}),
   fillPerson({id:"P107", idNumber:"7841988778899", nameAr:"سلطان أحمد المرزوقي",
-    nameEn:"Sultan Ahmed Almarzooqi", familyName:"Almarzooqi",
+    nameEn:"Sultan Ahmed Almarzooqi",
+    exceptions:[
+      {id:"PD0",workflow:WORKFLOWS[0],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PD1",workflow:WORKFLOWS[7],nameAr:"Redirection",nameEn:"Redirection"}], familyName:"Almarzooqi",
     blocks:{esb:[
         {title:"Municipal Violation",warning:"occupying part of a public road or public property without obtaining a licence.",ref:"202600447860",datetime:"28-06-2026, 16:31:57"}],
       elmsOwner:[],elmsPartial:[],smartHub:[],
@@ -1245,7 +1315,10 @@ PERSONS = [
     personDetails:{motherNameAr:"",motherNameEn:"",placeOfBirth:"AL AIN",
       dateOfBirth:"17-08-1985",maritalStatus:"MARRIED",regSmartHub:"Yes"}}),
   fillPerson({id:"P110", idNumber:"7841994332211", nameAr:"حصة راشد المزروعي",
-    nameEn:"Hessa Rashed Almazrouei", familyName:"Almazrouei", gender:"Female",
+    nameEn:"Hessa Rashed Almazrouei",
+    exceptions:[
+      {id:"PE0",workflow:WORKFLOWS[2],nameAr:"Redirection",nameEn:"Redirection"},
+      {id:"PE1",workflow:WORKFLOWS[11],nameAr:"Redirection",nameEn:"Redirection"}], familyName:"Almazrouei", gender:"Female",
     mobile:"971554433221", email:"hessa.almazrouei@adres.ae",
     personDetails:{motherNameAr:"",motherNameEn:"",placeOfBirth:"ABU DHABI",
       dateOfBirth:"11-10-1994",maritalStatus:"SINGLE",regSmartHub:"Yes"}})
@@ -1530,6 +1603,14 @@ function grid(cols,list,rowFn,cls,trFn){
     : '<tr class="emptyrow"><td colspan="'+cols.length+'"><div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+'</div></td></tr>';
   return '<div class="tw"><table class="g'+(cls?" "+cls:"")+'"><thead><tr>'+h+"</tr></thead><tbody>"+b+"</tbody></table></div>";
 }
+function secTitle(txt){ return '<div class="sect-t">'+esc(txt)+"</div>"; }
+/* section heading with an action aligned opposite the title */
+function secTitleA(txt,right){
+  return '<div class="sect-t sect-a"><span class="st">'+esc(txt)+"</span>"+(right||"")+"</div>";
+}
+function panel(inner){ return '<section class="panel">'+inner+"</section>"; }
+/* a titled section: heading outside a bordered white panel */
+function section(title,inner){ return secTitle(title)+panel(inner); }
 function grp(txt){ return '<div class="grp">'+esc(txt)+"</div>"; }
 /* heading that sits directly above a table: the table header supplies its own
    rule, so a second one under the heading reads as a double line */
@@ -1737,11 +1818,10 @@ function viewList(){
 }
 
 function catTabs(){
-  var n={persons:PERSONS.length,companies:COMPANIES.length,gov:GOV.length};
   return '<div class="ftabs">'
-    +[["persons","persons"],["companies","companies"],["gov","gov"]].map(function(x){
-      return '<button class="ftab" data-a="cat" data-id="'+x[0]+'" aria-selected="'+(S.cat===x[0])+'">'
-        +esc(t(x[1]))+" ("+n[x[0]]+")</button>"; }).join("")
+    +["persons","companies","gov"].map(function(k){
+      return '<button class="ftab" data-a="cat" data-id="'+k+'" aria-selected="'+(S.cat===k)+'">'
+        +esc(t(k))+"</button>"; }).join("")
     +"</div>";
 }
 
@@ -1770,63 +1850,64 @@ var PERSON_TABS=[["profileDetails","profileDetails"],["blockDetails","blockDetai
 
 /* the two customer flags — shown on each category's first tab */
 function custInfoBlock(r){
-  return grp(t("customerInformation"))
-    +fieldGrid([[t("isExempted"),st(r.isExempted)]]
-      .concat(r.isSmartSurvey!==undefined?[[t("isSmartSurvey"),st(r.isSmartSurvey)]]:[]));
+  return section(t("customerInformation"),
+    fieldGrid([[t("isExempted"),st(r.isExempted)]]
+      .concat(r.isSmartSurvey!==undefined?[[t("isSmartSurvey"),st(r.isSmartSurvey)]]:[])));
 }
 function bodyMain(p){
-  return fieldGrid([
+  return section(t("mainDetails"),fieldGrid([
     [t("name"), ar() ? (p.nameAr||p.nameEn) : (p.nameEn||p.nameAr)],
     [t("nationality"), p.nationality],
     [t("gender"), p.gender],
     [t("idNumber"), p.idNumber, true],
     [t("mobile"), p.mobile, true],
     [t("emailAddress"), p.email, true]
-  ])+custInfoBlock(p);
+  ]))+custInfoBlock(p);
 }
 
 function bodyProfile(p){
   var d=p.personDetails, ps=p.passport, c=p.contact, out="";
 
-  out+=grp(t("basicInformation"))+fieldGrid([
-    [t("nameAr"),p.nameAr],[t("nameEn"),p.nameEn],[t("familyName"),p.familyName]]);
+  out+=section(t("basicInformation"),fieldGrid([
+    [t("nameAr"),p.nameAr],[t("nameEn"),p.nameEn],[t("familyName"),p.familyName]]));
 
-  out+=grp(t("personDetails"))+fieldGrid([
+  out+=section(t("personDetails"),fieldGrid([
     [t("motherNameAr"),d.motherNameAr],[t("motherNameEn"),d.motherNameEn],
     [t("placeOfBirth"),d.placeOfBirth],[t("dateOfBirth"),d.dateOfBirth],
-    [t("maritalStatus"),d.maritalStatus],[t("regSmartHub"),st(d.regSmartHub)]]);
+    [t("maritalStatus"),d.maritalStatus],[t("regSmartHub"),st(d.regSmartHub)]]));
 
-  out+=grp(t("passport"))+fieldGrid([
+  out+=section(t("passport"),fieldGrid([
     [t("passportNumber"),ps.number,true],[t("passportIssuePlace"),ps.issuePlace],
-    [t("passportIssueDate"),ps.issueDate],[t("passportExpiryDate"),ps.expiryDate]]);
+    [t("passportIssueDate"),ps.issueDate],[t("passportExpiryDate"),ps.expiryDate]]));
 
-  out+=grp(t("contactInformation"))+fieldGrid([
+  out+=section(t("contactInformation"),fieldGrid([
     [t("mobile"),c.mobile,true],[t("phone"),c.phone,true],[t("fax"),c.fax,true],
     [t("poBox"),c.poBox,true],[t("emailAddress"),c.email,true],
-    [t("propertyNumber"),c.propertyNumber],[t("address"),c.address]]);
+    [t("propertyNumber"),c.propertyNumber],[t("address"),c.address]]));
 
-  out+=grp(t("familyBookDetails"));
+
+  var fbInner="";
   if(!p.familyBook){
     out+='<div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+"</div>";
   } else {
     var fb=p.familyBook;
-    out+=fieldGrid([[t("familySequence"),fb.familySequence,true],[t("city"),fb.city],
+    fbInner=fieldGrid([[t("familySequence"),fb.familySequence,true],[t("city"),fb.city],
       [t("wivesCount"),fb.wivesCount],[t("childrenCount"),fb.childrenCount]]);
     var hc=[t("nameAr"),t("nameEn"),t("motherNameAr"),t("motherNameEn"),t("idNumber"),
       t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),t("religion"),t("nationality")];
-    out+=grpT(t("familyHead"))+grid(hc,fb.head,function(r){
+    fbInner+=grpT(t("familyHead"))+grid(hc,fb.head,function(r){
       return "<td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.motherNameAr)
         +"</td><td>"+esc(r.motherNameEn)+'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)
         +"</td><td>"+esc(r.placeOfBirth)+"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)
         +"</td><td>"+esc(r.nationality)+"</td>"; });
-    out+=grpT(t("dependents"))+grid(["#",t("nameAr"),t("nameEn"),t("gender"),t("motherIdCard"),
+    fbInner+=grpT(t("dependents"))+grid(["#",t("nameAr"),t("nameEn"),t("gender"),t("motherIdCard"),
       t("motherNameAr"),t("motherNameEn"),t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),
       t("maritalStatus"),t("religion"),t("nationality")],fb.dependents,function(r,i){
       return "<td>"+(i+1)+"</td><td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.gender)
         +'</td><td dir="ltr">'+esc(r.motherIdCard)+"</td><td>"+esc(r.motherNameAr)+"</td><td>"+esc(r.motherNameEn)
         +'</td><td dir="ltr">'+esc(r.idNumber)+"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)
         +"</td><td>"+esc(r.maritalStatus)+"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; });
-    out+=grpT(t("wifeDetails"))+grid(["#",t("nameAr"),t("nameEn"),t("marriageDate"),t("motherNameAr"),
+    fbInner+=grpT(t("wifeDetails"))+grid(["#",t("nameAr"),t("nameEn"),t("marriageDate"),t("motherNameAr"),
       t("motherNameEn"),t("idNumber"),t("dateOfBirth"),t("placeOfBirth"),t("maritalStatus"),
       t("religion"),t("nationality")],fb.wives,function(r,i){
       return "<td>"+(i+1)+"</td><td>"+esc(r.nameAr)+"</td><td>"+esc(r.nameEn)+"</td><td>"+esc(r.marriageDate)
@@ -1834,6 +1915,21 @@ function bodyProfile(p){
         +"</td><td>"+esc(r.dateOfBirth)+"</td><td>"+esc(r.placeOfBirth)+"</td><td>"+esc(r.maritalStatus)
         +"</td><td>"+esc(r.religion)+"</td><td>"+esc(r.nationality)+"</td>"; });
   }
+  out+=section(t("familyBookDetails"),fbInner);
+
+  var addrs=p.addresses||[];
+  out+=secTitleA(t("addresses"),
+      '<button class="btn-add sm" data-a="addrAdd"><span class="plus">+</span>'
+      +esc(t("addNewAddress"))+"</button>")
+    +panel(grid([t("addressNameEn"),t("addressNameAr"),""],addrs,function(a,i){
+        /* Arabic keeps dir=rtl for correct bidi, but aligns left under its header */
+        return "<td>"+esc(a.en)+'</td><td dir="rtl" class="align-left">'+esc(a.ar)+"</td>"
+          +'<td class="actcell">'
+          +'<button class="iconsq" data-a="addrEdit" data-n="'+i+'" title="'+esc(t("update"))
+            +'" aria-label="'+esc(t("update"))+" "+esc(a.en)+'">'+icon("edit",17)+"</button>"
+          +'<button class="iconsq danger" data-a="confirm" data-do="delAddr" data-n="'+i+'" title="'
+            +esc(t("del"))+'" aria-label="'+esc(t("del"))+" "+esc(a.en)+'">'+icon("del",17)+"</button>"
+          +"</td>"; }));
   return out;
 }
 
@@ -1847,23 +1943,23 @@ function bodyBlocks(r){
           +'<div class="r">'+esc(e.ref)+"<br>"+icon("calendar",15)+" "+esc(e.datetime)+"</div></div>";
       }).join("")
     : '<div class="empty">'+icon("empty",45,"gl")+''+esc(t("noRecords"))+"</div>";
-  out+=grp(t("esbBlocks"))+esb;
+  out+=section(t("esbBlocks"),esb);
 
-  out+=grpT(t("elmsOwner"))+grid(["#",t("ownerName"),t("reason"),t("blockDate")],b.elmsOwner,function(x){
-    return "<td>"+esc(x.no)+"</td><td>"+esc(x.owner)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
-  out+=grpT(t("elmsPartial"))+grid(["#",t("plotNumber"),t("reason"),t("blockDate")],b.elmsPartial,function(x){
-    return "<td>"+esc(x.no)+"</td><td>"+esc(x.plot)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
-  out+=grpT(t("smartHubBlocks"))+grid(["#",t("reason"),t("blockDate")],b.smartHub,function(x){
-    return "<td>"+esc(x.no)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; });
+  out+=section(t("elmsOwner"),grid(["#",t("ownerName"),t("reason"),t("blockDate")],b.elmsOwner,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.owner)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }));
+  out+=section(t("elmsPartial"),grid(["#",t("plotNumber"),t("reason"),t("blockDate")],b.elmsPartial,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.plot)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }));
+  out+=section(t("smartHubBlocks"),grid(["#",t("reason"),t("blockDate")],b.smartHub,function(x){
+    return "<td>"+esc(x.no)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.date)+"</td>"; }));
 
-  out+=grpT(t("blockedPlots"))
-    +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNumber"),t("landUse"),""],
+  out+=section(t("blockedPlots"),
+    grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNumber"),t("landUse"),""],
       b.blockedPlots,function(x,i){
       return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
         +"</td><td>"+esc(x.road)+'</td><td class="num">'+esc(x.plotNumber)+"</td><td>"+esc(x.landUse)
         +'</td><td><button class="iconsq" data-a="plot" data-n="'+i+'" title="'+esc(t("blockedPlots"))
         +'" aria-label="'+esc(t("blockedPlots"))+'">'+icon("arrowRight",17,"dir")+"</button></td>"; },
-      null, function(x,i){ return ' class="rowlink" data-a="plot" data-n="'+i+'"'; });
+      null, function(x,i){ return ' class="rowlink" data-a="plot" data-n="'+i+'"'; }));
   return out;
 }
 
@@ -1918,21 +2014,21 @@ function poaGrid(list,page,act,linkAct,src){
 }
 
 function bodyPoa(p){
-  return poaFilterRow("poaSearch")
-    +poaGrid(poaFilter(p.poas),S.poaPage,"poaPage","poaOpen",contractsOf(p));
+  return panel(poaFilterRow("poaSearch")
+    +poaGrid(poaFilter(p.poas),S.poaPage,"poaPage","poaOpen",contractsOf(p)));
 }
 
 /* Documents tab — shared shape */
 function bodyDocuments(r){
-  var out=grp(t("approvedDocuments"))+docCards(r.approvedDocs,"approvedDocs");
+  var out=section(t("approvedDocuments"),docCards(r.approvedDocs,"approvedDocs"));
 
   var pg=paged(r.completedApplications,S.appPage,5);
-  out+=grpT(t("completedApplications"))
-    +grid([t("applicationNumber"),t("startUserName"),t("status"),t("createdDate"),""],pg.slice,function(a){
+  out+=section(t("completedApplications"),
+    grid([t("applicationNumber"),t("startUserName"),t("status"),t("createdDate"),""],pg.slice,function(a){
       return '<td dir="ltr">'+esc(a.no)+"</td><td>"+esc(a.startUserName)+"</td><td>"+sx(a.status)
         +'</td><td dir="ltr">'+esc(a.createdDate)
         +'</td><td><button class="btn sm" data-a="openApp" data-id="'+esc(a.no)+'">'+esc(t("view"))+"</button></td>"; })
-    +pager(pg.page,pg.total,"appPage");
+    +pager(pg.page,pg.total,"appPage"));
 
   return out;
 }
@@ -1944,14 +2040,13 @@ function tabbed(items,stateKey){
   var keys=items.map(function(x){ return x.key; });
   var cur = (S[sk] && keys.indexOf(S[sk])>-1) ? S[sk] : keys[0];
   var strip=items.map(function(x){
-    return '<button class="utab" data-a="tab" data-sk="'+sk+'" data-id="'+esc(x.key)+'" role="tab" aria-selected="'
+    return '<button class="ftab" data-a="tab" data-sk="'+sk+'" data-id="'+esc(x.key)+'" role="tab" aria-selected="'
       +(x.key===cur)+'">'+esc(x.title)+"</button>";
   }).join("");
   var active=null;
   items.forEach(function(x){ if(x.key===cur) active=x; });
-  return '<section class="tabcard">'
-    +'<div class="utabs" role="tablist">'+strip+"</div>"
-    +'<div class="tabbody" role="tabpanel">'+active.body()+"</div></section>";
+  return '<div class="ftabs" role="tablist">'+strip+"</div>"
+    +'<div class="tabflow" role="tabpanel">'+active.body()+"</div>";
 }
 
 /* ── Contract Details ────────────────────────────────────────────────────────
@@ -1970,13 +2065,18 @@ function docCards(list,src){
   if(!list||!list.length)
     return '<div class="empty">'+icon("empty",45,"gl")+esc(t("noRecords"))+"</div>";
   return '<div class="docgrid">'+list.map(function(dc,i){
-    var nm=docFileName(dc);
+    var nm=docFileName(dc), dash="\u2014";
     return '<div class="doccard">'
-      +'<span class="fi">'+icon("docfile",20)+"</span>"
-      +'<span class="fn" title="'+esc(nm)+'">'+esc(nm)+"</span>"
-      +'<button class="iconsq" data-a="viewDoc" data-src="'+src+'" data-n="'+i+'" title="'
-        +esc(t("view"))+'" aria-label="'+esc(t("view"))+" "+esc(nm)+'">'+icon("download",18)+"</button>"
-      +"</div>";
+      +'<div class="hd">'
+        +'<span class="fi">'+icon("docfile",20)+"</span>"
+        +'<span class="fn" title="'+esc(nm)+'">'+esc(nm)+"</span>"
+        +'<button class="iconsq doc" data-a="viewDoc" data-src="'+src+'" data-n="'+i+'" title="'
+          +esc(t("view"))+'" aria-label="'+esc(t("view"))+" "+esc(nm)+'">'+icon("download",18)+"</button>"
+      +"</div>"
+      +'<dl class="dates">'
+        +"<div><dt>"+esc(t("docIssueDate"))+'</dt><dd dir="ltr">'+esc(dc.issueDate||dash)+"</dd></div>"
+        +"<div><dt>"+esc(t("docEndDate"))+'</dt><dd dir="ltr">'+esc(dc.expiryDate||dash)+"</dd></div>"
+      +"</dl></div>";
   }).join("")+"</div>";
 }
 /* open a document in a new tab; a blob URL is navigable top-level where a
@@ -2063,23 +2163,25 @@ function viewContract(){
 
   return tabbed([
     {key:"basic", title:t("basicInformation"), body:function(){
-      return fieldGrid([
+      return section(t("basicInformation"),fieldGrid([
         [t("poaNo"),k.no,true],[t("contractType"),k.type],
         [t("issueDate"),k.issueDate],[t("contractStart"),k.startDate],
         [t("expiryDate"),k.expiryDate],[t("terminateDate"),k.terminateDate],
-        [t("remarks"),k.remarks]]); }},
-    {key:"first",  title:t("firstParty"),  body:function(){ return partyGrid(k.first); }},
-    {key:"second", title:t("secondParty"), body:function(){ return partyGrid(k.second); }},
+        [t("remarks"),k.remarks]])); }},
+    {key:"first",  title:t("firstParty"),  body:function(){ return section(t("firstParty"),partyGrid(k.first)); }},
+    {key:"second", title:t("secondParty"), body:function(){ return section(t("secondParty"),partyGrid(k.second)); }},
     {key:"wf",     title:t("workflowGroups"), body:function(){
-      return k.groups.length
+      var wfInner = k.groups.length
         ? k.groups.map(function(gp){
             return grpT(gp.name)
               +grid(["#",t("workflowNames")],gp.workflows,function(nm,i){
                   return "<td>"+(i+1)+"</td><td>"+esc(nm)+"</td>"; });
           }).join("")
-        : grid(["#",t("workflowNames")],[],function(){ return ""; }); }},
+        : grid(["#",t("workflowNames")],[],function(){ return ""; });
+      return section(t("workflowGroups"),wfInner); }},
     {key:"props",  title:t("properties"), body:function(){
-      return grpT(t("plots"))
+      return section(t("properties"),
+        grpT(t("plots"))
         +grid([t("municipality"),t("district"),t("community"),t("road"),t("plotNo"),t("landUse"),""],
           k.plots,function(x,i){
             return "<td>"+esc(x.municipality)+"</td><td>"+esc(x.district)
@@ -2094,7 +2196,7 @@ function viewContract(){
               +"</td><td>"+esc(x.municipality)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.community)
               +"</td><td>"+esc(x.road)+'</td><td dir="ltr">'+esc(x.plotNumber)+"</td><td>"
               +esc(x.landUse)+"</td>"+propArrow("units",i); },
-          null, propRow("units")); }}
+          null, propRow("units"))); }}
   ],"ctab");
 }
 function sxClass(v){
@@ -2122,30 +2224,30 @@ function viewCompany(){
   var c=rec(); if(!c) return "";
   return tabbed([
       {key:"info",  title:t("companyInformation"), body:function(){
-        return grp(t("generalInformation"))+fieldGrid([
+        return section(t("generalInformation"),fieldGrid([
           [t("tradeLicenseNumber"),c.tradeLicenseNumber,true],[t("orgNameAr"),c.nameAr],
           [t("orgNameEn"),c.nameEn],[t("licenseIssueDate"),c.general.licenseIssueDate],
-          [t("licenseExpiryDate"),c.general.licenseExpiryDate],[t("adcci"),c.general.adcci,true]])
-        +grp(t("contactInformation"))+fieldGrid([
+          [t("licenseExpiryDate"),c.general.licenseExpiryDate],[t("adcci"),c.general.adcci,true]]))
+        +section(t("contactInformation"),fieldGrid([
           [t("emailAddress"),c.contact.email,true],[t("mobile"),c.contact.mobile,true],
           [t("phone"),c.contact.phone,true],[t("fax"),c.contact.fax,true],
           [t("poBox"),c.contact.poBox,true],[t("propertyNumber"),c.contact.propertyNumber],
-          [t("address"),c.contact.address]])
+          [t("address"),c.contact.address]]))
         +custInfoBlock(c); }},
       {key:"blocks", title:t("blockDetails"), body:function(){ return bodyBlocks(c); }},
       {key:"acts",   title:t("tradeLicenseActivities"), body:function(){
         var ap=paged(c.activities,S.actPage,16);
-        return grid(["#",t("activityCode"),t("activityNameAr"),t("activityNameEn")],ap.slice,function(a,i){
+        return panel(grid(["#",t("activityCode"),t("activityNameAr"),t("activityNameEn")],ap.slice,function(a,i){
           return "<td>"+((ap.page-1)*16+i+1)+'</td><td dir="ltr">'+esc(a.code)+"</td><td>"+esc(a.nameAr)
-            +"</td><td>"+esc(a.nameEn)+"</td>"; })+pager(ap.page,ap.total,"actPage"); }},
+            +"</td><td>"+esc(a.nameEn)+"</td>"; })+pager(ap.page,ap.total,"actPage")); }},
       {key:"owners", title:t("owners"), body:function(){
-        return grid(["#",t("nameAr"),t("nameEn"),t("percentage"),t("nationality"),t("relationType")],
+        return panel(grid(["#",t("nameAr"),t("nameEn"),t("percentage"),t("nationality"),t("relationType")],
           c.owners,function(o,i){
           return "<td>"+(i+1)+"</td><td>"+esc(o.nameAr)+"</td><td>"+esc(o.nameEn)+"</td><td>"+esc(o.percentage)
-            +"</td><td>"+esc(o.nationality)+"</td><td>"+esc(o.relationType)+"</td>"; }); }},
+            +"</td><td>"+esc(o.nationality)+"</td><td>"+esc(o.relationType)+"</td>"; })); }},
       {key:"users",  title:t("users"), body:function(){
         var up=paged(c.users,S.usrPage,10);
-        return grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin"),""],
+        return panel(grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin"),""],
           up.slice,function(u,i){
           return "<td>"+((up.page-1)*10+i+1)+"</td><td>"+esc(u.nameAr)+"</td><td>"+esc(u.nameEn)
             +'</td><td dir="ltr">'+esc(u.email)+'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)
@@ -2153,9 +2255,9 @@ function viewCompany(){
             +'</td><td><button class="iconsq danger" data-a="confirm" data-do="delUser" data-n="'+i
             +'" data-nm="'+esc(u.nameEn)+'" title="'+esc(t("del"))+'" aria-label="'+esc(t("del"))
             +" "+esc(u.nameEn)+'">'+icon("del",17)+"</button></td>"; })
-          +pager(up.page,up.total,"usrPage"); }},
+          +pager(up.page,up.total,"usrPage")); }},
       {key:"sig",    title:t("authorizedSignatory"), body:function(){
-        return poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen",contractsOf(c)); }},
+        return panel(poaFilterRow("sigSearch")+poaGrid(poaFilter(c.signatories),S.sigPage,"sigPage","poaOpen",contractsOf(c))); }},
       {key:"docs",   title:t("documents"), body:function(){ return bodyDocuments(c); }}
     ]);
 }
@@ -2166,20 +2268,20 @@ function viewGov(){
   var g=rec(); if(!g) return "";
   return tabbed([
     {key:"info",  title:t("govInformation"), body:function(){
-      return grp(t("generalInformation"))+fieldGrid([[t("orgNameAr"),g.nameAr],[t("orgNameEn"),g.nameEn]])
-        +grp(t("contactInformation"))+fieldGrid([
+      return section(t("generalInformation"),fieldGrid([[t("orgNameAr"),g.nameAr],[t("orgNameEn"),g.nameEn]]))
+        +section(t("contactInformation"),fieldGrid([
           [t("mobile"),g.contact.mobile,true],[t("phone"),g.contact.phone,true],
           [t("fax"),g.contact.fax,true],[t("poBox"),g.contact.poBox,true],
           [t("emailAddress"),g.contact.email,true],
-          [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]])
+          [t("propertyNumber"),g.contact.propertyNumber],[t("address"),g.contact.address]]))
         +custInfoBlock(g); }},
     {key:"users", title:t("users"), body:function(){
-      return grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin")],
+      return panel(grid(["#",t("nameAr"),t("nameEn"),t("emailAddress"),t("phoneNo"),t("location"),t("isAdmin")],
         g.users,function(u,i){
         return "<td>"+(i+1)+"</td><td>"+esc(u.nameAr)+"</td><td>"+esc(u.nameEn)+'</td><td dir="ltr">'+esc(u.email)
-          +'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)+"</td><td>"+sx(u.isAdmin)+"</td>"; }); }},
+          +'</td><td dir="ltr">'+esc(u.phone)+"</td><td>"+esc(u.location)+"</td><td>"+sx(u.isAdmin)+"</td>"; })); }},
     {key:"docs",  title:t("documents"), body:function(){
-      return docCards(g.documents,"documents"); }}
+      return section(t("documents"),docCards(g.documents,"documents")); }}
   ]);
 }
 
@@ -2250,6 +2352,7 @@ function viewCpu(){
       +esc(t(label))+"</label>";
   }
   /* four across, labels above inputs, inside a bordered panel */
+  /* the flags come before the reason, because Is Exempted is what makes it required */
   var info='<div class="fieldpanel"><div class="fgrid">'
     +fld("name",null,{val:C.name,dis:true})
     +fld("emailAddress","cpu.email",{type:"email",dir:"ltr",ph:"phEmail",val:C.email,req:true,err:e.email})
@@ -2257,12 +2360,13 @@ function viewCpu(){
     +fld("landLine","cpu.landLine",{dir:"ltr",ph:"phLandLine",val:C.landLine})
     +fld("fax","cpu.fax",{dir:"ltr",ph:"phFax",val:C.fax})
     +fld("poBox","cpu.poBox",{dir:"ltr",ph:"phPoBox",val:C.poBox})
-    +fld("reasonForExemption","cpu.reasonForExemption",
-         {area:true,ph:"phReason",val:C.reasonForExemption,req:C.isExempted,err:e.reason,wide:true})
     +"</div>"
     +'<div class="chkrow">'+chk("cpuExempt","isExempted",C.isExempted)
       +chk("cpuSurvey","isSmartSurvey",C.isSmartSurvey)+"</div>"
-    +"</div>";
+    +'<div class="fgrid after-chk">'
+    +fld("reasonForExemption","cpu.reasonForExemption",
+         {area:true,ph:"phReason",val:C.reasonForExemption,req:C.isExempted,err:e.reason,wide:true})
+    +"</div></div>";
 
   var appDetails=fieldGrid([
       [t("service"), t("custProfileUpdate")],
@@ -2281,15 +2385,13 @@ function viewCpu(){
   return (S.cat!=="companies" ? unv("unvDocs") : "")
     +'<div class="row-end right" style="margin-bottom:12px">'
     +'<button class="btn btn-red" data-a="confirm" data-do="delApp">'+esc(t("del"))+"</button></div>"
-    +'<section class="tabcard"><div class="tabbody">'
-      +grp(t("applicationDetails"))+appDetails
-      +grp(t("applicantDetails"))+applicant
-      +grp(t("uploadDocuments"))+secs
-      +grp(t("customerInformation"))+info
-      +'<div class="row-end right" style="margin-top:24px">'
-      +'<button class="btn-search" style="width:auto;min-width:220px" data-a="cpuSubmit">'
-      +esc(t("submit"))+"</button></div>"
-    +"</div></section>";
+    +section(t("applicationDetails"),appDetails)
+    +section(t("applicantDetails"),applicant)
+    +section(t("uploadDocuments"),secs)
+    +section(t("customerInformation"),info)
+    +'<div class="row-end right" style="margin-top:26px">'
+    +'<button class="btn-search" style="width:auto;min-width:220px" data-a="cpuSubmit">'
+    +esc(t("submit"))+"</button></div>";
 
 }
 
@@ -2325,14 +2427,16 @@ function excModalBody(){
       +(d.kind==="RoleActivity"?" checked":"")+"> "+esc(t("roleActivity"))+"</label>"
     +"</div>"
     +'<div class="row-end right" style="margin-bottom:12px">'
-    +'<button class="btn sm" data-a="excSearch">'+icon("search",15)+" "+esc(t("searchBtn"))+"</button></div>"
+    +'<button class="btn-add sm" data-a="excSearch">'+icon("search",15)+esc(t("searchBtn"))+"</button></div>"
     +grid(["",t("nameEn"),t("nameAr")],pg.slice,function(w){
         var on=d.picked.indexOf(w[0])>-1;
-        return '<td><input type="checkbox" class="chk" data-a="excPick" data-v="'+esc(w[0])+'"'+(on?" checked":"")+"></td>"
-          +"<td>"+esc(w[0])+"</td><td>"+esc(w[1])+"</td>"; })
-    +pager(pg.page,pg.total,"excPage")
-    +'<div style="text-align:end;font-size:12px;color:var(--ink-2);margin-top:8px">'
-    +esc(t("numberOfItems"))+" "+d.picked.length+"</div>"
+        return '<td class="pickcell"><input type="checkbox" class="chk" data-a="excPick" data-v="'
+          +esc(w[0])+'"'+(on?" checked":"")+"></td>"
+          +"<td>"+esc(w[0])+"</td><td>"+esc(w[1])+"</td>"; }, "picklist")
+    +'<div class="pickfoot">'
+      +'<span class="pickcount">'+esc(t("numberOfItems"))+" "+d.picked.length+"</span>"
+      +pager(pg.page,pg.total,"excPage")
+    +"</div>"
     +(e.picked?'<div class="err" style="text-align:end">'+esc(e.picked)+"</div>":"");
 }
 
@@ -2363,11 +2467,24 @@ function renderModal(){
   } else if(m.kind==="exc"){
     title=t("addException"); body=excModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
-      +'<button class="btn" data-a="excSave">'+esc(t("save"))+"</button>";
+      +'<button class="btn-search" data-a="excSave">'+esc(t("save"))+"</button>";
   } else if(m.kind==="doc"){
     title=t("addDocument"); body=docModalBody();
     footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
-      +'<button class="btn btn-green" data-a="docSave">'+esc(t("addDocument"))+"</button>";
+      +'<button class="btn-search" data-a="docSave">'+esc(t("addDocument"))+"</button>";
+  } else if(m.kind==="addr"){
+    /* the edit dialog is not evidenced in UAT; it collects the two name fields */
+    title=t(m.i===null?"addNewAddress":"editAddress");
+    body='<div class="frow"><label>'+esc(t("addressNameEn"))+'</label><div class="ctl">'
+      +'<input type="text" data-b="modal.d.en" placeholder="'+esc(t("addressNameEn"))+'" value="'
+      +esc(m.d.en||"")+'"'+(m.errs&&m.errs.en?' aria-invalid="true"':"")+">"
+      +((m.errs&&m.errs.en)?'<div class="err">'+esc(m.errs.en)+"</div>":"")+"</div></div>"
+      +'<div class="frow"><label>'+esc(t("addressNameAr"))+'</label><div class="ctl">'
+      +'<input type="text" dir="rtl" data-b="modal.d.ar" placeholder="'+esc(t("addressNameAr"))+'" value="'
+      +esc(m.d.ar||"")+'"'+(m.errs&&m.errs.ar?' aria-invalid="true"':"")+">"
+      +((m.errs&&m.errs.ar)?'<div class="err">'+esc(m.errs.ar)+"</div>":"")+"</div></div>";
+    footer='<button class="btn" data-a="mclose">'+esc(t("cancel"))+"</button>"
+      +'<button class="btn-search" data-a="addrSave">'+esc(t("save"))+"</button>";
   } else if(m.kind==="prop"){
     /* owners of a single plot or unit — read-only, so no footer */
     var pr2=rec(), poa2=pr2&&contractsOf(pr2)[S.route.n];
@@ -2441,13 +2558,15 @@ function docModalBody(){
   var expiry = police ? addMonth(d.issueDate) : d.expiryDate;
   return '<div class="frow"><label>'+esc(t("documentType"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.section)+'" disabled></div></div>'
-    +'<div class="frow"><label>'+esc(t("referenceNumber"))+'</label><div class="ctl">'
-      +'<input type="text" data-b="modal.d.ref" placeholder="'+esc(t("phRefNo"))+'" value="'+esc(d.ref)+'"></div></div>'
-    +'<div class="frow"><label>'+esc(t("issueDate"))+'<span class="req">*</span></label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("referenceNumber"))+'<span class="req">*</span></label><div class="ctl">'
+      +'<input type="text" data-b="modal.d.ref" placeholder="'+esc(t("phRefNo"))+'" value="'+esc(d.ref)+'"'
+      +(e.ref?' aria-invalid="true"':"")+">"
+      +(e.ref?'<div class="err">'+esc(e.ref)+"</div>":"")+"</div></div>"
+    +'<div class="frow"><label>'+esc(t("issueDate"))+'</label><div class="ctl">'
       +'<input type="date" data-b="modal.d.issueDate" data-live="1" value="'+esc(d.issueDate)+'"'
       +(e.issueDate?' aria-invalid="true"':"")+">"
       +(e.issueDate?'<div class="err">'+esc(e.issueDate)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("expiryDate"))+'<span class="req">*</span></label><div class="ctl">'
+    +'<div class="frow"><label>'+esc(t("expiryDate"))+'</label><div class="ctl">'
       +'<input type="date" data-b="modal.d.expiryDate" value="'+esc(expiry)+'"'
       +(police?" disabled":"")+(e.expiryDate?' aria-invalid="true"':"")+">"
       +(e.expiryDate?'<div class="err">'+esc(e.expiryDate)+"</div>":"")
@@ -2558,8 +2677,6 @@ function renderBody(){
     var cr=rec(), cpoa=cr&&contractsOf(cr)[r.n];
     if(cpoa) headAct='<span class="statusbadge '+sxClass(cpoa.status)+'">'+esc(st(cpoa.status))+"</span>";
   }
-
-  document.body.classList.toggle("screen-search", r.name==="list");
   document.getElementById("page").innerHTML=
     '<div class="pagehead"><div class="ph-l">'
       +'<div class="crumbline">'+cl+"</div>"
@@ -2594,8 +2711,9 @@ function renderMenu(){
 
     /* Persons: View Details + Edit only.
        Companies / Government Entities keep [CustomerException]. */
-    var items=[["view",icon("view",19),t("viewDetails")],["edit",icon("edit",19),t("edit")]];
-    if(S.cat!=="persons") items.push(["exc",icon("exception",19),t("customerException")]);
+    /* Customer Exception is offered for all three categories, per DM-68361 req 1 */
+    var items=[["view",icon("view",19),t("viewDetails")],["edit",icon("edit",19),t("edit")],
+               ["exc",icon("exception",19),t("customerException")]];
     html=items.map(function(i){
       return '<button role="menuitem" data-a="'+i[0]+'" data-id="'+esc(id)+'">'+i[1]+esc(i[2])+"</button>";
     }).join("");
@@ -2626,6 +2744,7 @@ function runConfirm(m){
   var r=rec();
   if(m.doAct==="delExc"&&r){ r.exceptions=r.exceptions.filter(function(x){ return x.id!==m.id; }); toast("Deleted"); }
   else if(m.doAct==="delUser"&&r){ r.users.splice(parseInt(m.n,10),1); toast("Deleted"); }
+  else if(m.doAct==="delAddr"&&r&&r.addresses){ r.addresses.splice(parseInt(m.n,10),1); toast("Deleted"); }
   else if(m.doAct==="delCpuDoc"&&S.cpu){ S.cpu.docs[m.sec].splice(parseInt(m.n,10),1); toast("Deleted"); }
   else if(m.doAct==="delApp"){ toast("Application deleted"); home(); }
 }
@@ -2677,6 +2796,24 @@ document.addEventListener("click",function(ev){
       S.modal=null; toast(ar()?"تم الحفظ":"Saved"); render(); return;
 
     case "plot": S.modal={kind:"plot", i:+el.getAttribute("data-n")}; renderModal(); return;
+    case "addrAdd":
+      S.modal={kind:"addr", i:null, d:{en:"",ar:""}}; renderModal(); return;
+    case "addrEdit": {
+      var ar_=rec(), an=+el.getAttribute("data-n"), row=(ar_.addresses||[])[an];
+      if(!row) return;
+      S.modal={kind:"addr", i:an, d:{en:row.en, ar:row.ar}}; renderModal(); return;
+    }
+    case "addrSave": {
+      var am=S.modal, ad=am.d, aerr={};
+      if(!String(ad.en||"").trim()) aerr.en=t("reqField");
+      if(!String(ad.ar||"").trim()) aerr.ar=t("reqField");
+      if(Object.keys(aerr).length){ am.errs=aerr; renderModal(); return; }
+      var arec=rec(); if(!arec.addresses) arec.addresses=[];
+      if(am.i===null) arec.addresses.push({en:ad.en, ar:ad.ar});
+      else arec.addresses[am.i]={en:ad.en, ar:ad.ar};
+      S.modal=null; renderModal(); renderBody();
+      toast(am.i===null?t("addNewAddress"):t("editAddress")); return;
+    }
     case "propOpen": S.modal={kind:"prop", propKind:el.getAttribute("data-kind"),
       i:+el.getAttribute("data-n")}; renderModal(); return;
 
@@ -2727,9 +2864,10 @@ document.addEventListener("click",function(ev){
       var police=m.d.section===POLICE_SECTION;
       var exp=police?addMonth(m.d.issueDate):m.d.expiryDate;
       var de={};
-      if(!m.d.issueDate) de.issueDate=t("reqIssue");
-      if(!exp) de.expiryDate=t("reqExpiry");
-      else if(m.d.issueDate&&exp<=m.d.issueDate) de.expiryDate=t("expiryAfter");
+      /* reference number is the only required field; dates are optional, but if
+         both are supplied the expiry must still follow the issue date */
+      if(!String(m.d.ref||"").trim()) de.ref=t("reqField");
+      if(m.d.issueDate&&exp&&exp<=m.d.issueDate) de.expiryDate=t("expiryAfter");
       if(Object.keys(de).length){ m.errs=de; renderModal(); return; }
       S.cpu.docs[m.d.section].push({ref:m.d.ref,issueDate:m.d.issueDate,expiryDate:exp});
       S.modal=null; toast(ar()?"تم إضافة المستند":"Document added"); render(); return;
