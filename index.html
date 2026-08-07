@@ -342,7 +342,7 @@ margin-bottom:12px;}
 .uprow .fi{width:36px;height:36px;flex:0 0 36px;border-radius:7px;background:var(--olive-soft);
 display:grid;place-items:center;color:var(--ink);}
 .uprow .nm{flex:1;min-width:0;font-size:14px;color:var(--ink);}
-.uprow>.up{border-top:1px solid var(--line-2);padding:4px 16px 12px;}
+.uprow>.uploaded{border-top:1px solid var(--line-2);padding:4px 16px 12px;}
 .filelist{display:flex;flex-direction:column;gap:8px;padding-top:12px;}
 .fileline{display:flex;align-items:center;gap:12px;border:1px solid var(--line);
 border-radius:var(--r-sm);padding:9px 12px;background:var(--surface);}
@@ -451,7 +451,7 @@ body[dir=rtl] .listcard .li .ch{transform:scaleX(-1);}
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.42);display:grid;place-items:center;
 padding:24px;z-index:100;overflow:auto;}
 .modal.wide{width:min(1060px,100%);}
-.plotctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);
+.modalctx{font-size:13px;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-2);
 margin-bottom:4px;}
 .modal{background:var(--surface);border-radius:14px;width:min(700px,100%);
 max-height:90vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.24);}
@@ -2350,7 +2350,7 @@ function viewCpu(){
     var direct=docRules(name).direct;
     var uploaded = !list.length ? ""
       : direct
-      ? '<div class="up"><div class="filelist">'
+      ? '<div class="uploaded"><div class="filelist">'
         +list.map(function(dc,i){
             return '<div class="fileline">'
               +'<span class="fi">'+icon("docfile",18)+"</span>"
@@ -2363,7 +2363,7 @@ function viewCpu(){
           }).join("")
         +"</div></div>"
       : list.length
-      ? '<div class="up"><div class="tw"><table class="g"><thead><tr>'
+      ? '<div class="uploaded"><div class="tw"><table class="g"><thead><tr>'
         +"<th>"+esc(t("documentFile"))+"</th><th>"+esc(t("referenceNumber"))+"</th>"
         +"<th>"+esc(t("issueDate"))+"</th>"
         +(docRules(name).noExpiry?"":"<th>"+esc(t("expiryDate"))+"</th>")
@@ -2556,7 +2556,7 @@ function renderModal(){
       ? [row2.municipality,row2.district,row2.community,t("plotNo")+" "+row2.plotNumber,row2.landUse]
       : [t("unitName")+" "+row2.unitNumber,t("propertyNumber")+" "+row2.propertyNumber,
          row2.municipality,row2.district,t("plotNo")+" "+row2.plotNumber,row2.landUse];
-    body='<div class="plotctx">'+esc(ident.join(" / "))+"</div>"
+    body='<div class="modalctx">'+esc(ident.join(" / "))+"</div>"
       +grid([t("ownerName"),t("acquisitionType")],row2.owners||[],function(o){
           return "<td>"+esc(o.ownerName)+"</td><td>"+esc(o.acquisitionType)+"</td>"; });
     footer="";
@@ -2566,7 +2566,7 @@ function renderModal(){
     if(!row){ root.innerHTML=""; return; }
     wide=" wide";
     title=t("blockedPlots");
-    body='<div class="plotctx">'
+    body='<div class="modalctx">'
       +esc(row.municipality+" / "+row.district+" / "+row.community
            +" / "+t("plotNumber")+" "+row.plotNumber+" / "+row.landUse)+"</div>"
       +grpT(t("blockedPlotS"))
@@ -2616,9 +2616,9 @@ function docModalBody(){
   var m=S.modal, d=m.d, e=m.errs||{};
   var police = d.section===POLICE_SECTION, R = docRules(d.section);
   var expiry = police ? addMonth(d.issueDate) : d.expiryDate;
-  return '<div class="frow"><label>'+esc(t("documentType"))+'</label><div class="ctl">'
-      +'<input type="text" value="'+esc(d.section)+'" disabled></div></div>'
-    /* the document itself — the dialog collected only metadata before */
+  /* the section is fixed by the row the user came from, so it is stated as
+     context rather than repeated in a disabled field */
+  return '<div class="modalctx">'+esc(d.section)+"</div>"
     +'<div class="frow"><label>'+esc(t("documentFile"))+'<span class="req">*</span></label><div class="ctl">'
       +'<div class="filepick">'
         +'<label class="btn-upload"><input type="file" data-a="docPick" style="display:none">'
