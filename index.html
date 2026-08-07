@@ -175,7 +175,7 @@ border-bottom:1px solid var(--line-2);}
 
 /* ══ forms ══ */
 .frow{margin-bottom:14px;}
-.frow>label{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;
+.frow>label{display:flex;align-items:center;gap:2px;font-size:13px;font-weight:600;
 color:var(--ink-2);margin-bottom:6px;}
 .frow>.ctl{min-width:0;}
 input[type=text],input[type=email],input[type=date],select,textarea{
@@ -205,7 +205,7 @@ input[aria-invalid=true],select[aria-invalid=true],textarea[aria-invalid=true]{
 border-color:var(--red);background:var(--red-soft);}
 .err{color:var(--red-tx);font-size:12.5px;margin-top:5px;}
 .hint{color:var(--muted);font-size:12.5px;margin-top:5px;}
-.req{color:var(--red);margin-inline-start:2px;}
+.req{color:var(--red);margin-inline-start:0;}
 .newtag{background:var(--olive-soft);color:var(--olive-dk);border:1px solid #E2DCBE;
 font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
 padding:2px 6px;border-radius:4px;}
@@ -351,6 +351,9 @@ background:var(--olive-soft);display:grid;place-items:center;color:var(--ink);}
 .fileline .fn{flex:1;min-width:0;font-size:14px;color:var(--ink);
 overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 label.btn-upload{cursor:pointer;}
+.filepick{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.filepick .fname{font-size:13px;color:var(--muted);}
+.filepick .fname.has{color:var(--ink);font-weight:600;}
 /* same treatment as "Clear all" on the search screen: white, thin grey border,
    dark label — sized for a row rather than the filter panel */
 .btn-upload{background:var(--surface);border:1px solid var(--line);color:var(--ink);
@@ -596,6 +599,9 @@ var D = {
   entityId:["Entity ID","\u0631\u0642\u0645 \u0627\u0644\u062C\u0647\u0629"],
   docIssueDate:["Document issue date","\u062A\u0627\u0631\u064A\u062E \u0625\u0635\u062F\u0627\u0631 \u0627\u0644\u0645\u0633\u062A\u0646\u062F"],
   docEndDate:["Document end date","\u062A\u0627\u0631\u064A\u062E \u0627\u0646\u062A\u0647\u0627\u0621 \u0627\u0644\u0645\u0633\u062A\u0646\u062F"],
+  documentFile:["Document","\u0627\u0644\u0645\u0633\u062A\u0646\u062F"],
+  chooseFile:["Choose File","\u0627\u062E\u062A\u0631 \u0645\u0644\u0641"],
+  noFileChosen:["No file chosen","\u0644\u0645 \u064A\u062A\u0645 \u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0644\u0641"],
   addresses:["Addresses","\u0627\u0644\u0639\u0646\u0627\u0648\u064A\u0646"],
   addressNameEn:["Address Name (English)","\u0627\u0644\u0639\u0646\u0648\u0627\u0646 (\u0625\u0646\u062C\u0644\u064A\u0632\u064A)"],
   addressNameAr:["Address Name (Arabic)","\u0627\u0644\u0639\u0646\u0648\u0627\u0646 (\u0639\u0631\u0628\u064A)"],
@@ -841,7 +847,17 @@ var DOC_RULES = {
   "Escrow Account Trustee Registration Certificate":          {issue:true},
   /* uploaded straight from the file picker — no dialog, no fields */
   "Fee Exemption Letter":                                    {direct:true},
-  "Copy of Trade License":                                   {direct:true}
+  "Copy of Trade License":                                   {direct:true},
+
+  /* Individuals. noExpiry means the document never expires, so the field is not
+     shown at all rather than merely being optional. */
+  "Police Clearance Certificate":                            {issue:true, expiry:true},
+  "Experience Letter":                                       {noExpiry:true},
+  "Educational Qualification Certificate":                   {noExpiry:true},
+  "Training Completion Certificate for Evaluators":          {issue:true, expiry:true},
+  "Training Completion Certificate for Auctioneers":         {issue:true, expiry:true},
+  "Training Completion Certificate for Brokers":             {issue:true, expiry:true},
+  "Training Completion Certificate for Surveyors":           {issue:true, expiry:true}
 };
 function docRules(sec){ return DOC_RULES[sec] || {}; }
 
@@ -2348,13 +2364,17 @@ function viewCpu(){
         +"</div></div>"
       : list.length
       ? '<div class="up"><div class="tw"><table class="g"><thead><tr>'
-        +"<th>"+esc(t("referenceNumber"))+"</th><th>"+esc(t("issueDate"))+"</th><th>"
-        +esc(t("expiryDate"))+"</th><th></th></tr></thead><tbody>"
+        +"<th>"+esc(t("documentFile"))+"</th><th>"+esc(t("referenceNumber"))+"</th>"
+        +"<th>"+esc(t("issueDate"))+"</th>"
+        +(docRules(name).noExpiry?"":"<th>"+esc(t("expiryDate"))+"</th>")
+        +"<th></th></tr></thead><tbody>"
         +list.map(function(dc,i){
-            return "<tr><td>"+esc(dc.ref||"\u2014")+"</td><td>"+esc(dc.issueDate)+"</td><td>"
-              +esc(dc.expiryDate)
+            return "<tr><td>"+esc(dc.file||docFileName(dc))+"</td><td>"+esc(dc.ref||"\u2014")
+              +"</td><td>"+esc(dc.issueDate||"\u2014")+"</td>"
+              +(docRules(name).noExpiry?"":"<td>"+esc(dc.expiryDate||"\u2014")
               +(police?' <span class="newtag">1 '+esc(ar()?"\u0634\u0647\u0631":"month")+"</span>":"")
-              +'</td><td class="num">'
+              +"</td>")
+              +'<td class="num">'
               +'<button class="iconsq" data-a="viewCpuDoc" data-sec="'+esc(name)+'" data-n="'+i+'" title="'
                 +esc(t("view"))+'">'+icon("view",16)+"</button> "
               +'<button class="iconsq danger" data-a="confirm" data-do="delCpuDoc" data-sec="'
@@ -2598,6 +2618,14 @@ function docModalBody(){
   var expiry = police ? addMonth(d.issueDate) : d.expiryDate;
   return '<div class="frow"><label>'+esc(t("documentType"))+'</label><div class="ctl">'
       +'<input type="text" value="'+esc(d.section)+'" disabled></div></div>'
+    /* the document itself — the dialog collected only metadata before */
+    +'<div class="frow"><label>'+esc(t("documentFile"))+'<span class="req">*</span></label><div class="ctl">'
+      +'<div class="filepick">'
+        +'<label class="btn-upload"><input type="file" data-a="docPick" style="display:none">'
+        +icon("arrowRight",15,"up")+esc(t("chooseFile"))+"</label>"
+        +'<span class="fname'+(d.file?" has":"")+'">'+esc(d.file||t("noFileChosen"))+"</span>"
+      +"</div>"
+      +(e.file?'<div class="err">'+esc(e.file)+"</div>":"")+"</div></div>"
     +'<div class="frow"><label>'+esc(t("referenceNumber"))+(R.ref?'<span class="req">*</span>':"")+'</label><div class="ctl">'
       +'<input type="text" data-b="modal.d.ref" placeholder="'+esc(t("phRefNo"))+'" value="'+esc(d.ref)+'"'
       +(e.ref?' aria-invalid="true"':"")+">"
@@ -2606,11 +2634,12 @@ function docModalBody(){
       +'<input type="date" data-b="modal.d.issueDate" data-live="1" value="'+esc(d.issueDate)+'"'
       +(e.issueDate?' aria-invalid="true"':"")+">"
       +(e.issueDate?'<div class="err">'+esc(e.issueDate)+"</div>":"")+"</div></div>"
-    +'<div class="frow"><label>'+esc(t("expiryDate"))+(R.expiry?'<span class="req">*</span>':"")+'</label><div class="ctl">'
-      +'<input type="date" data-b="modal.d.expiryDate" value="'+esc(expiry)+'"'
-      +(police?" disabled":"")+(e.expiryDate?' aria-invalid="true"':"")+">"
-      +(e.expiryDate?'<div class="err">'+esc(e.expiryDate)+"</div>":"")
-      +(police?'<div class="hint">'+esc(t("policeRule"))+"</div>":"")+"</div></div>"
+    +(R.noExpiry ? ""
+      : '<div class="frow"><label>'+esc(t("expiryDate"))+(R.expiry?'<span class="req">*</span>':"")+'</label><div class="ctl">'
+        +'<input type="date" data-b="modal.d.expiryDate" value="'+esc(expiry)+'"'
+        +(police?" disabled":"")+(e.expiryDate?' aria-invalid="true"':"")+">"
+        +(e.expiryDate?'<div class="err">'+esc(e.expiryDate)+"</div>":"")
+        +(police?'<div class="hint">'+esc(t("policeRule"))+"</div>":"")+"</div></div>")
     +(police?'<div class="note amber"><span class="ic">!</span><span>'+esc(t("policeRule"))+"</span></div>":"");
 }
 
@@ -2907,12 +2936,14 @@ document.addEventListener("click",function(ev){
       /* required fields come from DOC_RULES; regardless of those, if both dates
          are supplied the expiry must still follow the issue date */
       var R2=docRules(m.d.section);
+      if(R2.noExpiry) exp="";
+      if(!m.d.file) de.file=t("reqField");
       if(R2.ref    && !String(m.d.ref||"").trim()) de.ref=t("reqField");
       if(R2.issue  && !m.d.issueDate)              de.issueDate=t("reqField");
       if(R2.expiry && !exp)                        de.expiryDate=t("reqField");
       if(m.d.issueDate&&exp&&exp<=m.d.issueDate)   de.expiryDate=t("expiryAfter");
       if(Object.keys(de).length){ m.errs=de; renderModal(); return; }
-      S.cpu.docs[m.d.section].push({ref:m.d.ref,issueDate:m.d.issueDate,expiryDate:exp});
+      S.cpu.docs[m.d.section].push({file:m.d.file,ref:m.d.ref,issueDate:m.d.issueDate,expiryDate:exp});
       S.modal=null; toast(ar()?"تم إضافة المستند":"Document added"); render(); return;
     case "cpuExempt": S.cpu.isExempted=el.checked; renderBody(); return;
     case "cpuSurvey": S.cpu.isSmartSurvey=el.checked; renderBody(); return;
@@ -2974,6 +3005,15 @@ document.addEventListener("input",function(ev){
 
 document.addEventListener("change",function(ev){
   var el=ev.target;
+  if(el.getAttribute&&el.getAttribute("data-a")==="docPick"){
+    var pf=el.files&&el.files[0];
+    if(pf&&S.modal&&S.modal.kind==="doc"){
+      S.modal.d.file=pf.name;
+      if(S.modal.errs) delete S.modal.errs.file;
+      renderModal();
+    }
+    return;
+  }
   if(el.getAttribute&&el.getAttribute("data-a")==="docFile"){
     var sec=el.getAttribute("data-sec");
     var f=el.files&&el.files[0];
